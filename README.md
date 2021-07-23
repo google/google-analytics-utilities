@@ -25,6 +25,47 @@ The tool currently performs the following functions:
 In order to access this information, you must have at least read and analyze permissions for the accounts, properties, and views you are interested in. If you want to create goals, you must have edit permissions for the view you want to create the goals in.
 
 
+## How to Access the Spreadsheet
+
+It is strongly recommended that you use the template spreadsheet to use the Google Analytics Utilities script. Follow these steps to make a copy of the template spreadsheet and start using the script:
+
+
+
+1. Join [this group](https://groups.google.com/g/google-analytics-utilities-users) to gain access to the spreadsheet.
+2. Create a copy of [this spreadsheet](https://docs.google.com/spreadsheets/d/1kJqwYNed8RTuAgjy0aRUooD__MIPqzUeiDF5LZ7v1aI/).
+
+The spreadsheet is now ready to use the Google Analytics Utilities sheet. The first time you run a function from the menu, you will need to authorize the permissions for the script and then run the function a second time.
+
+If you are not copying the script, then the Google Analytics API and Analytics Reporting API services need to be enabled.
+
+
+## Enable Google Analytics 4 Utilities
+
+In order to use the Google Analytics 4 utilities, you must first connect your spreadsheet to a Google Cloud project with the Analytics Admin API enabled. To do so, follow these steps:
+
+
+### Create a Cloud Project
+
+
+
+1. Navigate to [console.cloud.google.com/home](console.cloud.google.com/home) and either create a new project or select and existing one
+2.  Navigate to [console.cloud.google.com/apis/library](http://console.cloud.google.com/apis/library) for your project and search for “Google Analytics Admin API”
+3. Enable the Google Analytics Admin API
+4. Navigate to [console.cloud.google.com/iam-admin/settings](console.cloud.google.com/iam-admin/settings) for your project and copy the project Number
+
+
+### Connect App Script to Cloud Project
+
+
+
+1. Open the script connected to your spreadsheet by going to Extensions > App Script
+2. Click on “Project Settings” in the left-hand navigation to modify your project settings
+3. Under Google Cloud Platform (GCP) Project, click “Change project” and paste your project ID from earlier
+4. Click “Set Project”
+
+Your script can now start using the Google Analytics Admin API to request information about Google Analytics 4 accounts.
+
+
 ## Show and Hide Sheets
 
 To make managing the sheets easier, you can show or hide sheets related to Universal Analytics and Google Analytics 4.
@@ -33,23 +74,9 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 ## Universal Analytics
 
 
-### How to set up the script
-
-Follow these steps to properly set up the script:
-
-
-
-1. Join [this group](https://groups.google.com/g/google-analytics-utilities-users) to gain access to the spreadsheet.
-2. Create a copy of [this spreadsheet](https://docs.google.com/spreadsheets/d/1sWsanYzEOU3uQxjnyub_oyVGVInTjmsVkuaIomjNv80/edit?resourcekey=0-jaWrFAHGkdtZ0g5g1y-7jw#gid=347179575).
-
-The spreadsheet is now ready to use the Google Analytics Utilities sheet. The first time you run a function from the menu, you will need to authorize the permissions for the script and then run the function a second time.
-
-If you are not copying the script, then the Google Analytics API and Analytics Reporting API services need to be enabled.
-
-
 ### Account Summaries
 
-Go to GA Utilities and click on List Account Summaries. The script will identify all of the Google Analytics accounts your email has access to and list a flattened table of accounts, properties, and views to the “Account Summaries” sheet. This sheet can then be used to select specific accounts, properties, or views for other functions, like listing custom dimensions or view settings.
+Go to Google Analytics Utilities > Universal Analytics and click on List Account Summaries. The script will identify all of the Google Analytics accounts your email has access to and list a flattened table of accounts, properties, and views in the “UA Account Summaries” sheet. This sheet can then be used to select specific accounts, properties, or views for other functions, like listing custom dimensions or view settings.
 
 
 ### View Details
@@ -140,3 +167,22 @@ The script will save all of the goal settings for the selected views to the “G
 3. Go to Google Analytics Utilities > Universal Analytics > Goals  and click on Create Goals
 
 The script will create the goals in the specified views based on the information entered in the goal settings sheet.
+
+
+## Google Analytics 4
+
+
+### List Account Summaries
+
+Go to Google Analytics Utilities > Google Analytics 4 and click on List Account Summaries. The script will identify all of the Google Analytics 4 properties your email has access to and list a flattened table of accounts and properties in the “GA4 Account Summaries” sheet. This sheet can then be used to select specific accounts and properties for other functions.
+
+
+### List Data Streams
+
+
+
+1. List GA4 account summaries.
+2. Select the properties for which you want to retrieve their data streams.
+3. Go to Google Analytics Utilities > Google Analytics 4 and click on List Properties and Streams
+
+The script will list data stream information in the data stream sheet for all of the selected properties.
