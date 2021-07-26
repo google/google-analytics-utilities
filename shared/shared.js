@@ -137,6 +137,76 @@ const sheetRanges = {
         numRows: 1,
         numColumns: 26
       }
+    },
+    customDimensions: {
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 10
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 10
+      }
+    },
+    customMetrics: {
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 10
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 10
+      }
+    },
+    conversionEvents: {
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 8
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 8
+      }
+    },
+    adsLinks: {
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 11
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 11
+      }
+    },
+    firebaseLinks: {
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 8
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 8
+      }
     }
   }
 }
@@ -144,8 +214,8 @@ const sheetRanges = {
 const sheetNames = {
   ua: {
     viewDetails: 'View Details List',
-    customDimensions: 'Custom Dimensions',
-    customMetrics: 'Custom Metrics',
+    customDimensions: 'UA Custom Dimensions',
+    customMetrics: 'UA Custom Metrics',
     events: 'UA Events',
     accountSummaries: 'UA Account Summaries',
     settings: 'UA Settings',
@@ -155,7 +225,12 @@ const sheetNames = {
   },
   ga4: {
     accountSummaries: 'GA4 Account Summaries',
-    streams: 'Data Streams'
+    streams: 'Data Streams',
+    customDimensions: 'GA4 Custom Dimensions',
+    customMetrics: 'GA4 Custom Metrics',
+    conversionEvents: 'GA4 Conversion Events',
+    adsLinks: 'GA4 Google Ads Links',
+    firebaseLinks: 'GA4 Firebase Links'
   }
 }
 
@@ -184,9 +259,7 @@ function getAccountSummaries() {
 }
 
 function listRemarketingAudiences(accountId, propertyId, startIndex) {
-  return Analytics.Management.RemarketingAudience.list(
-		accountId, propertyId, {'start-index': startIndex}
-	);
+  return Analytics.Management.RemarketingAudience.list(accountId, propertyId, {'start-index': startIndex});
 }
 
 function listGoals(accountId, propertyId, viewId) {
@@ -194,12 +267,7 @@ function listGoals(accountId, propertyId, viewId) {
 }
 
 function createGoal(request) {
-  return Analytics.Management.Goals.insert(
-		request.resource,
-		request.accountId,
-		request.webPropertyId,
-		request.profileId
-	);
+  return Analytics.Management.Goals.insert(request.resource, request.accountId, request.webPropertyId, request.profileId);
 }
 
 /**
@@ -209,7 +277,7 @@ function createGoal(request) {
  * @return {!Object|null} The specified range object.
  */
 function getSheetRange(name, type) {
-  if (name === sheetNames.ua.viewDetails) {
+  if (name == sheetNames.ua.viewDetails) {
     return sheetRanges.ua.viewDetailsList[type];
   } else if (name == sheetNames.ua.customDimensions) {
     return sheetRanges.ua.customDimensions[type];
@@ -231,6 +299,16 @@ function getSheetRange(name, type) {
     return sheetRanges.ga4.accountSummaries[type];
   } else if (name == sheetNames.ga4.streams) { 
     return sheetRanges.ga4.streams[type];
+  } else if (name == sheetNames.ga4.customDimensions) {
+    return sheetRanges.ga4.customDimensions[type];
+  } else if (name == sheetNames.ga4.customMetrics) {
+    return sheetRanges.ga4.customMetrics[type];
+  } else if (name == sheetNames.ga4.conversionEvents) {
+    return sheetRanges.ga4.conversionEvents[type];
+  } else if (name == sheetNames.ga4.adsLinks) {
+    return sheetRanges.ga4.adsLinks[type];
+  } else if (name == sheetNames.ga4.firebaseLinks) {
+    return sheetRanges.ga4.firebaseLinks[type];
   } else {
     return null;
   }
@@ -314,10 +392,8 @@ function getSettings() {
   const rawStartDate = settingsValues[0][0];
   const rawEndDate = settingsValues[1][0];
   let settingsObject = {
-    startDate: rawStartDate.getFullYear() + '-' + (rawStartDate.getMonth() + 1)
-		+ '-' + rawStartDate.getDate(),
-    endDate: rawEndDate.getFullYear() + '-' + (rawEndDate.getMonth() + 1)
-		+ '-' + rawEndDate.getDate(),
+    startDate: rawStartDate.getFullYear() + '-' + (rawStartDate.getMonth() + 1) + '-' + rawStartDate.getDate(),
+    endDate: rawEndDate.getFullYear() + '-' + (rawEndDate.getMonth() + 1) + '-' + rawEndDate.getDate(),
   };
   return settingsObject;
 }

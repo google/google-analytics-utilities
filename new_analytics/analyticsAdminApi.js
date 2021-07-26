@@ -81,3 +81,23 @@ function getEnhancedMeasurementSettings(webDataStreamName) {
 function getGlobalSiteTag(webDataStreamName) {
   return JSON.parse(UrlFetchApp.fetch(ga4BaseRequestUrl + webDataStreamName + '/getGlobalSiteTag', getOptions()).getContentText());
 }
+
+function listGA4CustomDimensions(propertyName) {
+  return JSON.parse(UrlFetchApp.fetch(ga4BaseRequestUrl + propertyName + '/customDimensions', getOptions()).getContentText());
+}
+
+function listGA4CustomMetrics(propertyName) {
+  return JSON.parse(UrlFetchApp.fetch(ga4BaseRequestUrl + propertyName + '/customMetrics', getOptions()).getContentText());
+}
+
+function listGA4ConversionEvents(propertyName) {
+  return JSON.parse(UrlFetchApp.fetch(ga4BaseRequestUrl + propertyName + '/conversionEvents', getOptions()).getContentText());
+}
+
+function listGA4AdsLinks(propertyName) {
+  return JSON.parse(UrlFetchApp.fetch(ga4BaseRequestUrl + propertyName + '/googleAdsLinks', getOptions()).getContentText());
+}
+
+function listGA4FirebaseLinks(propertyName) {
+  return JSON.parse(UrlFetchApp.fetch(ga4BaseRequestUrl + propertyName + '/firebaseLinks', getOptions()).getContentText());
+}

@@ -34,6 +34,11 @@ function onOpen(e) {
       ui.createMenu('Google Analytics 4')
       .addItem('List Account Summaries', 'writeGA4AccountSummariesToSheet')
       .addItem('List Properties and Streams', 'writeGA4StreamsToSheet')
+      .addItem('List Custom Dimensions', 'writeGA4CustomDimensionsToSheet')
+      .addItem('List Custom Metrics', 'writeGA4CustomMetricsToSheet')
+      .addItem('List Conversion Events', 'writeGA4ConversionEventsToSheet')
+      .addItem('List Google Ads Links', 'writeGA4AdsLinksToSheet')
+      .addItem('List Firebase Links', 'writeGA4FirebaseLinksToSheet')
     )
     .addSeparator()
     .addSubMenu(
