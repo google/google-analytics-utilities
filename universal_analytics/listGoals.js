@@ -85,8 +85,8 @@ function writeGoalsToSheet() {
   const selectedViews = getSelectedViews();
   let goalData = [];
   selectedViews.forEach(summary => {
-    const accountId = summary[2];
-    const propertyId = summary[4];
+    const accountId = summary[1];
+    const propertyId = summary[3];
     const viewId = summary[5];
     goalData = goalData.concat(listExistingGoals(accountId, propertyId, viewId));
   });

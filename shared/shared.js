@@ -104,7 +104,7 @@ const sheetRanges = {
       read: {
         row: 2,
         column: 2,
-        numRows: 2,
+        numRows: 3,
         numColumns: 1
       }
     }
@@ -315,15 +315,6 @@ function getSheetRange(name, type) {
 }
 
 /**
- * Retrieves and returns the Settings sheet object.
- * @return {!Object} The settings sheet object.
- */
-function getSettingsSheet() {
-  let settingsSheet = ss.getSheetByName('Settings');
-  return settingsSheet;
-}
-
-/**
  * Returns an array of selected properties based on the
  * selected views.
  * @param {!Array<!Array>} selectedViews An array
@@ -388,12 +379,13 @@ function getDataFromSheet(sheetName) {
  * @return {!Object} The settings from the settings sheet.
  */
 function getSettings() {
-  const settingsValues = getDataFromSheet('Settings');
+  const settingsValues = getDataFromSheet('UA Settings');
   const rawStartDate = settingsValues[0][0];
   const rawEndDate = settingsValues[1][0];
+  const timeZone = settingsValues[2][0] || 'EST';
   let settingsObject = {
-    startDate: rawStartDate.getFullYear() + '-' + (rawStartDate.getMonth() + 1) + '-' + rawStartDate.getDate(),
-    endDate: rawEndDate.getFullYear() + '-' + (rawEndDate.getMonth() + 1) + '-' + rawEndDate.getDate(),
+    startDate: Utilities.formatDate(rawStartDate, timeZone, 'yyyy-MM-dd'),
+    endDate: Utilities.formatDate(rawEndDate, timeZone, 'yyyy-MM-dd')
   };
   return settingsObject;
 }
