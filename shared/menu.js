@@ -22,8 +22,22 @@ function onOpen(e) {
       .addItem('List Account Summaries', 'writeAccountSummariesToSheet')
       .addItem('List View Details', 'writeViewDetailsToSheet')
       .addItem('List Events', 'writeEventsToSheet')
-      .addItem('List Custom Dimensions', 'writeCustomDimensionsToSheet')
-      .addItem('List Custom Metrics', 'writeCustomMetricsToSheet')
+      .addSubMenu(
+        ui.createMenu('Custom Dimensions')
+        .addItem('List Custom Dimensions', 'writeCustomDimensionsToSheet')
+        .addSubMenu(
+          ui.createMenu('Modify Custom Dimensions')
+          .addItem('List Template Dimensions', 'writeTemplateCustomDimensionsToSheet')
+          .addItem('List Destination Properties', 'writeCustomDimensionDestinationPropertiesToSheet')
+          .addItem('Modify Custom Dimensions', 'modifyCustomDimensions')))
+      .addSubMenu(
+        ui.createMenu('Custom Metrics')
+        .addItem('List Custom Metrics', 'writeCustomMetricsToSheet')
+        .addSubMenu(
+          ui.createMenu('Modify Custom Metrics')
+          .addItem('List Template Metrics', 'writeTemplateCustomMetricsToSheet')
+          .addItem('List Destination Properties', 'writeCustomMetricDestinationPropertiesToSheet')
+          .addItem('Modify Custom Metrics', 'modifyCustomMetrics')))
       .addItem('List Filters', 'writeFilterDataToSheet')
       .addItem('List Remarketing Audience Settings', 'writeAudiencesToSheet')
       .addSubMenu(

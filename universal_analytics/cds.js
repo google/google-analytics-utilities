@@ -54,3 +54,4 @@ function writeCustomDimensionsToSheet() {
     writeToSheet(customDimensions, sheetNames.ua.customDimensions);
   }
 }
+

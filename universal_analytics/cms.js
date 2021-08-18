@@ -30,12 +30,12 @@ function listCustomMetrics(accountId, propertyId) {
       finalizedCms.push([
         accountId,
         propertyId,
-        cms[i].name,
         cms[i].index,
+        cms[i].name,
         cms[i].scope,
         cms[i].active,
-        cms[i].max_value || '',
         cms[i].min_value || '',
+        cms[i].max_value || '',
         cms[i].type]);
     }                 
   }
@@ -57,3 +57,4 @@ function writeCustomMetricsToSheet() {
     writeToSheet(customMetrics, sheetNames.ua.customMetrics);
   }
 }
+

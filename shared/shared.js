@@ -1,12 +1,12 @@
 /**
  * Copyright 2021 Google LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     https://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,258 +16,141 @@
 
 const ss = SpreadsheetApp.getActive();
 
-const sheetRanges = {
-  ua: {
-      viewDetailsList: {
-      read: {},
-      write: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 22
-      }
-    },
-    customDimensions: {
-      read: {},
-      write: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 6
-      }
-    },
-    customMetrics: {
-      read: {},
-      write: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 9
-      }
-    },
-    events: {
-      read: {},
-      write: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 10
-      }
-    },
-    accountSummaries: {
-      read: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 7
-      },
-      write: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 6
-      }
-    },
-    filters: {
-      read: {},
-      write: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 26
-      }
-    },
-    audiences: {
-      write: {},
-      read: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 18
-      }
-    },
-    goals: {
-      read: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 23
-      },
-      write: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 22
-      }
-    },
-    settings: {
-      read: {
-        row: 2,
-        column: 2,
-        numRows: 3,
-        numColumns: 1
-      }
-    }
-  },
-  ga4: {
-    accountSummaries: {
-      write: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 4
-      },
-      read: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 5
-      }
-    },
-    streams: {
-      write: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 25
-      },
-      read: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 26
-      }
-    },
-    customDimensions: {
-      write: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 10
-      },
-      read: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 10
-      }
-    },
-    customMetrics: {
-      write: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 10
-      },
-      read: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 10
-      }
-    },
-    conversionEvents: {
-      write: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 8
-      },
-      read: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 8
-      }
-    },
-    adsLinks: {
-      write: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 11
-      },
-      read: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 11
-      }
-    },
-    firebaseLinks: {
-      write: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 8
-      },
-      read: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 8
-      }
-    }
-  }
-}
-
-const sheetNames = {
-  ua: {
-    viewDetails: 'View Details List',
-    customDimensions: 'UA Custom Dimensions',
-    customMetrics: 'UA Custom Metrics',
-    events: 'UA Events',
-    accountSummaries: 'UA Account Summaries',
-    settings: 'UA Settings',
-    filters: 'Filters',
-    audiences: 'UA Audiences',
-    goals: 'Goal Settings'
-  },
-  ga4: {
-    accountSummaries: 'GA4 Account Summaries',
-    streams: 'Data Streams',
-    customDimensions: 'GA4 Custom Dimensions',
-    customMetrics: 'GA4 Custom Metrics',
-    conversionEvents: 'GA4 Conversion Events',
-    adsLinks: 'GA4 Google Ads Links',
-    firebaseLinks: 'GA4 Firebase Links'
-  }
-}
-
+/**
+ * Returns a list of Universal Analytics view details.
+ * @param {string|number} accountId The GA account ID.
+ * @param {string} propertyId The UA property ID.
+ * @return {!Array} An array of UA view details.
+ */
 function getViewDetails(accountId, propertyId) {
   return Analytics.Management.Profiles.list(accountId, propertyId).items;
 }
 
+/**
+ * Returns a list of Universal Analytics view custom dimensions.
+ * @param {string|number} accountId The GA account ID.
+ * @param {string} propertyId The UA property ID.
+ * @return {!Array} An array of custom dimensions.
+ */
 function getCustomDimensions(accountId, propertyId) {
-  return Analytics.Management.CustomDimensions.list(accountId, propertyId).items;
+  return Analytics.Management.CustomDimensions.list(accountId, propertyId)
+      .items;
 }
 
+/**
+ * Creates a Universal Analytics custom dimension.
+ * @param {!Object} request The request data to create a custom dimension.
+ * @return {!Object} An object describing the custom dimension that was created.
+ */
+function createCustomDimension(request) {
+  return Analytics.Management.CustomDimensions.insert(
+      request.body, request.accountId, request.propertyId);
+}
+
+/**
+ * Updates a Universal Analytics custom dimension.
+ * @param {!Object} request The request data to update a custom dimension.
+ * @return {!Object} An object describing the custom dimension that was updated.
+ */
+function updateCustomDimension(request) {
+  return Analytics.Management.CustomDimensions.update(
+      request.body, request.accountId, request.propertyId,
+      'ga:dimension' + request.index);
+}
+
+/**
+ * Creates a Universal Analytics custom metric.
+ * @param {!Object} request The request data to create a custom metric.
+ * @return {!Object} An object describing the custom metric that was created.
+ */
+function createCustomMetric(request) {
+  return Analytics.Management.CustomMetrics.insert(
+      request.body, request.accountId, request.propertyId);
+}
+
+/**
+ * Updates a Universal Analytics custom metric.
+ * @param {!Object} request The request data to update a custom metric.
+ * @return {!Object} An object describing the custom metric that was updated.
+ */
+function updateCustomMetric(request) {
+  return Analytics.Management.CustomMetrics.update(
+      request.body, request.accountId, request.propertyId,
+      'ga:metric' + request.index);
+}
+
+/**
+ * Lists the custom metrics in a Universal Analytics property.
+ * @param {string|number} accountId The GA account ID.
+ * @param {string} propertyId The UA property ID.
+ * @return {!Array} An array of custom metrics.
+ */
 function getCustomMetrics(accountId, propertyId) {
   return Analytics.Management.CustomMetrics.list(accountId, propertyId).items;
 }
 
+/**
+ * Lists all of the Universal Analytics filters for a GA account.
+ * @param {string|number} accountId The GA account ID.
+ * @return {!Array} An array of UA filters.
+ */
 function getAllFilters(accountId) {
   return Analytics.Management.Filters.list(accountId).items;
 }
 
+/**
+ * Lists filter links for the views under a UA property.
+ * @param {string|number} accountId The GA account ID.
+ * @param {string} propertyId The UA property ID.
+ * @param {string|number} viewId The UA view ID.
+ * @return {!Array} An array of UA filter links.
+ */
 function getFilterLinks(accountId, propertyId, viewId) {
-  return Analytics.Management.ProfileFilterLinks.list(accountId, propertyId, viewId).items;
+  return Analytics.Management.ProfileFilterLinks
+      .list(accountId, propertyId, viewId)
+      .items;
 }
 
+/**
+ * Lists the account summaries for all UA accounts a user can access.
+ * @return {!Array} An array of account summaries.
+ */
 function getAccountSummaries() {
   return Analytics.Management.AccountSummaries.list();
 }
 
+/**
+ * Lists the remarketing audiences in a Universal Analytics property.
+ * @param {string|number} accountId The GA account ID.
+ * @param {string} propertyId The UA property ID.
+ * @param {number} startIndex The start index for the returned audiences.
+ * @return {!Array} An array of remarketing audiences.
+ */
 function listRemarketingAudiences(accountId, propertyId, startIndex) {
-  return Analytics.Management.RemarketingAudience.list(accountId, propertyId, {'start-index': startIndex});
+  return Analytics.Management.RemarketingAudience.list(
+      accountId, propertyId, {'start-index': startIndex});
 }
 
+/**
+ * Lists the goals for the views under a UA property.
+ * @param {string|number} accountId The GA account ID.
+ * @param {string} propertyId The UA property ID.
+ * @param {string|number} viewId The UA view ID.
+ * @return {!Array} An array of goals in a view.
+ */
 function listGoals(accountId, propertyId, viewId) {
   return Analytics.Management.Goals.list(accountId, propertyId, viewId).items;
 }
 
+/**
+ * Creates a goal in a view under the UA property.
+ * @param {!Object} request The request data to create a goal.
+ * @return {!Object} An object describing the goal that was created.
+ */
 function createGoal(request) {
-  return Analytics.Management.Goals.insert(request.resource, request.accountId, request.webPropertyId, request.profileId);
+  return Analytics.Management.Goals.insert(
+      request.resource, request.accountId, request.webPropertyId,
+      request.profileId);
 }
 
 /**
@@ -281,6 +164,8 @@ function getSheetRange(name, type) {
     return sheetRanges.ua.viewDetailsList[type];
   } else if (name == sheetNames.ua.customDimensions) {
     return sheetRanges.ua.customDimensions[type];
+  } else if (name == sheetNames.ua.modifyCdsResults) {
+    return sheetRanges.ua.modifyCdsResults[type];
   } else if (name == sheetNames.ua.customMetrics) {
     return sheetRanges.ua.customMetrics[type];
   } else if (name == sheetNames.ua.events) {
@@ -294,10 +179,10 @@ function getSheetRange(name, type) {
   } else if (name == sheetNames.ua.audiences) {
     return sheetRanges.ua.audiences[type];
   } else if (name == sheetNames.ua.goals) {
-    return sheetRanges.ua.goals[type]
+    return sheetRanges.ua.goals[type];
   } else if (name == sheetNames.ga4.accountSummaries) {
     return sheetRanges.ga4.accountSummaries[type];
-  } else if (name == sheetNames.ga4.streams) { 
+  } else if (name == sheetNames.ga4.streams) {
     return sheetRanges.ga4.streams[type];
   } else if (name == sheetNames.ga4.customDimensions) {
     return sheetRanges.ga4.customDimensions[type];
@@ -315,28 +200,54 @@ function getSheetRange(name, type) {
 }
 
 /**
- * Returns an array of selected properties based on the
- * selected views.
- * @param {!Array<!Array>} selectedViews An array
- * of the selected views.
- * @return {Array<!Array} A deduplicated list of
- * selected properties based on the selected views.
+ * Returns an array of selected properties based on the selected views.
+ * @param {!Array<!Array>} selectedViews An array of the selected views.
+ * @return {!Array<!Array>} A deduplicated list of selected properties based on
+ *     the selected views.
  */
 function getSelectedProperties(selectedViews) {
   return selectedViews.filter((row, index) => {
     if (index == 0) {
       return row;
-    } else if (row[3] != selectedViews[index-1][3]) {
+    } else if (row[3] != selectedViews[index - 1][3]) {
       return row;
     }
   });
 }
 
 /**
+ * Returns a double array of all properties in all accounts.
+ * @return {!Array<!Array>} A double array of all propertiesunder all accounts a
+ *     user has access to.
+ */
+function getAllProperties() {
+  const finalProperties = [];
+  const summaries = getAccountSummaries();
+  for (let i = 0; i < summaries.items.length; i++) {
+    const accountName = summaries.items[i].name;
+    const accountId = summaries.items[i].id;
+    const properties = summaries.items[i].webProperties;
+    if (properties !== undefined) {
+      for (let j = 0; j < properties.length; j++) {
+        const propertyName = properties[j].name;
+        const propertyId = properties[j].id;
+        let is360 = false;
+        if (properties[j].level == 'PREMIUM') {
+          is360 = true;
+        }
+        finalProperties.push(
+            [accountName, accountId, propertyName, propertyId, is360]);
+      }
+    }
+  }
+  return finalProperties;
+}
+
+/**
  * Writes data to a specified sheet.
- * param {!Array} data The data to be written to the sheet.
- * param {string} sheetName The name of the sheet to which
- * the data will be written.
+ * @param {!Array} data The data to be written to the sheet.
+ * @param {string} sheetName The name of the sheet to which the data will be
+ *     written.
  */
 function writeToSheet(data, sheetName) {
   const ranges = getSheetRange(sheetName, 'write');
@@ -344,19 +255,15 @@ function writeToSheet(data, sheetName) {
   if (sheet == undefined) {
     sheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet(sheetName);
   }
-  sheet.getRange(
-    ranges.row, 
-    ranges.column,
-    data.length,
-    ranges.numColumns).setValues(data);
+  sheet.getRange(ranges.row, ranges.column, data.length, ranges.numColumns)
+      .setValues(data);
 }
 
 /**
  * Retrieves data from a specified sheet.
- * @param {string} sheetName The sheet name where the
- * data is located.
- * @return {!Array<Array>} A two dimensional array of the rows
- * of data retrieved from the sheet.
+ * @param {string} sheetName The sheet name where the data is located.
+ * @return {!Array<!Array>} A two dimensional array of the rows of data
+ *     retrieved from the sheet.
  */
 function getDataFromSheet(sheetName) {
   const ranges = getSheetRange(sheetName, 'read');
@@ -366,12 +273,10 @@ function getDataFromSheet(sheetName) {
     SpreadsheetApp.getUi().alert('Enter Settings');
     return;
   }
- return sheet.getRange(
-    ranges.row, 
-    ranges.column,
-    sheet.getLastRow(),
-    ranges.numColumns)
-  .getValues();
+  return sheet
+      .getRange(
+          ranges.row, ranges.column, sheet.getLastRow(), ranges.numColumns)
+      .getValues();
 }
 
 /**
@@ -432,18 +337,30 @@ function showOrHideSheets(gaType, action) {
   });
 }
 
+/**
+ * Hides universal analytics sheets.
+ */
 function hideUASheets() {
   showOrHideSheets('ua', 'hide');
 }
 
+/**
+ * Shows universal analytics sheets.
+ */
 function showUASheets() {
   showOrHideSheets('ua', 'show');
 }
 
+/**
+ * Hides GA4 sheets.
+ */
 function hideGA4Sheets() {
   showOrHideSheets('ga4', 'hide');
 }
 
+/**
+ * Shows GA4 sheets.
+ */
 function showGA4Sheets() {
   showOrHideSheets('ga4', 'show');
 }
