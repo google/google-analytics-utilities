@@ -71,18 +71,17 @@ function modifyUACustomDefinitions(
             active: templateValue[3]
           }
         };
-        let placeholderName = modifySettings[1][0];
-        if (placeholderName == '') {
-          placeholderName = 'Placeholder';
-        }
+        let placeholderName = modifySettings[1][0] || 'Placeholder';
+        let placeholderScope = modifySettings[2][0] || 'HIT';
+        let placeholderActive = modifySettings[3][0] || false;
         const placeholderRequest = {
           accountId: property[1],
           propertyId: property[3],
           index: templateValue[0],
           body: {
             name:  placeholderName + ' ' + templateValue[0],
-            scope: modifySettings[2][0],
-            active: modifySettings[3][0]
+            scope: placeholderScope,
+            active: placeholderActive
           }
         };
         if (type == 'custom metrics') {
@@ -91,7 +90,7 @@ function modifyUACustomDefinitions(
           templateRequest.body.type = templateValue[6];
           placeholderRequest.body.minValue = modifySettings[4][0];
           placeholderRequest.body.maxValue = modifySettings[5][0];
-          placeholderRequest.body.type = modifySettings[6][0];
+          placeholderRequest.body.type = modifySettings[6][0] || 'INTEGER';
         }
         if (existingValue != undefined) {
           if (templateValue[templateValue.length - 1]) {

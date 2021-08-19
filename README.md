@@ -2,9 +2,17 @@
 
 This is not an officially supported Google product.
 
-This repository contains an app script that can be used in combination with a Google Spreadsheet to save various information in bulk or individually about Google Analytics accounts, properties, or views to a Spreadsheet. This script makes use of the Google Analytics Management API and version 4 of the reporting API for Google Analytics.
+This repository contains an app script that can be used in combination with a Google Spreadsheet to save various information in bulk or individually about Universal Google Analytics accounts, properties, or views to a spreadsheet. Additional information about Google Analytics 4 properties can be saved. 
 
-The tool currently performs the following functions:
+The script makes use of the following APIs:
+
+
+
+*   Google Analytics Management API 
+*   Google Analytics Reporting API version 4
+*   Google Analytics Admin API
+
+The script currently performs the following functions:
 
 
 
@@ -12,17 +20,30 @@ The tool currently performs the following functions:
     *   List account summaries
     *   List view details
     *   List up to 1000 unique event category, action, and label combinations per view
-    *   List custom dimensions
-    *   List custom metrics
+    *   Custom dimensions
+        *   List 
+        *   Create/Update 
+    *   Custom metrics
+        *   List
+        *   Create/Update
     *   List view level filter settings
     *   List audience settings
-    *   List goals
+    *   List goal settings
     *   Create goals
 *   Google Analytics 4
     *   List account summaries
     *   List data streams
+    *   List GA4 custom dimensions
+    *   List GA4 custom metrics
+    *   List conversion events
+    *   List Firebase links
+    *   List GA4 Google Ads links
 
-In order to access this information, you must have at least read and analyze permissions for the accounts, properties, and views you are interested in. If you want to create goals, you must have edit permissions for the view you want to create the goals in.
+These tasks can be completed by [joining the Google Group](https://groups.google.com/g/google-analytics-utilities-users), [copying the template spreadsheet](https://docs.google.com/spreadsheets/d/1kJqwYNed8RTuAgjy0aRUooD__MIPqzUeiDF5LZ7v1aI/), and clicking on various options under the Google Analytics Utilities menu. To enable Google Analytics 4 scripts, a user must [follow the steps](https://github.com/google/google-analytics-utilities#enable-google-analytics-4-utilities) outlined below.
+
+In order to access information about a given Analytics account, a user must have at least read and analyze permissions for the accounts, properties, and views they are interested in. If a user wants to create or update settings, they must have edit permissions.
+
+All API requests are subject to the normal limitations [documented here](https://developers.google.com/analytics/devguides/config/mgmt/v3/limits-quotas).
 
 
 ## How to Access the Spreadsheet
@@ -76,7 +97,12 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 
 ### Account Summaries
 
-Go to Google Analytics Utilities > Universal Analytics and click on List Account Summaries. The script will identify all of the Google Analytics accounts your email has access to and list a flattened table of accounts, properties, and views in the “UA Account Summaries” sheet. This sheet can then be used to select specific accounts, properties, or views for other functions, like listing custom dimensions or view settings.
+
+
+1. Navigate to the “UA Account Summaries” sheet.
+2. Click on Google Analytics Utilities > Universal Analytics > List Account Summaries. 
+3. The script will identify all of the Google Analytics accounts your email has access to and list a flattened table of accounts, properties, and views in the “UA Account Summaries” sheet. 
+    *   This sheet can then be used to select specific accounts, properties, or views for other functions, like listing custom dimensions or view settings.
 
 
 ### View Details
@@ -84,10 +110,10 @@ Go to Google Analytics Utilities > Universal Analytics and click on List Account
 
 
 1. List account summaries. 
-2. Select the specific views from which you want to retrieve their details. 
-3. Go to Google Analytics Utilities > Universal Analytics and click on List View Details. 
-
-The script will save almost all of the information indicated [here](https://developers.google.com/analytics/devguides/config/mgmt/v3/mgmtReference/management/profiles) for each selected view in the “View Details List” sheet.
+2. Select the specific views from which you want to retrieve view details.
+3. Navigate to the “View Details List” sheet.
+4. Click on Google Analytics Utilities > Universal Analytics > List View Details. 
+5. The script will save almost all of the information indicated [here](https://developers.google.com/analytics/devguides/config/mgmt/v3/mgmtReference/management/profiles) for each selected view in the “View Details List” sheet.
 
 
 ### Events
@@ -96,32 +122,81 @@ The script will save almost all of the information indicated [here](https://deve
 
 1. List account summaries. 
 2. Select the specific views from which you want to retrieve event data. 
-3. Go to the “Settings” sheet and enter the start date and end date for the time frame you are interested in.
-4. Go to Google Analytics Utilities > Universal Analytics and click on List Events. 
-
-The script will save up to 1000 unique combinations of the event category, action, and label values in the view to the “Events” sheet. If no events existed in thee view for the selected view, a row will be added for the view, but the event information will be set to “No Events”.
+3. Navigate to the “Settings” sheet and enter the start date and end date for the time frame you are interested in.
+4. Navigate to the “Events” sheet.
+5. Click on Google Analytics Utilities > Universal Analytics > List Events. 
+6. The script will save up to 1000 unique combinations of the event category, action, and label values in the view to the “Events” sheet. If no events existed in the view for the selected view, a row will be added for the view, but the event information will be set to “No Events”.
 
 
 ### Custom Dimensions
 
 
+#### List Custom Dimensions
+
+
 
 1. List account summaries. 
-2. Since the account summaries sheet lists each sheet as a different row but custom dimensions exist at the property level, simply select one view per property for which you are interested and the script will identify the correct property.
-3. Go to Google Analytics Utilities > Universal Analytics and click on List Custom Dimensions.
+2. Since the account summaries sheet lists each sheet as a different row but custom dimensions exist at the property level, select one view per property for which you are interested and the script will identify the correct property.
+3. Navigate to the “UA Custom Dimensions” sheet.
+4. Click on Google Analytics Utilities > Universal Analytics > Custom Dimensions > List Custom Dimensions.
+5. The script will save all of the custom dimensions for the selected properties to the “UA Custom Dimensions” sheet.
 
-The script will save all of the custom dimensions for the selected properties to the “Custom Dimensions” sheet.
+
+#### Create/Update Custom Dimensions
+
+
+
+1. Navigate to the UA Custom Dimensions - Modify sheet
+2. Enter the template property information that has the custom dimensions you want to copy to other properties
+3. Click  on Google Analytics Utilities > Universal Analytics > Custom Dimensions > Modify Custom Dimensions > List Template Dimensions
+4. Check the boxes for the custom dimensions you want to copy to other properties
+5.  Set “Overwrite Existing CD Settings” to True if the script should overwrite any existing custom dimension settings at the same index for the selected dimensions.
+6. Set the placeholder custom dimension name, scope, and if it should be active. A placeholder will be created if there is a gap between the custom dimensions that exist in a property and the custom dimensions that are selected to be created. (E.g. If there are 5 dimensions in the destination property but custom dimensions 10 - 15 are selected to be copied from the template, then custom dimensions 6-9 will be created as placeholders.)
+    1. Note: If no placeholder information is provided, then it will default to these values: 
+        1. Name: Placeholder
+        2. Scope: Hit
+        3. Active: False
+7. Click  on Google Analytics Utilities > Universal Analytics > Custom Dimensions > Modify Custom Dimensions > List Destination Properties
+8. Select the destination properties where the custom dimensions will be copied to.
+9. Click  on Google Analytics Utilities > Universal Analytics > Custom Dimensions > Modify Custom Dimensions > Modify Custom Dimensions
+10. The script will now go through the process of updating and/or creating custom dimensions. The results will be recorded in the UA Custom Dimensions - Modify - Results sheet.
 
 
 ### Custom Metrics
 
 
+#### List Custom Metrics
+
+
 
 1. List account summaries. 
-2. Since the account summaries sheet lists each sheet as a different row but custom metrics exist at the property level, simply select one view per property for which you are interested and the script will identify the correct property.
-3. Go to Google Analytics Utilities > Universal Analytics and click on List Custom Metrics.
+2. Since the account summaries sheet lists each sheet as a different row but custom metrics exist at the property level, select one view per property for which you are interested and the script will identify the correct property.
+3. Navigate to the “UA Custom Metrics” sheet.
+4. Click on Google Analytics Utilities > Universal Analytics > Custom Metrics > List Custom Metrics.
+5. The script will save all of the custom metrics for the selected properties to the “UA Custom Metrics” sheet.
 
-The script will save all of the custom metrics for the selected properties to the “Custom Metrics” sheet.
+
+#### Create/Update Custom Metrics
+
+
+
+1. Navigate to the UA Custom Metrics - Modify sheet
+2. Enter the template property information that has the custom metrics you want to copy to other properties
+3. Click  on Google Analytics Utilities > Universal Analytics > Custom Metrics > Modify Custom Metrics > List Template Metrics
+4. Check the boxes for the custom metrics you want to copy to other properties
+5.  Set “Overwrite Existing CD Settings” to True if the script should overwrite any existing custom metric settings at the same index for the selected metrics.
+6. Set the placeholder custom metric name, scope, if it should be active, min value, max value, and type . A placeholder will be created if there is a gap between the custom metrics that exist in a property and the custom metrics that are selected to be created. (E.g. If there are 5 metrics in the destination property but custom metrics 10 - 15 are selected to be copied from the template, then custom metrics 6-9 will be created as placeholders.)
+    1. Note: If no placeholder information is provided, then it will default to these values: 
+        1. Name: Placeholder
+        2. Scope: Hit
+        3. Active: False
+        4. Min Value: blank
+        5. Max Value: blank
+        6. Type: Integer
+7. Click  on Google Analytics Utilities > Universal Analytics > Custom Metrics > Modify Custom Metrics > List Destination Properties
+8. Select the destination properties where the custom metrics will be copied to.
+9. Click  on Google Analytics Utilities > Universal Analytics > Custom Metrics > Modify Custom Metrics > Modify Custom Metrics
+10. The script will now go through the process of updating and/or creating custom metrics. The results will be recorded in the UA Custom Metrics - Modify - Results sheet.
 
 
 ### Filters
@@ -129,10 +204,11 @@ The script will save all of the custom metrics for the selected properties to th
 
 
 1. List account summaries. 
-2. Select the specific views from which you want to retrieve their filters. 
-3. Go to Google Analytics Utilities > Universal Analytics and click on List Filters. 
-
-The script will save all of the filters and their settings that are applied to the selected views to the “Filters” sheet. Since the same filter may be applied to multiple views, that filter and its settings may appear in the sheet multiple times. A filter will not show up in the sheet if it is not applied to one of the selected views.
+2. Select the specific views from which you want to retrieve filters settings.
+3. Navigate to the “Filters” sheet.
+4. Click on Google Analytics Utilities > Universal Analytics > List Filters.
+5. The script will save all of the filters and their settings that are applied to the selected views to the “Filters” sheet. 
+    *   Since the same filter may be applied to multiple views, that filter and its settings may appear in the sheet multiple times. A filter will not show up in the sheet if it is not applied to one of the selected views.
 
 
 ### Google Analytics Remarketing Audiences Settings
@@ -140,33 +216,32 @@ The script will save all of the filters and their settings that are applied to t
 
 
 1. List account summaries. 
-2. Since the account summaries sheet lists each sheet as a different row but audiences exist at the property level, simply select one view per property for which you are interested and the script will identify the correct property.
-3. Go to GA Utilities and click on List Remarketing Audience Settings.
-
-The script will save all of the audiences and their respective settings that exist for the selected properties to the “Audiences” sheet. Audience size cannot be retrieved via the Google Analytics Management API and will not be saved to the sheet.
-
-
-### List Goals
+2. Since the account summaries sheet lists each sheet as a different row but audiences exist at the property level, select one view per property for which you are interested and the script will identify the correct property.
+3. Navigate to the “Audiences” sheet.
+4. Click on GA Utilities > Universal Analytics > List Remarketing Audience Settings.
+5. The script will save all of the audiences and their respective settings that exist for the selected properties to the “Audiences” sheet. Audience size cannot be retrieved via the Google Analytics Management API and will not be saved to the sheet.
 
 
+### List Goals Settings
 
-1. List account summaries. 
-2. Select the specific views from which you want to retrieve their goals. 
-3. Go to Google Analytics Utilities > Universal Analytics > Goals  and click on List Goals. 
 
-The script will save all of the goal settings for the selected views to the “Goal Settings” sheet. The number of completed goals will not be saved to the sheet.
+
+1. List account summaries.
+2. Select the specific views from which you want to retrieve the goal settings.
+3. Navigate to the “Goal Settings” sheet.
+4. Click on Google Analytics Utilities > Universal Analytics > Goals > List Goals. 
+5. The script will save all of the goal settings for the selected views to the “Goal Settings” sheet. The number of goal completions will not be saved to the sheet.
 
 
 ### Create Goals
 
 
 
-1. Enter the goals settings for the goals that are to be created under the “Goal Settings” sheet.
+1. Enter the goals settings for the goals that are to be created in the “Goal Settings” sheet.
     1. Note: This process does not use or reference information in the “Account Summaries” sheet.
-2. Select which goals are going to be created by checking the box under column W.
-3. Go to Google Analytics Utilities > Universal Analytics > Goals  and click on Create Goals
-
-The script will create the goals in the specified views based on the information entered in the goal settings sheet.
+2. Select which goals that are going to be created by checking the box under column W.
+3. Click on Google Analytics Utilities > Universal Analytics > Goals > Create Goals.
+4. The script will create the goals in the specified views based on the information entered in the “Goal Settings” sheet.
 
 
 ## Google Analytics 4
@@ -174,7 +249,12 @@ The script will create the goals in the specified views based on the information
 
 ### List Account Summaries
 
-Go to Google Analytics Utilities > Google Analytics 4 and click on List Account Summaries. The script will identify all of the Google Analytics 4 properties your email has access to and list a flattened table of accounts and properties in the “GA4 Account Summaries” sheet. This sheet can then be used to select specific accounts and properties for other functions.
+
+
+1. Navigate to “GA4 Account Summaries”
+2. Click on Google Analytics Utilities > Google Analytics 4 > List Account Summaries. 
+3. The script will identify all of the Google Analytics 4 properties your email has access to and list a flattened table of accounts and properties in the “GA4 Account Summaries” sheet. 
+    *   This sheet can then be used to select specific accounts and properties for other functions.
 
 
 ### List Data Streams
@@ -182,7 +262,62 @@ Go to Google Analytics Utilities > Google Analytics 4 and click on List Account 
 
 
 1. List GA4 account summaries.
-2. Select the properties for which you want to retrieve their data streams.
-3. Go to Google Analytics Utilities > Google Analytics 4 and click on List Properties and Streams
+2. Select the properties from which you want to retrieve data streams.
+3. Navigate to the “Data Streams” sheet.
+4. Click on Google Analytics Utilities > Google Analytics 4 > List Properties and Streams.
+5. The data streams for the selected properties will be listed in the “Data Streams” sheet
 
-The script will list data stream information in the data stream sheet for all of the selected properties.
+
+### List Custom Dimensions
+
+
+
+1. List GA4 account summaries.
+2. Select the properties from which you want to retrieve custom dimensions.
+3. Navigate to the “GA4 Custom Dimensions” sheet.
+4. Click on Google Analytics Utilities > Google Analytics 4 > List Custom Dimensions.
+5. The custom dimensions for the selected properties will be listed in the “GA4 Custom Dimensions” sheet.
+
+
+### List custom metrics
+
+
+
+1. List GA4 account summaries.
+2. Select the properties from which you want to retrieve custom metrics.
+3. Navigate to the “GA4 Custom Metrics” sheet.
+4. Click on Google Analytics Utilities > Google Analytics 4 > List Custom Metrics.
+5. The custom metrics for the selected properties will be listed in the “GA4 Metrics Dimensions” sheet.
+
+
+### List conversion events
+
+
+
+1. List GA4 account summaries.
+2. Select the properties from which you want to retrieve conversion events.
+3. Navigate to the “GA4 Conversion Events” sheet.
+4. Click on Google Analytics Utilities > Google Analytics 4 > List Conversion Events.
+5. The conversion events for the selected properties will be listed in the “GA4 Conversion Events” sheet.
+
+
+### List Firebase links
+
+
+
+1. List GA4 account summaries.
+2. Select the properties from which you want to retrieve Firebase links.
+3. Navigate to the “GA4 Firebase Events” sheet.
+4. Click on Google Analytics Utilities > Google Analytics 4 > List Firebase Links.
+5. The Firebase links for the selected properties will be listed in the “GA4 Firebase Links” sheet.
+
+
+### List Google Ads links
+
+
+
+1. List GA4 account summaries.
+2. Select the properties from which you want to retrieve Google Ads links.
+3. Navigate to the “GA4 Google Ads Links” sheet.
+4. Click on Google Analytics Utilities > Google Analytics 4 > List Google Ads Links.
+5. The Google Ads links for the selected properties will be listed in the “GA4 Google Ads Links” sheet.
