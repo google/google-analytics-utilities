@@ -241,7 +241,7 @@ const sheetRanges = {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 10
+        numColumns: 13
       }
     },
     customMetrics: {
@@ -255,7 +255,7 @@ const sheetRanges = {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 10
+        numColumns: 13
       }
     },
     conversionEvents: {

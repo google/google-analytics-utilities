@@ -15,9 +15,7 @@
  */
 
 /**
- * Takes a GA4 account summaries array and converts it to a two dimensional 
- * array that can be written to a sheet.
- * @param {!Array} summaries GA4 account summary object.
+ * @param {!Array} summaries
  * @return {!Array<!Array>}
  */
 function getFlattenedGA4AccountSummaries(summaries) {
@@ -44,10 +42,18 @@ function getFlattenedGA4AccountSummaries(summaries) {
 }
 
 /**
- * Writes GA4 account summaries to a sheet.
+ * 
  */
 function writeGA4AccountSummariesToSheet() {
-  const summaries = listGA4AccountSummaries().accountSummaries;
-  const flattenedSummaries = getFlattenedGA4AccountSummaries(summaries);
+  let summaries = listGA4AccountSummaries();
+  let nextPageToken = summaries.nextPageToken;
+  let flattenedSummaries = getFlattenedGA4AccountSummaries(
+		summaries.accountSummaries);
+  while (nextPageToken != undefined) {
+    summaries = listGA4AccountSummaries(nextPageToken);
+    nextPageToken = summaries.nextPageToken;
+		flattenedSummaries.concat(
+			getFlattenedGA4AccountSummaries(summaries.accountSummaries));
+  }
   writeToSheet(flattenedSummaries, sheetNames.ga4.accountSummaries);
 }

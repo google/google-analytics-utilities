@@ -15,6 +15,12 @@
  */
 
 const ss = SpreadsheetApp.getActive();
+const requestType = {
+	ga4: {
+		cd: 'custom dimensions',
+		cm: 'custom metrics'
+	}
+}
 
 /**
  * Returns a list of Universal Analytics view details.
