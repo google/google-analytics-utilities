@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 /**
  * @param {!Array} summaries
  * @return {!Array<!Array>}
@@ -45,12 +44,13 @@ function getFlattenedGA4AccountSummaries(summaries) {
  * 
  */
 function writeGA4AccountSummariesToSheet() {
-  let summaries = listGA4AccountSummaries();
+  let summaries = listGA4Entities(ga4RequestSuffix.accountSummaries);
   let nextPageToken = summaries.nextPageToken;
   let flattenedSummaries = getFlattenedGA4AccountSummaries(
-		summaries.accountSummaries);
+		summaries.accountSummaries
+  );
   while (nextPageToken != undefined) {
-    summaries = listGA4AccountSummaries(nextPageToken);
+    summaries = listGA4Entities(ga4RequestSuffix.accountSummaries, nextPageToken);
     nextPageToken = summaries.nextPageToken;
 		flattenedSummaries.concat(
 			getFlattenedGA4AccountSummaries(summaries.accountSummaries));

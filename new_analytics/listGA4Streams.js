@@ -15,17 +15,15 @@
  */
 
 /**
- * Retrieves datastreams for selected GA4 properties and returns data streem
- * settings as a two dimensional array that can be written to a sheet.
- * @param {!Array} properties An array of GA4 properties from the sheet.
- * @return {!Array} A two dimensional array of data stream settings that can be
- * written to a sheet.
+ * 
  */
 function listSelectedGA4Streams(properties) {
   const dataStreams = [];
   properties.forEach(property => {
     const propertyName = 'properties/' + property[3];
-    const webStreams = listGA4WebStreams(propertyName).webDataStreams;
+    const webStreams = listGA4Entities(
+      propertyName + ga4RequestSuffix.webDataStreams
+    ).webDataStreams;
     if (webStreams != undefined) {
       webStreams.forEach(stream => {
         const tempArray = [];
@@ -43,8 +41,7 @@ function listSelectedGA4Streams(properties) {
           stream.createTime,
           stream.updateTime,
           stream.defaultUri)
-        const enhancedMeasurementSettings =
-					getEnhancedMeasurementSettings(stream.name);
+        const enhancedMeasurementSettings = getEnhancedMeasurementSettings(stream.name);
         if (enhancedMeasurementSettings != undefined) {
           tempArray.push(
             enhancedMeasurementSettings.streamEnabled,
@@ -65,8 +62,9 @@ function listSelectedGA4Streams(properties) {
         dataStreams.push(tempArray);
       });
     }
-		const androidStreams = 
-		listGA4AndroidAppDataStreams(propertyName).androidStreams;
+    const androidStreams = listGA4Entities(
+      propertyName + ga4RequestSuffix.androidAppDataStreams
+    ).androidStreams;
     if (androidStreams != undefined) {
       androidStreams.forEach(stream => {
         dataStreams.push([
@@ -87,7 +85,9 @@ function listSelectedGA4Streams(properties) {
         ]);
       });
     }
-    const iosStreams = listGA4iosAppDataStreams(propertyName).iosStreams;
+    const iosStreams = listGA4Entities(
+      propertyName + ga4RequestSuffix.iosAppDataStreams
+    ).iosStreams;
     if (iosStreams != undefined) {
       iosStreams.forEach(stream => {
         dataStreams.push([

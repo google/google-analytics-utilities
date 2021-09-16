@@ -269,7 +269,7 @@ const sheetRanges = {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 8
+        numColumns: 11
       }
     },
     adsLinks: {
@@ -283,7 +283,7 @@ const sheetRanges = {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 11
+        numColumns: 14
       }
     },
     firebaseLinks: {
@@ -297,11 +297,11 @@ const sheetRanges = {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 8
+        numColumns: 11
       }
     }
   }
-}
+};
 
 const sheetNames = {
   ua: {
@@ -328,4 +328,4 @@ const sheetNames = {
     adsLinks: 'GA4 Google Ads Links',
     firebaseLinks: 'GA4 Firebase Links'
   }
-}
+};

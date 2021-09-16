@@ -26,7 +26,9 @@ function listSelectedGA4CustomMetrics(properties) {
   const finalizedCms = [];
   properties.forEach(property => {
     const propertyName = 'properties/' + property[3];
-    const cms = listGA4CustomMetrics(propertyName).customMetrics;
+    const cms = listGA4Entities(
+      propertyName + ga4RequestSuffix.customMetrics
+    ).customMetrics;
     if (cms != undefined) {
       for (let i = 0; i < cms.length; i++) {
         finalizedCms.push([
@@ -35,8 +37,8 @@ function listSelectedGA4CustomMetrics(properties) {
           property[2],
           property[3],
           cms[i].displayName,
-          cms[i].parameterName,
           cms[i].name,
+          cms[i].parameterName,
           cms[i].scope,
           cms[i].measurementUnit,
           cms[i].description

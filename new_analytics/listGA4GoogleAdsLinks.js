@@ -26,7 +26,9 @@ function listSelectedGA4AdsLinks(properties) {
   const allAdsLinks = [];
   properties.forEach(property => {
     const propertyName = 'properties/' + property[3];
-    const adsLinks = listGA4AdsLinks(propertyName).googleAdsLinks;
+    const adsLinks = listGA4Entities(
+      propertyName + ga4RequestSuffix.googleAdsLinks
+    ).googleAdsLinks;
     if (adsLinks != undefined) {
       for (let i = 0; i < adsLinks.length; i++) {
         allAdsLinks.push([
@@ -34,8 +36,8 @@ function listSelectedGA4AdsLinks(properties) {
           property[1],
           property[2],
           property[3],
-          adsLinks[i].name,
           adsLinks[i].customerId,
+          adsLinks[i].name,
           adsLinks[i].canManageClients,
           adsLinks[i].adsPersonalizationEnabled,
           adsLinks[i].emailAddress,

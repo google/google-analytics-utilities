@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 function onOpen(e) {
   const ui = SpreadsheetApp.getUi();
   ui.createMenu('Google Analytics Utilities')
@@ -50,15 +49,24 @@ function onOpen(e) {
       .addItem('List Properties and Streams', 'writeGA4StreamsToSheet')
       .addSubMenu(
         ui.createMenu('Custom Dimensions')
-        .addItem('List Custom Dimensions', 'writeGA4CustomDimensionsToSheet')
-        .addItem('Archive/Create Custom Dimensions', 'modifyGA4CustomDimensions'))
+        .addItem('List', 'writeGA4CustomDimensionsToSheet')
+        .addItem('Archive or Create', 'modifyGA4CustomDimensions'))
      .addSubMenu(
         ui.createMenu('Custom Metrics')
-        .addItem('List Custom Metrics', 'writeGA4CustomMetricsToSheet')
-        .addItem('Archive/Create Custom Metrics', 'modifyGA4CustomMetrics'))
-      .addItem('List Conversion Events', 'writeGA4ConversionEventsToSheet')
-      .addItem('List Google Ads Links', 'writeGA4AdsLinksToSheet')
-      .addItem('List Firebase Links', 'writeGA4FirebaseLinksToSheet')
+        .addItem('List', 'writeGA4CustomMetricsToSheet')
+        .addItem('Archive or Create', 'modifyGA4CustomMetrics'))
+      .addSubMenu(
+        ui.createMenu('Conversion Events')
+        .addItem('List', 'writeGA4ConversionEventsToSheet')
+        .addItem('Delete or Create', 'modifyGA4ConversionEvents'))
+      .addSubMenu(
+        ui.createMenu('Google Ads Links')
+        .addItem('List', 'writeGA4AdsLinksToSheet')
+        .addItem('Delete or Create', 'modifyGA4AdsLinks'))
+      .addSubMenu(
+        ui.createMenu('Firebase Links')
+        .addItem('List', 'writeGA4FirebaseLinksToSheet')
+        .addItem('Delete or Create', 'modifyGA4FirebaseLinks'))
     )
     .addSeparator()
     .addSubMenu(

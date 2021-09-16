@@ -26,7 +26,9 @@ function listSelectedGA4ConversionEvents(properties) {
   const allConversionEvents = [];
   properties.forEach(property => {
     const propertyName = 'properties/' + property[3];
-    const conversionEvents = listGA4ConversionEvents(propertyName).conversionEvents;
+    const conversionEvents = listGA4Entities(
+      propertyName + ga4RequestSuffix.conversionEvents
+    ).conversionEvents;
     if (conversionEvents != undefined) {
       for (let i = 0; i < conversionEvents.length; i++) {
         allConversionEvents.push([
@@ -34,8 +36,8 @@ function listSelectedGA4ConversionEvents(properties) {
           property[1],
           property[2],
           property[3],
-          conversionEvents[i].name,
           conversionEvents[i].eventName,
+          conversionEvents[i].name,
           conversionEvents[i].createTime,
           conversionEvents[i].isDeletable
         ]);

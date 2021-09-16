@@ -26,7 +26,9 @@ function listSelectedGA4CustomDimensions(properties) {
   const finalizedCds = [];
   properties.forEach(property => {
     const propertyName = 'properties/' + property[3];
-    const cds = listGA4CustomDimensions(propertyName).customDimensions;
+    const cds = listGA4Entities(
+      propertyName + ga4RequestSuffix.customDimensions
+    ).customDimensions;
     if (cds != undefined) {
       for (let i = 0; i < cds.length; i++) {
         finalizedCds.push([
@@ -35,8 +37,8 @@ function listSelectedGA4CustomDimensions(properties) {
           property[2],
           property[3],
           cds[i].displayName,
-          cds[i].parameterName,
           cds[i].name,
+          cds[i].parameterName,
           cds[i].scope,
           cds[i].disallowAdsPersonalization,
           cds[i].description

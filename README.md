@@ -28,16 +28,32 @@ The script currently performs the following functions:
         *   Create/Update
     *   List view level filter settings
     *   List audience settings
-    *   List goal settings
-    *   Create goals
+    *   Goal settings
+        *   List
+        *   Create
 *   Google Analytics 4
     *   List account summaries
     *   List data streams
-    *   List GA4 custom dimensions
-    *   List GA4 custom metrics
-    *   List conversion events
-    *   List Firebase links
-    *   List GA4 Google Ads links
+    *   GA4 custom dimensions
+        *   List
+        *   Create
+        *   Archive
+    *   GA4 custom metrics
+        *   List
+        *   Create
+        *   Archive
+    *   Conversion events
+        *   List
+        *   Create
+        *   Delete
+    *   Firebase links
+        *   List
+        *   Create
+        *   Delete
+    *   GA4 Google Ads links
+        *   List
+        *   Create
+        *   Delete
 
 These tasks can be completed by [joining the Google Group](https://groups.google.com/g/google-analytics-utilities-users), [copying the template spreadsheet](https://docs.google.com/spreadsheets/d/1kJqwYNed8RTuAgjy0aRUooD__MIPqzUeiDF5LZ7v1aI/), and clicking on various options under the Google Analytics Utilities menu. To enable Google Analytics 4 scripts, a user must [follow the steps](https://github.com/google/google-analytics-utilities#enable-google-analytics-4-utilities) outlined below.
 
@@ -268,56 +284,186 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 5. The data streams for the selected properties will be listed in the “Data Streams” sheet
 
 
-### List Custom Dimensions
+### Custom Dimensions
+
+
+#### List
 
 
 
 1. List GA4 account summaries.
 2. Select the properties from which you want to retrieve custom dimensions.
 3. Navigate to the “GA4 Custom Dimensions” sheet.
-4. Click on Google Analytics Utilities > Google Analytics 4 > List Custom Dimensions.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Custom Dimensions > List.
 5. The custom dimensions for the selected properties will be listed in the “GA4 Custom Dimensions” sheet.
 
 
-### List custom metrics
+#### Create
+
+
+
+1. Navigate to the “GA4 Custom Dimensions” sheet.
+2. Enter the account ID, property ID, Custom Dimension Name (the name displayed in the UI), parameter name (the name collected in the code/tags), scope, description, and whether or not ads personalization is disallowed. Check the box under the “Create” column to tell the script to create a custom dimension based on the provided settings. Repeat this step in a new row for each custom dimension you want to create.
+3. Click on Google Analytics Utilities > Google Analytics 4 > Custom Dimensions > Delete or Create.
+4. The script will attempt to create a new custom dimension based on the information in each row.
+
+
+#### Archive
+
+
+
+1. List GA4 account summaries.
+2. Select the properties from which you want to retrieve custom dimensions.
+3. Navigate to the “GA4 Custom Dimensions” sheet.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Custom Dimensions > List.
+5. Check the “Archive” box for each custom dimension you want to archive.
+6. Click on Google Analytics Utilities > Google Analytics 4 > Custom Dimensions > Delete or Create.
+7. The script will attempt to archive the selected custom dimensions.
+
+
+### Custom Metrics
+
+
+#### List
 
 
 
 1. List GA4 account summaries.
 2. Select the properties from which you want to retrieve custom metrics.
 3. Navigate to the “GA4 Custom Metrics” sheet.
-4. Click on Google Analytics Utilities > Google Analytics 4 > List Custom Metrics.
-5. The custom metrics for the selected properties will be listed in the “GA4 Metrics Dimensions” sheet.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Custom Metrics > List.
+5. The custom metrics for the selected properties will be listed in the “GA4 Custom Metrics” sheet.
 
 
-### List conversion events
+#### Create
+
+
+
+1. Navigate to the “GA4 Custom Metrics” sheet.
+2. Enter the account ID, property ID, Custom Metric Name (the name displayed in the UI), parameter name (the name collected in the code/tags), scope,  measurement unit, and description. Check the box under the “Create” column to tell the script to create a custom metric based on the provided settings. Repeat this step in a new row for each custom metric you want to create.
+3. Click on Google Analytics Utilities > Google Analytics 4 > Custom Metrics > Archive or Create.
+4. The script will attempt to create a new custom metric based on the information in each row.
+
+
+#### Archive
+
+
+
+1. List GA4 account summaries.
+2. Select the properties from which you want to retrieve custom metrics.
+3. Navigate to the “GA4 Custom Metrics” sheet.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Custom Metrics > List.
+5. Check the “Archive” box for each custom metric you want to archive.
+6. Click on Google Analytics Utilities > Google Analytics 4 > Custom Metrics > Archive or Create.
+7. The script will attempt to archive the selected custom metric.
+
+
+### Conversion Events
+
+
+#### List
 
 
 
 1. List GA4 account summaries.
 2. Select the properties from which you want to retrieve conversion events.
 3. Navigate to the “GA4 Conversion Events” sheet.
-4. Click on Google Analytics Utilities > Google Analytics 4 > List Conversion Events.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Conversion Events > List.
 5. The conversion events for the selected properties will be listed in the “GA4 Conversion Events” sheet.
 
 
-### List Firebase links
+#### Create
+
+
+
+1. Navigate to the “GA4 Conversion Events” sheet.
+2. Enter the account ID, property ID, and event name. Check the box under the “Create” column to tell the script to create a conversion event based on the provided settings. Repeat this step in a new row for each conversion event you want to create.
+3. Click on Google Analytics Utilities > Google Analytics 4 > Conversion Events > Delete or Create.
+4. The script will attempt to create a new conversion event based on the information in each row.
+
+
+#### Delete
+
+
+
+1. List GA4 account summaries.
+2. Select the properties from which you want to retrieve conversion events.
+3. Navigate to the “GA4 Conversion Events” sheet.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Conversion Events > List.
+5. Check the “Delete” box for each conversion event you want to delete.
+6. Click on Google Analytics Utilities > Google Analytics 4 > Conversion Events > Delete or Create.
+7. The script will attempt to delete the selected conversion events.
+
+
+### Firebase Links
+
+
+#### List
 
 
 
 1. List GA4 account summaries.
 2. Select the properties from which you want to retrieve Firebase links.
-3. Navigate to the “GA4 Firebase Events” sheet.
-4. Click on Google Analytics Utilities > Google Analytics 4 > List Firebase Links.
+3. Navigate to the “GA4 Firebase Links” sheet.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Firebase Links > List.
 5. The Firebase links for the selected properties will be listed in the “GA4 Firebase Links” sheet.
 
 
-### List Google Ads links
+#### Create
+
+
+
+1. Navigate to the “GA4 Firebase Links” sheet.
+2. Enter the account ID, property ID, and Firebase project ID or name. Check the box under the “Create” column to tell the script to create a Firebase link based on the provided settings. Repeat this step in a new row for each Firebase link you want to create.
+3. Click on Google Analytics Utilities > Google Analytics 4 > Firebase Links > Delete or Create.
+4. The script will attempt to create a new Firebase link based on the information in each row.
+
+
+#### Delete
+
+
+
+1. List GA4 account summaries.
+2. Select the properties from which you want to retrieve Firebase links.
+3. Navigate to the “GA4 Firebase Links” sheet.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Firebase Links > List.
+5. Check the “Delete” box for each Firebase link you want to delete.
+6. Click on Google Analytics Utilities > Google Analytics 4 > Firebase Links > Delete or Create.
+7. The script will attempt to delete the selected Firebase links.
+
+
+### Google Ads Links
+
+
+#### List
 
 
 
 1. List GA4 account summaries.
 2. Select the properties from which you want to retrieve Google Ads links.
 3. Navigate to the “GA4 Google Ads Links” sheet.
-4. Click on Google Analytics Utilities > Google Analytics 4 > List Google Ads Links.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Google Ads Links > List.
 5. The Google Ads links for the selected properties will be listed in the “GA4 Google Ads Links” sheet.
+
+
+#### Create
+
+
+
+1. Navigate to the “GA4 Google Ads Links” sheet.
+2. Enter the account ID, property ID, Google Ads client ID, and whether or not ads data validation should be enabled. Check the box under the “Create” column to tell the script to create a Google Ads link based on the provided settings. Repeat this step in a new row for each Google Ads link you want to create.
+3. Click on Google Analytics Utilities > Google Analytics 4 > Google Ads Links > Delete or Create.
+4. The script will attempt to create a new Google Ads link based on the information in each row.
+
+
+#### Delete
+
+
+
+1. List GA4 account summaries.
+2. Select the properties from which you want to retrieve Google Ads links.
+3. Navigate to the “GA4 Google Ads Links” sheet.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Google Ads Links > List.
+5. Check the “Delete” box for each Google Ads link you want to delete.
+6. Click on Google Analytics Utilities > Google Analytics 4 > Firebase Links > Delete or Create.
+7. The script will attempt to delete the selected Google Ads links.

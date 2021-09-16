@@ -16,15 +16,30 @@
 
 const ga4BaseRequestUrl = 'https://analyticsadmin.googleapis.com/v1alpha/';
 const ga4RequestDelay = 100;
+const ga4RequestSuffix = {
+  accountSummaries: 'accountSummaries',
+  accounts: 'accounts',
+  androidAppDataStreams: '/androidAppDataStreams',
+  firebaseLinks: '/firebaseLinks',
+  googleAdsLinks: '/googleAdsLinks',
+  iosAppDataStreams: '/iosAppDataStreams',
+  webDataStreams: '/webDataStreams',
+  enhancedMeasurementSettings: '/enhancedMeasurementSettings',
+  globalSiteTag: '/getGlobalSiteTag',
+  customDimensions: '/customDimensions',
+  customMetrics: '/customMetrics',
+  conversionEvents: '/conversionEvents',
+  auditPropertyUserLinks: '/userLinks:audit',
+};
 
 /**
  * Returns the UrlFetchApp options, including header, method, payload, etc.
- * requests to the Analytics Admin API.
+ * for requests to the Analytics Admin API.
  * @param {string} method Either POST or GET.
- * @param {?Object} data The payload data for the request.
+ * @param {?Object} payload The payload data for the request.
  * @return {!Object} Authorization header.
  */
-function getOptions(method, data) {
+function getOptions(method, payload) {
   const options = {
     'headers': {
       'authorization': 'Bearer ' + ScriptApp.getOAuthToken()
@@ -34,34 +49,76 @@ function getOptions(method, data) {
   if (method != undefined) {
     options.method = method;
   }
-  if (data != undefined) {
-    if (data.payload != undefined) {
-      options.payload = JSON.stringify(data.payload);
-      options.headers['Content-Type'] = 'application/json';
-    }
+  if (payload != undefined) {
+    options.payload = JSON.stringify(payload);
+    options.headers['Content-Type'] = 'application/json';
   }
   return options;
 }
 
-function listGA4AccountSummaries(pageToken) {
-  let suffix = '?pageSize=200';
-  if (pageToken != undefined) {
-    suffix += '&pageToken=' + pageToken;
+/**
+ * Lists most GA4 entities.
+ * @param {string} requestSuffix The suffix for the entity to be listed.
+ * @param {string} pageToken The token for the next page to be retrieved.
+ * @return {!Object} Either a response from the API or an error message.
+ */
+function listGA4Entities(requestSuffix, pageToken) {
+  try {
+    requestSuffix += '?pageSize=200';
+    if (pageToken != undefined) {
+      requestSuffix += '&pageToken=' + pageToken;
+    }
+    const data = JSON.parse(UrlFetchApp.fetch(
+      ga4BaseRequestUrl + requestSuffix,
+      getOptions()
+    ).getContentText());
+    Utilities.sleep(ga4RequestDelay);
+    return data;
+  } catch(e) {
+    return e;
   }
-  const data = JSON.parse(UrlFetchApp.fetch(
-		ga4BaseRequestUrl + 'accountSummaries' + suffix,
-		getOptions()
-	).getContentText());
-	Utilities.sleep(ga4RequestDelay);
-	return data;
 }
 
-function listGA4Accounts() {
-  const data = JSON.parse(UrlFetchApp.fetch(
-		ga4BaseRequestUrl + 'accounts', getOptions()).getContentText()
-	);
-	Utilities.sleep(ga4RequestDelay);
-	return data;
+function archiveGA4CustomDefinition(customDefinitionName) {
+  try {
+    const data = UrlFetchApp.fetch(
+			ga4BaseRequestUrl + customDefinitionName + ':archive',
+			getOptions('POST')
+		);
+		Utilities.sleep(ga4RequestDelay);
+		return data;
+  } catch(e) {
+    console.log(e);
+    return e;
+  }
+}
+
+function createGA4Entity(requestSuffix, payload) {
+  try {
+    const data = UrlFetchApp.fetch(
+			ga4BaseRequestUrl + requestSuffix, 
+			getOptions('POST', payload)
+		);
+		Utilities.sleep(ga4RequestDelay);
+		return data;
+  } catch(e) {
+    console.log(e);
+    return e;
+  }
+}
+
+function deleteGA4Entity(entityPath) {
+  try {
+    const data = UrlFetchApp.fetch(
+			ga4BaseRequestUrl + entityPath,
+			getOptions('DELETE')
+		);
+		Utilities.sleep(ga4RequestDelay);
+		return data;
+  } catch(e) {
+    console.log(e);
+    return e;
+  }
 }
 
 function listGA4Properties(id, filterType) {
@@ -79,65 +136,15 @@ function listGA4Properties(id, filterType) {
 	return data;
 }
 
-function listGA4AuditAccountUserLinks(accountName) {
+function auditGA4UserLinks(level, pageToken) {
+  requestSuffix = '?pageSize=5000';
+  if (pageToken != undefined) {
+    requestSuffix += '&pageToken=' + pageToken;
+  }
   const data = JSON.parse(UrlFetchApp.fetch(
-		ga4BaseRequestUrl + accountName + '/userLinks:audit',
+		ga4BaseRequestUrl + level + '/userLinks:audit' + requestSuffix,
 		getOptions()
 	).getContentText());
-	Utilities.sleep(ga4RequestDelay);
-	return data;
-}
-
-function listGA4AuditPropertyUserLinks(propertyName) {
-  const data = JSON.parse(UrlFetchApp.fetch(
-		ga4BaseRequestUrl + propertyName + '/userLinks:audit', 
-		getOptions()).getContentText()
-	);
-	Utilities.sleep(ga4RequestDelay);
-	return data;
-}
-
-function listGA4AndroidAppDataStreams(propertyName) {
-  const data = JSON.parse(UrlFetchApp.fetch(
-		ga4BaseRequestUrl + propertyName + '/androidAppDataStreams',
-		getOptions()).getContentText()
-	);
-	Utilities.sleep(ga4RequestDelay);
-	return data;
-}
-
-function listGA4FirebaseLinks(propertyName) {
-  const data = JSON.parse(UrlFetchApp.fetch(
-		ga4BaseRequestUrl + propertyName + '/firebaseLinks', 
-		getOptions()).getContentText()
-	);
-	Utilities.sleep(ga4RequestDelay);
-	return data;
-}
-
-function listGA4GoogleAdsLinks(propertyName) {
-  const data = JSON.parse(UrlFetchApp.fetch(
-		ga4BaseRequestUrl + propertyName + '/googleAdsLinks', 
-		getOptions()).getContentText()
-	);
-	Utilities.sleep(ga4RequestDelay);
-	return data;
-}
-
-function listGA4iosAppDataStreams(propertyName) {
-  const data = JSON.parse(UrlFetchApp.fetch(
-		ga4BaseRequestUrl + propertyName + '/iosAppDataStreams', 
-		getOptions()).getContentText()
-	);
-	Utilities.sleep(ga4RequestDelay);
-	return data;
-}
-
-function listGA4WebStreams(propertyName) {
-  const data = JSON.parse(UrlFetchApp.fetch(
-		ga4BaseRequestUrl + propertyName + '/webDataStreams', 
-		getOptions()).getContentText()
-	);
 	Utilities.sleep(ga4RequestDelay);
 	return data;
 }
@@ -156,107 +163,6 @@ function getGlobalSiteTag(webDataStreamName) {
 		ga4BaseRequestUrl + webDataStreamName + '/getGlobalSiteTag', 
 		getOptions()).getContentText()
 	);
-	Utilities.sleep(ga4RequestDelay);
-	return data;
-}
-
-function listGA4CustomDimensions(propertyName) {
-  const data = JSON.parse(UrlFetchApp.fetch(
-		ga4BaseRequestUrl + propertyName + '/customDimensions', 
-		getOptions()).getContentText()
-	);
-	Utilities.sleep(ga4RequestDelay);
-	return data;
-}
-
-function createGA4CustomDimension(propertyName, data) {
-  try {
-    const data = UrlFetchApp.fetch(
-			ga4BaseRequestUrl + propertyName + '/customDimensions', 
-			getOptions('POST',data)
-		);
-		Utilities.sleep(ga4RequestDelay);
-		return data;
-  } catch(e) {
-    console.log(e);
-    return e;
-  }
-}
-
-function archiveGA4CustomDimension(customDimensionName) {
-  try {
-    const data = UrlFetchApp.fetch(
-			ga4BaseRequestUrl + customDimensionName + ':archive',
-			getOptions('POST')
-		);
-		Utilities.sleep(ga4RequestDelay);
-		return data;
-  } catch(e) {
-    console.log(e);
-    return e;
-  }
-}
-
-function listGA4CustomMetrics(propertyName) {
-  const data = JSON.parse(UrlFetchApp.fetch(
-		ga4BaseRequestUrl + propertyName + '/customMetrics', 
-		getOptions()
-	).getContentText());
-	Utilities.sleep(ga4RequestDelay);
-	return data;
-}
-
-function createGA4CustomMetric(propertyName, data) {
-  try {
-    const data = UrlFetchApp.fetch(
-			ga4BaseRequestUrl + propertyName + '/customMetrics', 
-			getOptions('POST',data)
-		);
-		Utilities.sleep(ga4RequestDelay);
-		return data;
-  } catch(e) {
-    console.log(e);
-    return e;
-  }
-}
-
-function archiveGA4CustomMetric(customMetricName) {
-  try {
-    const data = UrlFetchApp.fetch(
-			ga4BaseRequestUrl + customMetricName + ':archive',
-			getOptions('POST')
-		);
-		Utilities.sleep(ga4RequestDelay);
-		return data;
-  } catch(e) {
-    console.log(e);
-    return e;
-  }
-}
-
-function listGA4ConversionEvents(propertyName) {
-  const data = JSON.parse(UrlFetchApp.fetch(
-		ga4BaseRequestUrl + propertyName + '/conversionEvents', 
-		getOptions()).getContentText()
-	);
-	Utilities.sleep(ga4RequestDelay);
-	return data;
-}
-
-function listGA4AdsLinks(propertyName) {
-  const data = JSON.parse(UrlFetchApp.fetch(
-		ga4BaseRequestUrl + propertyName + '/googleAdsLinks', 
-		getOptions()
-	).getContentText());
-	Utilities.sleep(ga4RequestDelay);
-	return data;
-}
-
-function listGA4FirebaseLinks(propertyName) {
-  const data = JSON.parse(UrlFetchApp.fetch(
-		ga4BaseRequestUrl + propertyName + '/firebaseLinks', 
-		getOptions()
-	).getContentText());
 	Utilities.sleep(ga4RequestDelay);
 	return data;
 }

@@ -15,12 +15,15 @@
  */
 
 const ss = SpreadsheetApp.getActive();
-const requestType = {
-	ga4: {
-		cd: 'custom dimensions',
-		cm: 'custom metrics'
-	}
-}
+const apiActionTaken = {
+  ga4: {
+    deleted: 'Deleted',
+    created: 'Created',
+    archived: 'Archived',
+    skipped: 'Skipped',
+    error: 'Error'
+  }
+};
 
 /**
  * Returns a list of Universal Analytics view details.
@@ -31,7 +34,6 @@ const requestType = {
 function getViewDetails(accountId, propertyId) {
   return Analytics.Management.Profiles.list(accountId, propertyId).items;
 }
-
 /**
  * Returns a list of Universal Analytics view custom dimensions.
  * @param {string|number} accountId The GA account ID.
@@ -42,7 +44,6 @@ function getCustomDimensions(accountId, propertyId) {
   return Analytics.Management.CustomDimensions.list(accountId, propertyId)
       .items;
 }
-
 /**
  * Creates a Universal Analytics custom dimension.
  * @param {!Object} request The request data to create a custom dimension.
@@ -52,7 +53,6 @@ function createCustomDimension(request) {
   return Analytics.Management.CustomDimensions.insert(
       request.body, request.accountId, request.propertyId);
 }
-
 /**
  * Updates a Universal Analytics custom dimension.
  * @param {!Object} request The request data to update a custom dimension.
@@ -63,7 +63,6 @@ function updateCustomDimension(request) {
       request.body, request.accountId, request.propertyId,
       'ga:dimension' + request.index);
 }
-
 /**
  * Creates a Universal Analytics custom metric.
  * @param {!Object} request The request data to create a custom metric.
@@ -73,7 +72,6 @@ function createCustomMetric(request) {
   return Analytics.Management.CustomMetrics.insert(
       request.body, request.accountId, request.propertyId);
 }
-
 /**
  * Updates a Universal Analytics custom metric.
  * @param {!Object} request The request data to update a custom metric.
@@ -84,7 +82,6 @@ function updateCustomMetric(request) {
       request.body, request.accountId, request.propertyId,
       'ga:metric' + request.index);
 }
-
 /**
  * Lists the custom metrics in a Universal Analytics property.
  * @param {string|number} accountId The GA account ID.
@@ -94,7 +91,6 @@ function updateCustomMetric(request) {
 function getCustomMetrics(accountId, propertyId) {
   return Analytics.Management.CustomMetrics.list(accountId, propertyId).items;
 }
-
 /**
  * Lists all of the Universal Analytics filters for a GA account.
  * @param {string|number} accountId The GA account ID.
@@ -103,7 +99,6 @@ function getCustomMetrics(accountId, propertyId) {
 function getAllFilters(accountId) {
   return Analytics.Management.Filters.list(accountId).items;
 }
-
 /**
  * Lists filter links for the views under a UA property.
  * @param {string|number} accountId The GA account ID.
@@ -116,7 +111,6 @@ function getFilterLinks(accountId, propertyId, viewId) {
       .list(accountId, propertyId, viewId)
       .items;
 }
-
 /**
  * Lists the account summaries for all UA accounts a user can access.
  * @return {!Array} An array of account summaries.
@@ -124,7 +118,6 @@ function getFilterLinks(accountId, propertyId, viewId) {
 function getAccountSummaries() {
   return Analytics.Management.AccountSummaries.list();
 }
-
 /**
  * Lists the remarketing audiences in a Universal Analytics property.
  * @param {string|number} accountId The GA account ID.
@@ -136,7 +129,6 @@ function listRemarketingAudiences(accountId, propertyId, startIndex) {
   return Analytics.Management.RemarketingAudience.list(
       accountId, propertyId, {'start-index': startIndex});
 }
-
 /**
  * Lists the goals for the views under a UA property.
  * @param {string|number} accountId The GA account ID.
@@ -147,7 +139,6 @@ function listRemarketingAudiences(accountId, propertyId, startIndex) {
 function listGoals(accountId, propertyId, viewId) {
   return Analytics.Management.Goals.list(accountId, propertyId, viewId).items;
 }
-
 /**
  * Creates a goal in a view under the UA property.
  * @param {!Object} request The request data to create a goal.
@@ -158,7 +149,6 @@ function createGoal(request) {
       request.resource, request.accountId, request.webPropertyId,
       request.profileId);
 }
-
 /**
  * Returns either the read or write range for a given sheet.
  * @param {string} name The name of the sheet for the range.
@@ -204,7 +194,6 @@ function getSheetRange(name, type) {
     return null;
   }
 }
-
 /**
  * Returns an array of selected properties based on the selected views.
  * @param {!Array<!Array>} selectedViews An array of the selected views.
@@ -220,7 +209,6 @@ function getSelectedProperties(selectedViews) {
     }
   });
 }
-
 /**
  * Returns a double array of all properties in all accounts.
  * @return {!Array<!Array>} A double array of all propertiesunder all accounts a
@@ -248,7 +236,6 @@ function getAllProperties() {
   }
   return finalProperties;
 }
-
 /**
  * Writes data to a specified sheet.
  * @param {!Array} data The data to be written to the sheet.
@@ -264,7 +251,6 @@ function writeToSheet(data, sheetName) {
   sheet.getRange(ranges.row, ranges.column, data.length, ranges.numColumns)
       .setValues(data);
 }
-
 /**
  * Retrieves data from a specified sheet.
  * @param {string} sheetName The sheet name where the data is located.
@@ -284,7 +270,6 @@ function getDataFromSheet(sheetName) {
           ranges.row, ranges.column, sheet.getLastRow(), ranges.numColumns)
       .getValues();
 }
-
 /**
  * Retrieve settings from thee settings sheet.
  * @return {!Object} The settings from the settings sheet.
@@ -300,7 +285,6 @@ function getSettings() {
   };
   return settingsObject;
 }
-
 /**
  * Get selected views from the account summaries sheet based
  * on which views have a checked checkbox.
@@ -311,7 +295,6 @@ function getSelectedViews() {
   const views = getDataFromSheet(sheetNames.ua.accountSummaries);
   return views.filter(row => row[6]);
 }
-
 /**
  * Get selected properties from the account summaries sheet based
  * on which views have a checked box.
@@ -322,7 +305,6 @@ function getSelectedGa4Properties() {
   const properties = getDataFromSheet(sheetNames.ga4.accountSummaries);
   return properties.filter(row => row[4]);
 }
-
 /**
  * Sets UA and GA4 sheets to be hidden or shown.
  * @param {string} gaType Either "ua" or "ga4".
@@ -342,28 +324,24 @@ function showOrHideSheets(gaType, action) {
     }
   });
 }
-
 /**
  * Hides universal analytics sheets.
  */
 function hideUASheets() {
   showOrHideSheets('ua', 'hide');
 }
-
 /**
  * Shows universal analytics sheets.
  */
 function showUASheets() {
   showOrHideSheets('ua', 'show');
 }
-
 /**
  * Hides GA4 sheets.
  */
 function hideGA4Sheets() {
   showOrHideSheets('ga4', 'hide');
 }
-
 /**
  * Shows GA4 sheets.
  */
