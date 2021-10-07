@@ -38,7 +38,11 @@ function onOpen(e) {
           .addItem('List Destination Properties', 'writeCustomMetricDestinationPropertiesToSheet')
           .addItem('Modify Custom Metrics', 'modifyCustomMetrics')))
       .addItem('List Filters', 'writeFilterDataToSheet')
-      .addItem('List Remarketing Audience Settings', 'writeAudiencesToSheet')
+      .addSubMenu(
+        ui.createMenu('Remarketing Audiences')
+        .addItem('List Settings', 'writeAudiencesToSheet')
+        .addItem('Delete Audiences', 'deleteUAAudiences')
+      )
       .addSubMenu(
         ui.createMenu('Goals')
         .addItem('List Goals', 'writeGoalsToSheet')

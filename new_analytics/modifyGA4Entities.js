@@ -121,7 +121,7 @@ function modifyGA4Entities(sheetName) {
       if (deleteOrArchive && create) {
         actionTaken = apiActionTaken.ga4.skipped;
         // Writes that the entity was skipped to the sheet.
-        writeGA4ActionTakenToSheet(sheetName, index, actionTaken);
+        writeActionTakenToSheet(sheetName, index, actionTaken);
       // Archives custom definitions and deletes anything else that can be deleted.
       } else if (deleteOrArchive) {
         if (
@@ -142,7 +142,7 @@ function modifyGA4Entities(sheetName) {
           }
         }
         // Writes that the entity was deleted or archived to the sheet.
-        writeGA4ActionTakenToSheet(sheetName, index, actionTaken);
+        writeActionTakenToSheet(sheetName, index, actionTaken);
 
       // Creates the new entity.
       } else if (create) {
@@ -158,39 +158,8 @@ function modifyGA4Entities(sheetName) {
           response = createGA4Entity(propertyPath + ga4RequestSuffix.firebaseLinks, payload);
         }
         // Writes the creation of the entity to the sheet.
-        writeGA4ActionTakenToSheet(sheetName, index, apiActionTaken.ga4.created);
+        writeActionTakenToSheet(sheetName, index, apiActionTaken.ga4.created);
       }
     });
   }
-}
-
-/**
- * Writes the action that was taken on a GA4 enity to a sheet.
- * @param {string} sheetName The name of the sheet being written to.
- * @param {number} index The index of the entity that is being acted
- * upon in the two dimensional array of entity data.
- * @param {string} status The action taken for a given entity.
- */
-function writeGA4ActionTakenToSheet(sheetName, index, actionTaken) {
-	// The actual row to be written to is offset from the index value by 2, so
-	// the index value must be increased by two.
-	const writeRow = index + 2; 
-  let actionTakenColumn = null;
-  // The action taken column number will be correctly set below;
-  if (sheetName == sheetNames.ga4.customDimensions) {
-    actionTakenColumn = sheetRanges.ga4.customDimensions.read.numColumns;
-  } else if (sheetName == sheetNames.ga4.customMetrics) {
-    actionTakenColumn = sheetRanges.ga4.customMetrics.read.numColumns;
-  } else if (sheetName == sheetNames.ga4.conversionEvents) {
-    actionTakenColumn = sheetRanges.ga4.conversionEvents.read.numColumns;
-  } else if (sheetName == sheetNames.ga4.adsLinks) {
-    actionTakenColumn = sheetRanges.ga4.adsLinks.read.numColumns;
-  } else if (sheetName == sheetNames.ga4.firebaseLinks) {
-    actionTakenColumn = sheetRanges.ga4.firebaseLinks.read.numColumns;
-  }
-	const numRows = 1;
-	const numColumns = 1;
-	ss.getSheetByName(sheetName).getRange(
-		writeRow, actionTakenColumn, numRows, numColumns
-	).setValue(actionTaken);
 }

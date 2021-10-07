@@ -60,12 +60,17 @@ const sheetRanges = {
       }
     },
     audiences: {
-      write: {},
-      read: {
+      write: {
         row: 2,
         column: 1,
         numRows: 1,
         numColumns: 18
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 20
       }
     },
     goals: {

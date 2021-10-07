@@ -96,6 +96,25 @@ function formatAudiences(audiences) {
 }
 
 /**
+ * Deletes selected audiences in the sheet.
+ */
+function deleteUAAudiences() {
+  const audienceSheet = sheetNames.ua.audiences;
+  const audiences = getDataFromSheet(audienceSheet);
+  audiences.forEach((audience, index) => {
+    if (audience[18]) { // Checks if the audience is seleted to be deleted.
+      const accountId = audience[2]; // Account ID for the audience to be deleted.
+      const propertyId = audience[3]; // Property ID for the audience to be deleted.
+      const linkId = audience[1]; // Audience link ID to be deleted.
+      console.log(accountId + ' ' + propertyId + ' ' + linkId);
+      Analytics.Management.RemarketingAudience.remove(accountId, propertyId, linkId);
+      writeActionTakenToSheet(audienceSheet, index, 'Deleted');
+      Utilities.sleep(750);
+    }
+  });
+}
+
+/**
  * Writes audiences to the sheet.
  */
 function writeAudiencesToSheet() {

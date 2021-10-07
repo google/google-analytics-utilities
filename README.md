@@ -27,7 +27,9 @@ The script currently performs the following functions:
         *   List
         *   Create/Update
     *   List view level filter settings
-    *   List audience settings
+    *   Audiences
+        *   List settings
+        *   Delete
     *   Goal settings
         *   List
         *   Create
@@ -227,15 +229,31 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
     *   Since the same filter may be applied to multiple views, that filter and its settings may appear in the sheet multiple times. A filter will not show up in the sheet if it is not applied to one of the selected views.
 
 
-### Google Analytics Remarketing Audiences Settings
+### Google Analytics Remarketing Audiences
+
+
+#### List Settings
 
 
 
 1. List account summaries. 
 2. Since the account summaries sheet lists each sheet as a different row but audiences exist at the property level, select one view per property for which you are interested and the script will identify the correct property.
-3. Navigate to the “Audiences” sheet.
-4. Click on GA Utilities > Universal Analytics > List Remarketing Audience Settings.
-5. The script will save all of the audiences and their respective settings that exist for the selected properties to the “Audiences” sheet. Audience size cannot be retrieved via the Google Analytics Management API and will not be saved to the sheet.
+3. Navigate to the “UA Audiences” sheet.
+4. Click on GA Utilities > Universal Analytics > Remarketing Audiences > List Settings.
+5. The script will save all of the audiences and their respective settings that exist for the selected properties to the “UA Audiences” sheet. Audience size cannot be retrieved via the Google Analytics Management API and will not be saved to the sheet.
+
+
+#### Delete
+
+
+
+1. List account summaries. 
+2. Since the account summaries sheet lists each sheet as a different row but audiences exist at the property level, select one view per property for which you are interested and the script will identify the correct property.
+3. Navigate to the “UA Audiences” sheet.
+4. Click on Google Analytics Utilities > Universal Analytics > Remarketing Audiences > List Settings.
+5. Check the “Delete” box for each audience you want to delete.
+6. Click on Google Analytics Utilities > Universal Analytics > Remarketing Audiences > Delete or Create.
+7. The script will attempt to delete the selected audiences.
 
 
 ### List Goals Settings
