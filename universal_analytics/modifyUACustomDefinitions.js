@@ -121,7 +121,7 @@ function modifyUACustomDefinitions(
             }
           }
         } else {
-          if (templateCd[4]) {
+          if (templateValue[templateValue.length - 1]) {
             let response = null;
             let resultsSheetName = '';
             let resultsRange = {};
