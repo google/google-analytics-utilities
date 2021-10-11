@@ -190,6 +190,8 @@ function getSheetRange(name, type) {
     return sheetRanges.ga4.adsLinks[type];
   } else if (name == sheetNames.ga4.firebaseLinks) {
     return sheetRanges.ga4.firebaseLinks[type];
+  } else if (name == sheetNames.ua.metricsRequest) { 
+    return sheetRanges.ua.metricsRequest[type];
   } else {
     return null;
   }
@@ -380,4 +382,17 @@ function writeActionTakenToSheet(sheetName, index, actionTaken) {
 	ss.getSheetByName(sheetName).getRange(
 		writeRow, actionTakenColumn, numRows, numColumns
 	).setValue(actionTaken);
+}
+
+/**
+ * Requests report data.
+ * @param {!Object} report
+ * @return {!Array<!Array>} The event data as a two
+ * dimensional array.
+ */
+function getData(report) {
+  let request = AnalyticsReporting.newGetReportsRequest();
+  request.reportRequests = [];
+  request.reportRequests.push(report);
+  return AnalyticsReporting.Reports.batchGet(request).reports[0].data.rows;
 }

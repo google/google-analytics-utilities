@@ -22,40 +22,43 @@
  * @param {string} endDate
  * @return {!Object} Retuns the report object.
  */
-function constructReport(viewId, startDate, endDate) {
+function constructMetricsReport(viewId, startDate, endDate) {
   const report = AnalyticsReporting.newReportRequest();
-  report.dimensions = [];
   report.metrics = [];
   report.dateRanges = [];
-  report.orderBys = [];
-  const dimensionNames = ['ga:eventCategory', 'ga:eventAction', 'ga:eventLabel'];
-  for (let i = 0; i < dimensionNames.length; i++) {
-    let tempDim = AnalyticsReporting.newDimension();
-    tempDim.name = dimensionNames[i];
-    report.dimensions.push(tempDim);
+  const headers = getMetricHeaders();
+  if (headers.length > 0) {
+    headers[0].forEach(metric => {
+      if (metric != '') {
+        const newMetric = AnalyticsReporting.newMetric();
+        newMetric.expression = metric;
+        report.metrics.push(newMetric);
+      }
+    });
+  } else {
+    return report;
   }
-  const totalEvents = AnalyticsReporting.newMetric();
-  totalEvents.alias = 'Total Events';
-  totalEvents.expression = 'ga:totalEvents';
-  totalEvents.formattingType = 'INTEGER';
-  report.metrics.push(totalEvents);
   report.viewId = viewId;
   report.hideTotals = true;
   const dateRange = AnalyticsReporting.newDateRange();
   dateRange.startDate = startDate;
   dateRange.endDate = endDate;
   report.dateRanges.push(dateRange);
-  let ob = AnalyticsReporting.newOrderBy();
-  ob.fieldName = 'ga:eventCategory';
-  ob.orderType = 'VALUE';
-  ob.sortOrder = 'DESCENDING';
-  report.orderBys.push(ob);
   return report;
 }
 
 /**
+ * Retrieves the metric expressions from the sheet.
+ */
+function getMetricHeaders() {
+  const headers = ss.getSheetByName(sheetNames.ua.metricsRequest)
+	.getRange(1, 7, 1, 10).getValues();
+  return headers;
+}
+
+/**
  * Adds the account, property, and view names and views to the
- * two dimensional array that contains the event data.
+ * two dimensional array that contains the metric data.
  * @param {!Array<!Array>} data
  * @param {string} accountName
  * @param {string|number} accountId
@@ -65,22 +68,32 @@ function constructReport(viewId, startDate, endDate) {
  * @param {string|number} viewId
  * @return {!Array<!Array>} A two dimensional array where each array
  * contains the event data as well as the account, property, and view
- * names and IDs where the events originated.
+ * names and IDs where the metrics originated.
  */
-function formatData(data, accountName, accountId, propertyName, propertyId, viewName, viewId) {
-  const tempArray = [];
-  for (let i = 0; i < data.length; i++) {
-    data[i].dimensions.unshift(accountName, accountId, propertyName, propertyId, viewName, viewId);
-    data[i].dimensions.push(data[i].metrics[0].values[0]);
-    tempArray.push(data[i].dimensions);
+function formatMetricData(
+	data,
+	accountName,
+	accountId,
+	propertyName,
+	propertyId,
+	viewName,
+	viewId
+) {
+  const tempArray = [
+		accountName, accountId, propertyName,
+		propertyId, viewName, viewId
+	];
+  for (let i = 0; i < 10; i++) {
+    const value = data[0].metrics[0].values[i]; // The metric value.;
+    tempArray.push(value || '');
   }
   return tempArray;
 }
 
 /**
- * Writes event data to the sheet.
+ * Retrieves metric data and formats it to be written to a sheet.
  */
-function writeEventsToSheet() {
+function writeMetricsDataToSheet() {
   const views = getSelectedViews();
   const settings = getSettings();
   const startDate = settings.startDate;
@@ -93,16 +106,20 @@ function writeEventsToSheet() {
     const propertyId = views[i][3];
     const viewName = views[i][4];
     const viewId = views[i][5].toString();
-    const report = constructReport(viewId, startDate, endDate);
+    const report = constructMetricsReport(viewId, startDate, endDate);
     const data = getData(report);
     if (data != undefined) {
-      const formatedData = formatData(data, accountName, accountId, propertyName, propertyId, viewName, viewId);
-      finalData = finalData.concat(formatedData);
+      const formatedData = formatMetricData(
+				data, accountName, accountId, propertyName, 
+				propertyId, viewName, viewId
+			);
+      finalData.push(formatedData);
     } else if (data == undefined) {
-      finalData = finalData.concat([[
+      finalData.push([
         accountName, accountId, propertyName, propertyId, viewName, viewId, 
-        'No Events', 'No Events', 'No Events', 'No Events']])
+        '', '', '', '', '', '', '', '', '', '']);
     }
+    Utilities.sleep(150);
   }
-  writeToSheet(finalData, sheetNames.ua.events);
+  writeToSheet(finalData, sheetNames.ua.metricsRequest);
 }

@@ -20,6 +20,7 @@ The script currently performs the following functions:
     *   List account summaries
     *   List view details
     *   List up to 1000 unique event category, action, and label combinations per view
+    *   Report on specific metrics for selected views
     *   Custom dimensions
         *   List 
         *   Create/Update 
@@ -144,6 +145,19 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 4. Navigate to the “Events” sheet.
 5. Click on Google Analytics Utilities > Universal Analytics > List Events. 
 6. The script will save up to 1000 unique combinations of the event category, action, and label values in the view to the “Events” sheet. If no events existed in the view for the selected view, a row will be added for the view, but the event information will be set to “No Events”.
+
+
+### Retrieve Metrics from Selected Views
+
+
+
+1. List account summaries. 
+2. Select the specific views from which you want to retrieve metric data.
+3. Navigate to the “Settings” sheet and enter the start date and end date for the time frame you are interested in.
+4. Navigate to the “UA Metrics Request” sheet.
+5. In row 1, specify the metric data you would like to retrieve from a given view by selecting a metric from the dropdown. You can also create [expressions](https://developers.google.com/analytics/devguides/reporting/core/v4/basics#expressions) like ga:sessions/ga:users.
+6. Click on Google Analytics Utilities > Universal Analytics > List Metrics. 
+7. This script will retrieve the specific metric data for each view and save the data from each view on a separate line.
 
 
 ### Custom Dimensions

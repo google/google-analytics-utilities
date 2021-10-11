@@ -21,6 +21,7 @@ function onOpen(e) {
       .addItem('List Account Summaries', 'writeAccountSummariesToSheet')
       .addItem('List View Details', 'writeViewDetailsToSheet')
       .addItem('List Events', 'writeEventsToSheet')
+      .addItem('List Metrics', 'writeMetricsDataToSheet')
       .addSubMenu(
         ui.createMenu('Custom Dimensions')
         .addItem('List Custom Dimensions', 'writeCustomDimensionsToSheet')

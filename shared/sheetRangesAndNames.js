@@ -204,6 +204,20 @@ const sheetRanges = {
         numRows: 1,
         numColumns: 6
       }
+    },
+    metricsRequest: {
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 16
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 16
+      }
     }
   },
   ga4: {
@@ -322,7 +336,8 @@ const sheetNames = {
     modifyCds: 'UA Custom Dimensions - Modify',
     modifyCdsResults: 'UA Custom Dimensions - Modify - Results',
     modifyCms: 'UA Custom Metrics - Modify',
-    modifyCmsResults: 'UA Custom Metrics - Modify - Results'
+    modifyCmsResults: 'UA Custom Metrics - Modify - Results',
+    metricsRequest: 'UA Metrics Request'
   },
   ga4: {
     accountSummaries: 'GA4 Account Summaries',
