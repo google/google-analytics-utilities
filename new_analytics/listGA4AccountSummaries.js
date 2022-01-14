@@ -44,16 +44,9 @@ function getFlattenedGA4AccountSummaries(summaries) {
  * 
  */
 function writeGA4AccountSummariesToSheet() {
-  let summaries = listGA4Entities(ga4RequestSuffix.accountSummaries);
-  let nextPageToken = summaries.nextPageToken;
-  let flattenedSummaries = getFlattenedGA4AccountSummaries(
+  let summaries = listGA4Entities('accountSummaries')
+  const flattenedSummaries = getFlattenedGA4AccountSummaries(
 		summaries.accountSummaries
   );
-  while (nextPageToken != undefined) {
-    summaries = listGA4Entities(ga4RequestSuffix.accountSummaries, nextPageToken);
-    nextPageToken = summaries.nextPageToken;
-		flattenedSummaries.concat(
-			getFlattenedGA4AccountSummaries(summaries.accountSummaries));
-  }
   writeToSheet(flattenedSummaries, sheetNames.ga4.accountSummaries);
 }

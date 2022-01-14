@@ -27,8 +27,7 @@ function listSelectedGA4FirebaseLinks(properties) {
   properties.forEach(property => {
     const propertyName = 'properties/' + property[3];
     const firebaseLinks = listGA4Entities(
-      propertyName + ga4RequestSuffix.firebaseLinks
-    ).firebaseLinks;
+      'firebaseLinks', propertyName).firebaseLinks;
     if (firebaseLinks != undefined) {
       for (let i = 0; i < firebaseLinks.length; i++) {
         allFirebaseLinks.push([

@@ -79,33 +79,6 @@ The spreadsheet is now ready to use the Google Analytics Utilities sheet. The fi
 If you are not copying the script, then the Google Analytics API and Analytics Reporting API services need to be enabled.
 
 
-## Enable Google Analytics 4 Utilities
-
-In order to use the Google Analytics 4 utilities, you must first connect your spreadsheet to a Google Cloud project with the Analytics Admin API enabled. To do so, follow these steps:
-
-
-### Create a Cloud Project
-
-
-
-1. Navigate to [console.cloud.google.com/home](console.cloud.google.com/home) and either create a new project or select and existing one
-2.  Navigate to [console.cloud.google.com/apis/library](http://console.cloud.google.com/apis/library) for your project and search for “Google Analytics Admin API”
-3. Enable the Google Analytics Admin API
-4. Navigate to [console.cloud.google.com/iam-admin/settings](console.cloud.google.com/iam-admin/settings) for your project and copy the project Number
-
-
-### Connect App Script to Cloud Project
-
-
-
-1. Open the script connected to your spreadsheet by going to Extensions > App Script
-2. Click on “Project Settings” in the left-hand navigation to modify your project settings
-3. Under Google Cloud Platform (GCP) Project, click “Change project” and paste your project ID from earlier
-4. Click “Set Project”
-
-Your script can now start using the Google Analytics Admin API to request information about Google Analytics 4 accounts.
-
-
 ## Show and Hide Sheets
 
 To make managing the sheets easier, you can show or hide sheets related to Universal Analytics and Google Analytics 4.

@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,46 +15,47 @@
  */
 
 /**
- * Retrieves the custom metrics for a given set of properties.
+ * Retrieves the Google DV360 links for a given set of properties.
  * @param {!Array<!Array>} properties A two dimensional array of
  * account and property names and ids.
  * @return {!Array<!Array>} A two dimensional array where each
- * array contains metadata about the custom metrics for the given
+ * array contains metadata about the Google DV360 Links for the given
  * set of properties.
  */
-function listSelectedGA4CustomMetrics(properties) {
-  const finalizedCms = [];
+function listSelectedDV360Links(properties) {
+  const links = [];
   properties.forEach(property => {
     const propertyName = 'properties/' + property[3];
-    const cms = listGA4Entities(
-      'customMetrics', propertyName).customMetrics;
-    if (cms != undefined) {
-      for (let i = 0; i < cms.length; i++) {
-        finalizedCms.push([
+    const allDV360Links = listGA4Entities(
+      'displayVideo360AdvertiserLinks', propertyName)
+      .displayVideo360AdvertiserLinks;
+    if (allDV360Links != undefined) {
+      for (let i = 0; i < allDV360Links.length; i++) {
+        links.push([
           property[0],
           property[1],
           property[2],
           property[3],
-          cms[i].displayName,
-          cms[i].name,
-          cms[i].parameterName,
-          cms[i].scope,
-          cms[i].measurementUnit,
-          cms[i].description
+          allDV360Links[i].advertiserId,
+          allDV360Links[i].name,
+          allDV360Links[i].advertiserDisplayName,
+          allDV360Links[i].adsPersonalizationEnabled,
+          allDV360Links[i].campaignDataSharingEnabled,
+          allDV360Links[i].costDataSharingEnabled
         ]);
       }
     }
   });
-  return finalizedCms;
+  return links;
 }
 
 /**
  * 
  */
-function writeGA4CustomMetricsToSheet() {
+function writeGA4DV360LinksToSheet() {
   const selectedProperties = getSelectedGa4Properties();
-  const cms = listSelectedGA4CustomMetrics(selectedProperties);
-  if (cms.length > 0) {
-    writeToSheet(cms, sheetNames.ga4.customMetrics);
+  const links = listSelectedDV360Links(selectedProperties);
+  if (links.length > 0) {
+    writeToSheet(links, sheetNames.ga4.displayVideo360AdvertiserLinks);
   }
 }

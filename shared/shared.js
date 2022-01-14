@@ -186,12 +186,14 @@ function getSheetRange(name, type) {
     return sheetRanges.ga4.customMetrics[type];
   } else if (name == sheetNames.ga4.conversionEvents) {
     return sheetRanges.ga4.conversionEvents[type];
-  } else if (name == sheetNames.ga4.adsLinks) {
-    return sheetRanges.ga4.adsLinks[type];
+  } else if (name == sheetNames.ga4.googleAdsLinks) {
+    return sheetRanges.ga4.googleAdsLinks[type];
   } else if (name == sheetNames.ga4.firebaseLinks) {
     return sheetRanges.ga4.firebaseLinks[type];
   } else if (name == sheetNames.ua.metricsRequest) { 
     return sheetRanges.ua.metricsRequest[type];
+  } else if (name == sheetNames.ga4.displayVideo360AdvertiserLinks) {
+    return sheetRanges.ga4.displayVideo360AdvertiserLinks[type];
   } else {
     return null;
   }
@@ -370,12 +372,14 @@ function writeActionTakenToSheet(sheetName, index, actionTaken) {
     actionTakenColumn = sheetRanges.ga4.customMetrics.read.numColumns;
   } else if (sheetName == sheetNames.ga4.conversionEvents) {
     actionTakenColumn = sheetRanges.ga4.conversionEvents.read.numColumns;
-  } else if (sheetName == sheetNames.ga4.adsLinks) {
-    actionTakenColumn = sheetRanges.ga4.adsLinks.read.numColumns;
+  } else if (sheetName == sheetNames.ga4.googleAdsLinks) {
+    actionTakenColumn = sheetRanges.ga4.googleAdsLinks.read.numColumns;
   } else if (sheetName == sheetNames.ga4.firebaseLinks) {
     actionTakenColumn = sheetRanges.ga4.firebaseLinks.read.numColumns;
   } else if (sheetName == sheetNames.ua.audiences) {
     actionTakenColumn = sheetRanges.ua.audiences.read.numColumns;
+  } else if (sheetName == sheetNames.ga4.displayVideo360AdvertiserLinks) {
+    actionTakenColumn = sheetRanges.ga4.displayVideo360AdvertiserLinks.read.numColumns;
   }
 	const numRows = 1;
 	const numColumns = 1;

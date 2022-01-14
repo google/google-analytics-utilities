@@ -240,13 +240,13 @@ const sheetRanges = {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 25
+        numColumns: 14
       },
       read: {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 26
+        numColumns: 15
       }
     },
     customDimensions: {
@@ -291,7 +291,7 @@ const sheetRanges = {
         numColumns: 11
       }
     },
-    adsLinks: {
+    googleAdsLinks: {
       write: {
         row: 2,
         column: 1,
@@ -317,6 +317,20 @@ const sheetRanges = {
         column: 1,
         numRows: 1,
         numColumns: 11
+      }
+    },
+    displayVideo360AdvertiserLinks: {
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 10
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 13
       }
     }
   }
@@ -345,7 +359,8 @@ const sheetNames = {
     customDimensions: 'GA4 Custom Dimensions',
     customMetrics: 'GA4 Custom Metrics',
     conversionEvents: 'GA4 Conversion Events',
-    adsLinks: 'GA4 Google Ads Links',
-    firebaseLinks: 'GA4 Firebase Links'
+    googleAdsLinks: 'GA4 Google Ads Links',
+    firebaseLinks: 'GA4 Firebase Links',
+    displayVideo360AdvertiserLinks: 'GA4 DV360 Links'
   }
 };

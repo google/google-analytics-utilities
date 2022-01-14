@@ -27,8 +27,7 @@ function listSelectedGA4AdsLinks(properties) {
   properties.forEach(property => {
     const propertyName = 'properties/' + property[3];
     const adsLinks = listGA4Entities(
-      propertyName + ga4RequestSuffix.googleAdsLinks
-    ).googleAdsLinks;
+      'googleAdsLinks', propertyName).googleAdsLinks;
     if (adsLinks != undefined) {
       for (let i = 0; i < adsLinks.length; i++) {
         allAdsLinks.push([
@@ -57,6 +56,6 @@ function writeGA4AdsLinksToSheet() {
   const selectedProperties = getSelectedGa4Properties();
   const adsLinks = listSelectedGA4AdsLinks(selectedProperties);
   if (adsLinks.length > 0) {
-    writeToSheet(adsLinks, sheetNames.ga4.adsLinks);
+    writeToSheet(adsLinks, sheetNames.ga4.googleAdsLinks);
   }
 }

@@ -21,90 +21,35 @@ function listSelectedGA4Streams(properties) {
   const dataStreams = [];
   properties.forEach(property => {
     const propertyName = 'properties/' + property[3];
-    const webStreams = listGA4Entities(
-      propertyName + ga4RequestSuffix.webDataStreams
-    ).webDataStreams;
-    if (webStreams != undefined) {
-      webStreams.forEach(stream => {
+    const dataStreamsResponse = listGA4Entities(
+      'dataStreams', propertyName).dataStreams;
+    if (dataStreamsResponse != undefined && dataStreamsResponse.length > 0) {
+      dataStreamsResponse.forEach(stream => {
         const tempArray = [];
         tempArray.push(
           property[0],
           property[1],
           property[2],
           property[3],
-          'Web',
+          stream.type,
           stream.displayName,
           stream.name.split('/')[1],
-          stream.measurementId,
-          '', '',
-          stream.firebaseAppId,
+          '', '', '', '',
           stream.createTime,
           stream.updateTime,
-          stream.defaultUri)
-        const enhancedMeasurementSettings = getEnhancedMeasurementSettings(stream.name);
-        if (enhancedMeasurementSettings != undefined) {
-          tempArray.push(
-            enhancedMeasurementSettings.streamEnabled,
-            enhancedMeasurementSettings.pageViewsEnabled,
-            enhancedMeasurementSettings.scrollsEnabled,
-            enhancedMeasurementSettings.outboundClicksEnabled,
-            enhancedMeasurementSettings.siteSearchEnabled,
-            enhancedMeasurementSettings.videoEngagementEnabled,
-            enhancedMeasurementSettings.fileDownloadsEnabled,
-            enhancedMeasurementSettings.pageLoadsEnabled,
-            enhancedMeasurementSettings.pageChangesEnabled,
-            enhancedMeasurementSettings.searchQueryParameter,
-            enhancedMeasurementSettings.uriQueryParameter
-          );
-        } else {
-          tempArray.push('', '', '', '', '', '', '', '', '', '', '');
+          '');
+        if (stream.webStreamData != undefined) {
+          tempArray[7] = stream.webStreamData.measurementId || '';
+          tempArray[10] = stream.webStreamData.firebaseAppId || '';
+          tempArray[13] = stream.webStreamData.defaultUri || '';
+        } else if (stream.androidAppStreamData != undefined) {
+          tempArray[8] = stream.androidAppStreamData.packageName || '';
+          tempArray[10] = stream.androidAppStreamData.firebaseAppId || '';
+        } else if (stream.iosAppStreamData != undefined) {
+          tempArray[9] = stream.iosAppStreamData.bundleId || '';
+          tempArray[10] = stream.iosAppStreamData.firebaseAppId || '';
         }
         dataStreams.push(tempArray);
-      });
-    }
-    const androidStreams = listGA4Entities(
-      propertyName + ga4RequestSuffix.androidAppDataStreams
-    ).androidStreams;
-    if (androidStreams != undefined) {
-      androidStreams.forEach(stream => {
-        dataStreams.push([
-          property[0],
-          property[1],
-          property[2],
-          property[3],
-          'Android',
-          stream.displayName,
-          stream.name.split('/')[1],
-          '',
-          stream.packageName,
-          '',
-          stream.firebaseAppId,
-          stream.createTime,
-          stream.updateTime,
-          stream.defaultUri
-        ]);
-      });
-    }
-    const iosStreams = listGA4Entities(
-      propertyName + ga4RequestSuffix.iosAppDataStreams
-    ).iosStreams;
-    if (iosStreams != undefined) {
-      iosStreams.forEach(stream => {
-        dataStreams.push([
-          property[0],
-          property[1],
-          property[2],
-          property[3],
-          'iOS',
-          stream.displayName,
-          stream.name.split('/')[1],
-          '', '',
-          stream.bundleId,
-          stream.firebaseAppId,
-          stream.createTime,
-          stream.updateTime,
-          stream.defaultUri
-        ]);
       });
     }
   });

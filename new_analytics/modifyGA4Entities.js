@@ -39,7 +39,7 @@ function modifyGA4ConversionEvents() {
  * Deletes or creates GA4 Google Ads Links.
  */
 function modifyGA4AdsLinks() {
-  modifyGA4Entities(sheetNames.ga4.adsLinks);
+  modifyGA4Entities(sheetNames.ga4.googleAdsLinks);
 }
 
 /**
@@ -55,6 +55,7 @@ function modifyGA4FirebaseLinks() {
  */
 function modifyGA4Entities(sheetName) {
   let entities = getDataFromSheet(sheetName);
+  const ga4Resource = Object.keys(sheetNames.ga4).find(key => sheetNames.ga4[key] === sheetName);
   filteredEntity = entities.filter(
 		entity => entity[0] != '');
   if (filteredEntity.length > 0) {
@@ -64,6 +65,7 @@ function modifyGA4Entities(sheetName) {
       let create = null;
       let actionTaken = null;
 
+      // Build payload.
       const payload = {};
       // Data consistent across GA4 sheets.
 			const propertyPath = 'properties/' + entity[3];
@@ -98,7 +100,7 @@ function modifyGA4Entities(sheetName) {
         deleteOrArchive = entity[8];
         create = entity[9];
         payload.eventName = entityDisplayNameOrId;
-      } else if (sheetName == sheetNames.ga4.adsLinks) {
+      } else if (sheetName == sheetNames.ga4.googleAdsLinks) {
         // Add Google Ads link fields.
         deleteOrArchive = entity[11];
         create = entity[12];
@@ -114,6 +116,14 @@ function modifyGA4Entities(sheetName) {
         const maximumUserAccess = entity[7];
         payload.project = entityDisplayNameOrId;
         payload.maximumUserAccess = maximumUserAccess;
+      } else if (sheetName == sheetNames.ga4.displayVideo360AdvertiserLinks) {
+        // Add DV360 link fields.
+        deleteOrArchive = entity[10];
+        create = entity[11];
+        payload.advertiserId = entityDisplayNameOrId;
+        payload.adsPersonalizationEnabled = entity[7];
+        payload.campaignDataSharingEnabled = entity[8];
+        payload.costDataSharingEnabled = entity[9];
       }
 
       // An entity cannot be both created and archived/deleted, so if both
@@ -127,14 +137,14 @@ function modifyGA4Entities(sheetName) {
         if (
           sheetName == sheetNames.ga4.customDimensions ||
           sheetName == sheetNames.ga4.customMetrics) {
-          response = archiveGA4CustomDefinition(entityPath);
+          response = archiveGA4CustomDefinition(ga4Resource, entityPath);
           if (response.length == undefined) {
             actionTaken = apiActionTaken.ga4.archived;
           } else {
             actionTaken = apiActionTaken.ga4.error;
           }
         } else {
-          response = deleteGA4Entity(entityPath);
+          response = deleteGA4Entity(ga4Resource, entityPath);
           if (response.length == undefined) {
             actionTaken = apiActionTaken.ga4.deleted;
           } else {
@@ -146,17 +156,7 @@ function modifyGA4Entities(sheetName) {
 
       // Creates the new entity.
       } else if (create) {
-        if (sheetName == sheetNames.ga4.customDimensions) {
-          response = createGA4Entity(propertyPath + ga4RequestSuffix.customDimensions, payload);
-        } else if (sheetName == sheetNames.ga4.customMetrics) {
-          response = createGA4Entity(propertyPath + ga4RequestSuffix.customMetrics, payload);
-        } else if (sheetName == sheetNames.ga4.conversionEvents) {
-          response = createGA4Entity(propertyPath + ga4RequestSuffix.conversionEvents, payload);
-        } else if (sheetName == sheetNames.ga4.adsLinks) {
-          response = createGA4Entity(propertyPath + ga4RequestSuffix.googleAdsLinks, payload);
-        } else if (sheetName == sheetNames.ga4.firebaseLinks) {
-          response = createGA4Entity(propertyPath + ga4RequestSuffix.firebaseLinks, payload);
-        }
+        response = createGA4Entity(ga4Resource, propertyPath, payload);
         // Writes the creation of the entity to the sheet.
         writeActionTakenToSheet(sheetName, index, apiActionTaken.ga4.created);
       }

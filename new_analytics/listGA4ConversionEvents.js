@@ -27,8 +27,7 @@ function listSelectedGA4ConversionEvents(properties) {
   properties.forEach(property => {
     const propertyName = 'properties/' + property[3];
     const conversionEvents = listGA4Entities(
-      propertyName + ga4RequestSuffix.conversionEvents
-    ).conversionEvents;
+      'conversionEvents', propertyName).conversionEvents;
     if (conversionEvents != undefined) {
       for (let i = 0; i < conversionEvents.length; i++) {
         allConversionEvents.push([
