@@ -72,6 +72,10 @@ function onOpen(e) {
         ui.createMenu('Firebase Links')
         .addItem('List', 'writeGA4FirebaseLinksToSheet')
         .addItem('Delete or Create', 'modifyGA4FirebaseLinks'))
+      .addSubMenu(
+        ui.createMenu('DV360 Links')
+        .addItem('List', 'writeGA4DV360LinksToSheet')
+        .addItem('Delete or Create', 'modifyGA4DV360Links'))
     )
     .addSeparator()
     .addSubMenu(

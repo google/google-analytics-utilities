@@ -50,6 +50,13 @@ function modifyGA4FirebaseLinks() {
 }
 
 /**
+ * Deletes or creates GA4 DV360 links.
+ */
+function modifyGA4DV360Links() {
+  modifyGA4Entities(sheetNames.ga4.displayVideo360AdvertiserLinks);
+}
+
+/**
  * @param {string} sheetName The name of the sheet from which
  * the data will be retrieved.
  */
