@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -194,6 +194,10 @@ function getSheetRange(name, type) {
     return sheetRanges.ua.metricsRequest[type];
   } else if (name == sheetNames.ga4.displayVideo360AdvertiserLinks) {
     return sheetRanges.ga4.displayVideo360AdvertiserLinks[type];
+  } else if (name == sheetNames.ga4.copyProperties) {
+    return sheetRanges.ga4.copyProperties[type];
+  } else if (name == sheetNames.ga4.properties) {
+    return sheetRanges.ga4.properties[type];
   } else {
     return null;
   }
@@ -380,6 +384,8 @@ function writeActionTakenToSheet(sheetName, index, actionTaken) {
     actionTakenColumn = sheetRanges.ua.audiences.read.numColumns;
   } else if (sheetName == sheetNames.ga4.displayVideo360AdvertiserLinks) {
     actionTakenColumn = sheetRanges.ga4.displayVideo360AdvertiserLinks.read.numColumns;
+  } else if (sheetName == sheetNames.ga4.properties) {
+    actionTakenColumn = sheetRanges.ga4.properties.read.numColumns;
   }
 	const numRows = 1;
 	const numColumns = 1;

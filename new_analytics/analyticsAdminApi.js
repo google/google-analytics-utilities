@@ -24,7 +24,8 @@ const ga4Resource = {
   customDimensions: AnalyticsAdmin.Properties.CustomDimensions,
   customMetrics: AnalyticsAdmin.Properties.CustomMetrics,
   conversionEvents: AnalyticsAdmin.Properties.ConversionEvents,
-  displayVideo360AdvertiserLinks: AnalyticsAdmin.Properties.DisplayVideo360AdvertiserLinks
+  displayVideo360AdvertiserLinks: AnalyticsAdmin.Properties.DisplayVideo360AdvertiserLinks,
+  properties: AnalyticsAdmin.Properties
 };
 
 /**
@@ -38,7 +39,12 @@ function listGA4Entities(resourceKey, parent) {
     const options = {pageSize: 200};
     let response = {};
     if (parent != undefined) {
-      response = ga4Resource[resourceKey].list(parent, options);
+      if (resourceKey == 'properties') {
+        parent.pageSize = 200;
+        response = ga4Resource[resourceKey].list(parent);
+      } else {
+        response = ga4Resource[resourceKey].list(parent, options);
+      }
     } else {
       response = ga4Resource[resourceKey].list(options);
     }

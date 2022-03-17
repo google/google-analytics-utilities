@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,6 +55,14 @@ function modifyGA4FirebaseLinks() {
 function modifyGA4DV360Links() {
   modifyGA4Entities(sheetNames.ga4.displayVideo360AdvertiserLinks);
 }
+
+/**
+ * Deletes or creates GA4 properties.
+ */
+function modifyGA4Properties() {
+  modifyGA4Entities(sheetNames.ga4.properties);
+}
+
 
 /**
  * @param {string} sheetName The name of the sheet from which
@@ -131,6 +139,14 @@ function modifyGA4Entities(sheetName) {
         payload.adsPersonalizationEnabled = entity[7];
         payload.campaignDataSharingEnabled = entity[8];
         payload.costDataSharingEnabled = entity[9];
+      } else if (sheetName == sheetNames.ga4.properties) {
+        // Add fields to modify a property.
+        deleteOrArchive = entity[12];
+        create = entity[13];
+        payload.displayName = entity[2];
+        payload.industryCategory = entity[6];
+        payload.timeZone = entity[7];
+        payload.currencyCode = entity[8];
       }
 
       // An entity cannot be both created and archived/deleted, so if both
@@ -151,7 +167,11 @@ function modifyGA4Entities(sheetName) {
             actionTaken = apiActionTaken.ga4.error;
           }
         } else {
-          response = deleteGA4Entity(ga4Resource, entityPath);
+          if (sheetName == sheetNames.ga4.properties) {
+            response = deleteGA4Entity(ga4Resource, propertyPath);
+          } else {
+            response = deleteGA4Entity(ga4Resource, entityPath);
+          }
           if (response.length == undefined) {
             actionTaken = apiActionTaken.ga4.deleted;
           } else {

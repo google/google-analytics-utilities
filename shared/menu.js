@@ -76,6 +76,10 @@ function onOpen(e) {
         ui.createMenu('DV360 Links')
         .addItem('List', 'writeGA4DV360LinksToSheet')
         .addItem('Delete or Create', 'modifyGA4DV360Links'))
+      .addSubMenu(
+        ui.createMenu('Properties')
+        .addItem('List Selected Properties', 'writeGA4PropertyDetailsToSheet')
+        .addItem('Delete or Create', 'modifyGA4Properties'))
     )
     .addSeparator()
     .addSubMenu(
