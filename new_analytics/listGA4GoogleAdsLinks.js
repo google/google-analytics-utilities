@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,6 +56,6 @@ function writeGA4AdsLinksToSheet() {
   const selectedProperties = getSelectedGa4Properties();
   const adsLinks = listSelectedGA4AdsLinks(selectedProperties);
   if (adsLinks.length > 0) {
-    writeToSheet(adsLinks, sheetNames.ga4.googleAdsLinks);
+    writeToSheet(adsLinks, sheetsMeta.ga4.googleAdsLinks.sheetName);
   }
 }

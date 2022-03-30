@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-const sheetRanges = {
+const sheetsMeta = {
   ua: {
-      viewDetailsList: {
+    viewDetailsList: {
+      sheetName: 'UA View Details List',
       read: {},
       write: {
         row: 2,
@@ -26,6 +27,7 @@ const sheetRanges = {
       }
     },
     customDimensions: {
+      sheetName: 'UA Custom Dimensions',
       read: {},
       write: {
         row: 2,
@@ -35,6 +37,7 @@ const sheetRanges = {
       }
     },
     customMetrics: {
+      sheetName: 'UA Custom Dimensions',
       read: {},
       write: {
         row: 2,
@@ -44,6 +47,7 @@ const sheetRanges = {
       }
     },
     events: {
+      sheetName: 'UA Events',
       read: {},
       write: {
         row: 2,
@@ -53,6 +57,7 @@ const sheetRanges = {
       }
     },
     accountSummaries: {
+      sheetName: 'UA Account Summaries',
       read: {
         row: 2,
         column: 1,
@@ -67,6 +72,7 @@ const sheetRanges = {
       }
     },
     filters: {
+      sheetName: 'UA Filters',
       read: {},
       write: {
         row: 2,
@@ -76,6 +82,7 @@ const sheetRanges = {
       }
     },
     audiences: {
+      sheetName: 'UA Audiences',
       write: {
         row: 2,
         column: 1,
@@ -90,6 +97,7 @@ const sheetRanges = {
       }
     },
     goals: {
+      sheetName: 'UA Goal Settings',
       read: {
         row: 2,
         column: 1,
@@ -104,6 +112,7 @@ const sheetRanges = {
       }
     },
     settings: {
+      sheetName: 'UA Settings',
       read: {
         row: 2,
         column: 2,
@@ -112,6 +121,7 @@ const sheetRanges = {
       }
     },
     modifyCdsTemplateDimensions: {
+      sheetName: 'UA Custom Dimensions - Modify',
       write: {
         row: 12,
         column: 1,
@@ -126,6 +136,7 @@ const sheetRanges = {
       }
     },
     modifyCdsTemplateProperty: {
+      sheetName: 'UA Custom Dimensions - Modify',
       write: {},
       read: {
         row: 3,
@@ -135,6 +146,7 @@ const sheetRanges = {
       }
     },
     modifyCdsSettings: {
+      sheetName: 'UA Custom Dimensions - Modify',
       write: {},
       read: {
         row: 5,
@@ -144,6 +156,7 @@ const sheetRanges = {
       }
     },
     modifyCdsResults: {
+      sheetName: 'UA Custom Dimensions - Modify - Results',
       write: {
         row: 2,
         column: 1,
@@ -153,6 +166,7 @@ const sheetRanges = {
       read: {}
     },
     modifyCdsDestinationProperties: {
+      sheetName: 'UA Custom Dimensions - Modify',
       write: {
         row: 3,
         column: 7,
@@ -167,6 +181,7 @@ const sheetRanges = {
       }
     },
     modifyCmsTemplateMetrics: {
+      sheetName: 'UA Custom Metrics - Modify',
       write: {
         row: 14,
         column: 1,
@@ -181,6 +196,7 @@ const sheetRanges = {
       }
     },
     modifyCmsTemplateProperty: {
+      sheetName: 'UA Custom Metrics - Modify',
       write: {},
       read: {
         row: 3,
@@ -190,6 +206,7 @@ const sheetRanges = {
       }
     },
     modifyCmsSettings: {
+      sheetName: 'UA Custom Metrics - Modify',
       write: {},
       read: {
         row: 5,
@@ -199,6 +216,7 @@ const sheetRanges = {
       }
     },
     modifyCmsResults: {
+      sheetName: 'UA Custom Metrics - Modify - Results',
       write: {
         row: 2,
         column: 1,
@@ -208,6 +226,7 @@ const sheetRanges = {
       read: {}
     },
     modifyCmsDestinationProperties: {
+      sheetName: 'UA Custom Metrics - Modify',
       write: {
         row: 3,
         column: 10,
@@ -222,6 +241,7 @@ const sheetRanges = {
       }
     },
     metricsRequest: {
+      sheetName: 'UA Metrics Request',
       write: {
         row: 2,
         column: 1,
@@ -238,6 +258,7 @@ const sheetRanges = {
   },
   ga4: {
     accountSummaries: {
+      sheetName: 'GA4 Account Summaries',
       write: {
         row: 2,
         column: 1,
@@ -252,11 +273,72 @@ const sheetRanges = {
       }
     },
     streams: {
+      sheetName: 'GA4 Data Streams',
       write: {
         row: 2,
         column: 1,
         numRows: 1,
         numColumns: 14
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 18
+      }
+    },
+    customDimensions: {
+      sheetName: 'GA4 Custom Dimensions',
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 10
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 14
+      }
+    },
+    customMetrics: {
+      sheetName: 'GA4 Custom Metrics',
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 10
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 14
+      }
+    },
+    conversionEvents: {
+      sheetName: 'GA4 Conversion Events',
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 9
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 13
+      }
+    },
+    googleAdsLinks: {
+      sheetName: 'GA4 Google Ads Links',
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 11
       },
       read: {
         row: 2,
@@ -265,35 +347,8 @@ const sheetRanges = {
         numColumns: 15
       }
     },
-    customDimensions: {
-      write: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 10
-      },
-      read: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 13
-      }
-    },
-    customMetrics: {
-      write: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 10
-      },
-      read: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 13
-      }
-    },
-    conversionEvents: {
+    firebaseLinks: {
+      sheetName: 'GA4 Firebase Links',
       write: {
         row: 2,
         column: 1,
@@ -304,15 +359,16 @@ const sheetRanges = {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 11
+        numColumns: 12
       }
     },
-    googleAdsLinks: {
+    displayVideo360AdvertiserLinks: {
+      sheetName: 'GA4 DV360 Links',
       write: {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 11
+        numColumns: 10
       },
       read: {
         row: 2,
@@ -321,35 +377,8 @@ const sheetRanges = {
         numColumns: 14
       }
     },
-    firebaseLinks: {
-      write: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 8
-      },
-      read: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 11
-      }
-    },
-    displayVideo360AdvertiserLinks: {
-      write: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 10
-      },
-      read: {
-        row: 2,
-        column: 1,
-        numRows: 1,
-        numColumns: 13
-      }
-    },
     copyProperties: {
+      sheetName: 'GA4 Copy Properties',
       write: {
         row: 2,
         column: 1,
@@ -364,6 +393,7 @@ const sheetRanges = {
       }
     },
     properties: {
+      sheetName: 'GA4 Property Details',
       write: {
         row: 2,
         column: 1,
@@ -374,39 +404,8 @@ const sheetRanges = {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 15
+        numColumns: 16
       }
     }
-  }
-};
-
-const sheetNames = {
-  ua: {
-    viewDetails: 'View Details List',
-    customDimensions: 'UA Custom Dimensions',
-    customMetrics: 'UA Custom Metrics',
-    events: 'UA Events',
-    accountSummaries: 'UA Account Summaries',
-    settings: 'UA Settings',
-    filters: 'Filters',
-    audiences: 'UA Audiences',
-    goals: 'Goal Settings',
-    modifyCds: 'UA Custom Dimensions - Modify',
-    modifyCdsResults: 'UA Custom Dimensions - Modify - Results',
-    modifyCms: 'UA Custom Metrics - Modify',
-    modifyCmsResults: 'UA Custom Metrics - Modify - Results',
-    metricsRequest: 'UA Metrics Request'
-  },
-  ga4: {
-    accountSummaries: 'GA4 Account Summaries',
-    streams: 'Data Streams',
-    customDimensions: 'GA4 Custom Dimensions',
-    customMetrics: 'GA4 Custom Metrics',
-    conversionEvents: 'GA4 Conversion Events',
-    googleAdsLinks: 'GA4 Google Ads Links',
-    firebaseLinks: 'GA4 Firebase Links',
-    displayVideo360AdvertiserLinks: 'GA4 DV360 Links',
-    copyProperties: 'GA4 Copy Properties',
-    properties: 'GA4 Property Details'
   }
 };

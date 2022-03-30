@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -99,7 +99,7 @@ function formatAudiences(audiences) {
  * Deletes selected audiences in the sheet.
  */
 function deleteUAAudiences() {
-  const audienceSheet = sheetNames.ua.audiences;
+  const audienceSheet = sheetsMeta.ua.audiences.sheetName;
   const audiences = getDataFromSheet(audienceSheet);
   audiences.forEach((audience, index) => {
     if (audience[18]) { // Checks if the audience is seleted to be deleted.
@@ -126,6 +126,6 @@ function writeAudiencesToSheet() {
     audiences = audiences.concat(listAudiences(accountId, propertyId, 1, []));
   });
   if (audiences != []) {
-    writeToSheet(audiences, sheetNames.ua.audiences);
+    writeToSheet(audiences, sheetsMeta.ua.audiences.sheetName);
   }
 }

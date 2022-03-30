@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
  * original row number of the goal settings.
  */
 function getGoalSettings() {
-  const allGoalSettings = getDataFromSheet(sheetNames.ua.goals);
+  const allGoalSettings = getDataFromSheet(sheetsMeta.ua.goals.sheetName);
   return allGoalSettings.reduce((filtered, goalDetails, index) => {
     if (goalDetails[22]) {
       filtered.push({

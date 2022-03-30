@@ -55,6 +55,6 @@ function writeGA4PropertyDetailsToSheet() {
   const selectedAccounts = getSelectedGa4Properties();
   const properties = listSelectedGA4Properties(selectedAccounts);
   if (properties.length > 0) {
-    writeToSheet(properties, sheetNames.ga4.properties);
+    writeToSheet(properties, sheetsMeta.ga4.properties.sheetName);
   }
 }

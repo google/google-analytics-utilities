@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,6 +53,6 @@ function writeGA4FirebaseLinksToSheet() {
   const selectedProperties = getSelectedGa4Properties();
   const firebaseLinks = listSelectedGA4FirebaseLinks(selectedProperties);
   if (firebaseLinks.length > 0) {
-    writeToSheet(firebaseLinks, sheetNames.ga4.firebaseLinks);
+    writeToSheet(firebaseLinks, sheetsMeta.ga4.firebaseLinks.sheetName);
   }
 }

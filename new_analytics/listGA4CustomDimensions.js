@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,6 +55,6 @@ function writeGA4CustomDimensionsToSheet() {
   const selectedProperties = getSelectedGa4Properties();
   const cds = listSelectedGA4CustomDimensions(selectedProperties);
   if (cds.length > 0) {
-    writeToSheet(cds, sheetNames.ga4.customDimensions);
+    writeToSheet(cds, sheetsMeta.ga4.customDimensions.sheetName);
   }
 }

@@ -1,3 +1,5 @@
+
+
 ## Google Analytics Utilities
 
 This is not an officially supported Google product.
@@ -17,46 +19,40 @@ The script currently performs the following functions:
 
 
 *   Universal Analytics
-    *   List account summaries
-    *   List view details
+    *   Account Summaries
+        *   List
+    *   View Details
+        *   List
     *   List up to 1000 unique event category, action, and label combinations per view
     *   Report on specific metrics for selected views
     *   Custom dimensions
-        *   List 
-        *   Create/Update 
+        *   List, Create, Update 
     *   Custom metrics
-        *   List
-        *   Create/Update
+        *   List, Create, Update
     *   List view level filter settings
     *   Audiences
-        *   List settings
-        *   Delete
+        *   List settings, Delete
     *   Goal settings
-        *   List
-        *   Create
+        *   List, Create
 *   Google Analytics 4
-    *   List account summaries
-    *   List data streams
+    *   Account Summaries,
+        *   List
+    *   Properties
+        *   List, Create, Delete, Update
+    *   Data Streams
+        *   List, Create, Delete, Update
     *   GA4 custom dimensions
-        *   List
-        *   Create
-        *   Archive
+        *   List, Create, Archive, Update
     *   GA4 custom metrics
-        *   List
-        *   Create
-        *   Archive
+        *   List, Create, Archive, Update
     *   Conversion events
-        *   List
-        *   Create
-        *   Delete
+        *   List, Create, Delete
     *   Firebase links
-        *   List
-        *   Create
-        *   Delete
+        *   List, Create, Delete
     *   GA4 Google Ads links
-        *   List
-        *   Create
-        *   Delete
+        *   List, Create, Delete, Update
+    *   DV360 Links
+        *   List, Create, Delete, Update
 
 These tasks can be completed by [joining the Google Group](https://groups.google.com/g/google-analytics-utilities-users), [copying the template spreadsheet](https://docs.google.com/spreadsheets/d/1kJqwYNed8RTuAgjy0aRUooD__MIPqzUeiDF5LZ7v1aI/), and clicking on various options under the Google Analytics Utilities menu. To enable Google Analytics 4 scripts, a user must [follow the steps](https://github.com/google/google-analytics-utilities#enable-google-analytics-4-utilities) outlined below.
 
@@ -239,7 +235,7 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 3. Navigate to the “UA Audiences” sheet.
 4. Click on Google Analytics Utilities > Universal Analytics > Remarketing Audiences > List Settings.
 5. Check the “Delete” box for each audience you want to delete.
-6. Click on Google Analytics Utilities > Universal Analytics > Remarketing Audiences > Delete or Create.
+6. Click on Google Analytics Utilities > Universal Analytics > Remarketing Audiences > Modify.
 7. The script will attempt to delete the selected audiences.
 
 
@@ -268,7 +264,10 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 ## Google Analytics 4
 
 
-### List Account Summaries
+### Account Summaries
+
+
+#### List
 
 
 
@@ -278,15 +277,105 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
     *   This sheet can then be used to select specific accounts and properties for other functions.
 
 
-### List Data Streams
+### Properties
+
+
+#### List
+
+
+
+1. List GA4 account summaries.
+2. Select one account row to list the details for the properties underneath it.
+3. Navigate to the “GA4 Property Details” sheet.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Properties > List.
+5. The details for the selected properties will be listed in the “GA4 Property Details” sheet.
+
+
+#### Create
+
+
+
+1. Navigate to the “GA4 Property Details” sheet.
+2. Each row represents a separate data stream. Enter the following information:
+    1. Account ID
+    2. Property name
+    3. [Industry category](https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1alpha/properties#IndustryCategory)
+    4. [Time zone](https://www.iana.org/time-zones)
+    5. [Currency code](https://en.wikipedia.org/wiki/ISO_4217)
+    6. Check the box for “Create”
+3. Click on Google Analytics Utilities > Google Analytics 4 > Properties > Modify.
+4. The script will attempt to create the selected properties.
+
+
+#### Delete
+
+
+
+1. After listing your GA4 data streams, navigate to the “GA4 Property Details” sheet.
+2. Select the data streams you want to delete.
+3. Click on Google Analytics Utilities > Google Analytics 4 > Properties > Modify.
+4. The script will attempt to delete the selected properties.
+
+
+#### Update
+
+
+
+1. After listing your GA4 data streams, navigate to the “GA4 Property Details” sheet.
+2. Enter a new property name, industry category, time zone, or currency code for a given property.
+3. Check the “Update” box for each property you want to update.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Properties > Modify.
+5. The script will attempt to update the selected properties.
+
+
+### Data Streams
+
+
+#### List
 
 
 
 1. List GA4 account summaries.
 2. Select the properties from which you want to retrieve data streams.
-3. Navigate to the “Data Streams” sheet.
-4. Click on Google Analytics Utilities > Google Analytics 4 > List Properties and Streams.
-5. The data streams for the selected properties will be listed in the “Data Streams” sheet
+3. Navigate to the “GA4 Data Streams” sheet.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Data Streams > List.
+5. The data streams for the selected properties will be listed in the “GA4 Data Streams” sheet.
+
+
+#### Create
+
+
+
+1. Navigate to the “GA4 Data Streams” sheet.
+2. Each row represents a separate data stream. Enter the following information:
+    1. Property ID
+    2. Stream Name
+    3. Stream type: WEB\_DATA\_STREAM, ANDROID\_APP\_DATA\_STREAM, or IOS\_APP\_DATA\_STREAM
+    4. Default URI, bundle ID, package ID (as relevant to the respective stream type)
+    5. Check the box for “Create”
+3. Click on Google Analytics Utilities > Google Analytics 4 > Data Streams > Modify.
+4. The script will attempt to create the selected data streams.
+
+
+#### Delete
+
+
+
+1. After listing your GA4 data streams, navigate to the “GA4 Data Streams” sheet.
+2. Select the data streams you want to delete.
+3. Click on Google Analytics Utilities > Google Analytics 4 > Data Streams > Modify.
+4. The script will attempt to delete the selected data streams.
+
+
+#### Update
+
+
+
+1. After listing your GA4 data streams, navigate to the “GA4 Data Streams” sheet.
+2. Enter a new stream name for a given data stream.
+3. Check the “Update” box for each data stream you want to update.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Data Streams > Modify.
+5. The script will attempt to update the selected data streams.
 
 
 ### Custom Dimensions
@@ -308,22 +397,38 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 
 
 1. Navigate to the “GA4 Custom Dimensions” sheet.
-2. Enter the account ID, property ID, Custom Dimension Name (the name displayed in the UI), parameter name (the name collected in the code/tags), scope, description, and whether or not ads personalization is disallowed. Check the box under the “Create” column to tell the script to create a custom dimension based on the provided settings. Repeat this step in a new row for each custom dimension you want to create.
-3. Click on Google Analytics Utilities > Google Analytics 4 > Custom Dimensions > Delete or Create.
-4. The script will attempt to create a new custom dimension based on the information in each row.
+2. Enter the following:
+    1. Property ID
+    2. Custom dimension name (the name displayed in the UI)
+    3. Parameter name (the name collected in the code/tags)
+    4. [Scope](https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1alpha/properties.customDimensions#DimensionScope)
+    5. Description
+    6. Whether or not ads personalization is disallowed (true or false)
+    7. Check the box for “Create”
+    8. Repeat these steps in a new row for each custom dimension you want to create
+3. Click on Google Analytics Utilities > Google Analytics 4 > Custom Dimensions > Modify.
+4. The script will attempt to create the selected custom dimensions.
 
 
 #### Archive
 
 
 
-1. List GA4 account summaries.
-2. Select the properties from which you want to retrieve custom dimensions.
-3. Navigate to the “GA4 Custom Dimensions” sheet.
-4. Click on Google Analytics Utilities > Google Analytics 4 > Custom Dimensions > List.
-5. Check the “Archive” box for each custom dimension you want to archive.
-6. Click on Google Analytics Utilities > Google Analytics 4 > Custom Dimensions > Delete or Create.
-7. The script will attempt to archive the selected custom dimensions.
+1. After listing your GA4 custom dimensions, navigate to the "GA4 Custom Dimensions” sheet.
+2. Check the “Archive” box for each custom dimension you want to archive.
+3. Click on Google Analytics Utilities > Google Analytics 4 > Custom Dimensions > Modify.
+4. The script will attempt to archive the selected custom dimensions.
+
+
+#### Update
+
+
+
+1. After listing your GA4 custom dimensions, navigate to the "GA4 Custom Dimensions” sheet.
+2. Enter a new custom dimension name or description for a given custom dimension.
+3. Check the “Update” box for each custom dimension you want to update.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Custom Dimensions > Modify.
+5. The script will attempt to update the selected custom dimensions.
 
 
 ### Custom Metrics
@@ -334,10 +439,10 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 
 
 1. List GA4 account summaries.
-2. Select the properties from which you want to retrieve custom metrics.
+2. Select the properties from which you want to retrieve custom dimensions.
 3. Navigate to the “GA4 Custom Metrics” sheet.
 4. Click on Google Analytics Utilities > Google Analytics 4 > Custom Metrics > List.
-5. The custom metrics for the selected properties will be listed in the “GA4 Custom Metrics” sheet.
+5. The custom dimensions for the selected properties will be listed in the “GA4 Custom Metrics” sheet.
 
 
 #### Create
@@ -345,22 +450,38 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 
 
 1. Navigate to the “GA4 Custom Metrics” sheet.
-2. Enter the account ID, property ID, Custom Metric Name (the name displayed in the UI), parameter name (the name collected in the code/tags), scope,  measurement unit, and description. Check the box under the “Create” column to tell the script to create a custom metric based on the provided settings. Repeat this step in a new row for each custom metric you want to create.
-3. Click on Google Analytics Utilities > Google Analytics 4 > Custom Metrics > Archive or Create.
-4. The script will attempt to create a new custom metric based on the information in each row.
+2. Enter the following:
+    1. Property ID
+    2. Custom metric name (the name displayed in the UI)
+    3. Parameter name (the name collected in the code/tags)
+    4. [Scope](https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1alpha/properties.customMetrics#MetricScope)
+    5. [Measurement Unit](https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1alpha/properties.customMetrics#MeasurementUnit)
+    6. Description
+    7. Check the box for “Create”
+    8. Repeat these steps in a new row for each custom metric you want to create
+3. Click on Google Analytics Utilities > Google Analytics 4 > Custom Metrics > Modify.
+4. The script will attempt to create the selected custom metrics.
 
 
 #### Archive
 
 
 
-1. List GA4 account summaries.
-2. Select the properties from which you want to retrieve custom metrics.
-3. Navigate to the “GA4 Custom Metrics” sheet.
-4. Click on Google Analytics Utilities > Google Analytics 4 > Custom Metrics > List.
-5. Check the “Archive” box for each custom metric you want to archive.
-6. Click on Google Analytics Utilities > Google Analytics 4 > Custom Metrics > Archive or Create.
-7. The script will attempt to archive the selected custom metric.
+1. After listing your GA4 custom metrics, navigate to the "GA4 Custom Metrics” sheet.
+2. Check the “Archive” box for each custom metric you want to archive.
+3. Click on Google Analytics Utilities > Google Analytics 4 > Custom Metrics > Modify.
+4. The script will attempt to archive the selected custom metrics.
+
+
+#### Update
+
+
+
+1. After listing your GA4 custom metrics, navigate to the "GA4 Custom Metrics” sheet.
+2. Enter a new custom metric name, description, or measurement unit for a given custom metric.
+3. Check the “Update” box for each custom metric you want to update.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Custom Metrics > Modify.
+5. The script will attempt to update the selected custom metrics.
 
 
 ### Conversion Events
@@ -382,8 +503,12 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 
 
 1. Navigate to the “GA4 Conversion Events” sheet.
-2. Enter the account ID, property ID, and event name. Check the box under the “Create” column to tell the script to create a conversion event based on the provided settings. Repeat this step in a new row for each conversion event you want to create.
-3. Click on Google Analytics Utilities > Google Analytics 4 > Conversion Events > Delete or Create.
+2. Enter the following:
+    1. Property ID
+    2. Event name
+    3. Check the box for “Create”
+    4. Repeat these steps in a new row for each conversion event you want to create
+3. Click on Google Analytics Utilities > Google Analytics 4 > Conversion Events > Modify.
 4. The script will attempt to create a new conversion event based on the information in each row.
 
 
@@ -391,13 +516,11 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 
 
 
-1. List GA4 account summaries.
-2. Select the properties from which you want to retrieve conversion events.
-3. Navigate to the “GA4 Conversion Events” sheet.
-4. Click on Google Analytics Utilities > Google Analytics 4 > Conversion Events > List.
-5. Check the “Delete” box for each conversion event you want to delete.
-6. Click on Google Analytics Utilities > Google Analytics 4 > Conversion Events > Delete or Create.
-7. The script will attempt to delete the selected conversion events.
+1. After listing your GA4 conversion events, navigate to the "GA4 Conversion Events” sheet.
+2. Click on Google Analytics Utilities > Google Analytics 4 > Conversion Events > List.
+3. Check the “Delete” box for each conversion event you want to delete.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Conversion Events > Modify.
+5. The script will attempt to delete the selected conversion events.
 
 
 ### Firebase Links
@@ -419,8 +542,12 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 
 
 1. Navigate to the “GA4 Firebase Links” sheet.
-2. Enter the account ID, property ID, and Firebase project ID or name. Check the box under the “Create” column to tell the script to create a Firebase link based on the provided settings. Repeat this step in a new row for each Firebase link you want to create.
-3. Click on Google Analytics Utilities > Google Analytics 4 > Firebase Links > Delete or Create.
+2. Enter the following:
+    1. Property ID
+    2. Firebase project ID or name
+    3. Check the box for “Create”
+    4. Repeat these steps in a new row for each Firebase link you want to create
+3. Click on Google Analytics Utilities > Google Analytics 4 > Firebase Links > Modify.
 4. The script will attempt to create a new Firebase link based on the information in each row.
 
 
@@ -428,13 +555,10 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 
 
 
-1. List GA4 account summaries.
-2. Select the properties from which you want to retrieve Firebase links.
-3. Navigate to the “GA4 Firebase Links” sheet.
-4. Click on Google Analytics Utilities > Google Analytics 4 > Firebase Links > List.
-5. Check the “Delete” box for each Firebase link you want to delete.
-6. Click on Google Analytics Utilities > Google Analytics 4 > Firebase Links > Delete or Create.
-7. The script will attempt to delete the selected Firebase links.
+1. After listing your GA4 firebase links, navigate to the “GA4 Firebase Links” sheet.
+2. Check the “Delete” box for each Firebase link you want to delete.
+3. Click on Google Analytics Utilities > Google Analytics 4 > Firebase Links > Modify.
+4. The script will attempt to delete the selected Firebase links.
 
 
 ### Google Ads Links
@@ -456,8 +580,13 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 
 
 1. Navigate to the “GA4 Google Ads Links” sheet.
-2. Enter the account ID, property ID, Google Ads client ID, and whether or not ads data validation should be enabled. Check the box under the “Create” column to tell the script to create a Google Ads link based on the provided settings. Repeat this step in a new row for each Google Ads link you want to create.
-3. Click on Google Analytics Utilities > Google Analytics 4 > Google Ads Links > Delete or Create.
+2. Enter the following:
+    1. Property ID
+    2. Google Ads client ID
+    3. True or false for “Ads Personalization Enabled”
+    4. Check the box for “Create”
+    5. Repeat these steps in a new row for each Google Ads link you want to create
+3. Click on Google Analytics Utilities > Google Analytics 4 > Google Ads Links > Modify.
 4. The script will attempt to create a new Google Ads link based on the information in each row.
 
 
@@ -465,10 +594,72 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 
 
 
+1. After listing your GA4 Google Ads links, navigate to the “GA4 Google Ads Links” sheet.
+2. Click on Google Analytics Utilities > Google Analytics 4 > Google Ads Links > List.
+3. Check the “Delete” box for each Google Ads link you want to delete.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Google Ads Links > Modify.
+5. The script will attempt to delete the selected Google Ads links.
+
+
+#### Update
+
+
+
+1. After listing your GA4 Google Ads links, navigate to the “GA4 Google Ads Links” sheet.
+2. Enter true or false for “Ads Personalization Enabled”
+3. Check the “Update” box for each Google Ads link you want to update.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Google Ads Links > Modify.
+5. The script will attempt to update the selected Google Ads links.
+
+
+### DV360 Links
+
+
+#### List
+
+
+
 1. List GA4 account summaries.
-2. Select the properties from which you want to retrieve Google Ads links.
-3. Navigate to the “GA4 Google Ads Links” sheet.
-4. Click on Google Analytics Utilities > Google Analytics 4 > Google Ads Links > List.
-5. Check the “Delete” box for each Google Ads link you want to delete.
-6. Click on Google Analytics Utilities > Google Analytics 4 > Firebase Links > Delete or Create.
-7. The script will attempt to delete the selected Google Ads links.
+2. Select the properties from which you want to retrieve DV360 links.
+3. Navigate to the “GA4 DV360 Links” sheet.
+4. Click on Google Analytics Utilities > Google Analytics 4 > DV360 Links > List.
+5. The DV360 links for the selected properties will be listed in the “GA4 DV360 Links” sheet.
+
+
+#### Create
+
+
+
+1. Navigate to the “GA4 DV360 Links” sheet.
+2. Enter the following:
+    1. Property ID
+    2. Advertiser ID
+    3. True or false for “Ads Personalization Enabled”
+    4. True or false for “Campaign Data Sharing Enabled”
+    5. True or false for “Cost Data Sharing Enabled”
+    6. Check the box for “Create”
+    7. Repeat these steps in a new row for each DV360 link you want to create
+3. Click on Google Analytics Utilities > Google Analytics 4 > DV360 Links > Modify.
+4. The script will attempt to create a new DV360 link based on the information in each row.
+
+
+#### Delete
+
+
+
+6. After listing your GA4 DV360 links, navigate to the “GA4 DV360 Links” sheet.
+7. Click on Google Analytics Utilities > Google Analytics 4 > DV360 Links > List.
+8. Check the “Delete” box for each DV360 link you want to delete.
+9. Click on Google Analytics Utilities > Google Analytics 4 > DV360 Links > Modify.
+10. The script will attempt to delete the selected DV360 links.
+
+
+#### Update
+
+
+
+6. After listing your GA4 DV360 links, navigate to the “GA4 DV360 Links” sheet.
+7. Enter true or false for “Ads Personalization Enabled”
+8. Check the “Update” box for each DV360 link you want to update.
+9. Click on Google Analytics Utilities > Google Analytics 4 > DV360 Links > Modify.
+10. The script will attempt to update the selected Dv360 links.

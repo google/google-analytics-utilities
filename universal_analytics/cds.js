@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ function writeCustomDimensionsToSheet() {
     customDimensions = customDimensions.concat(listCustomDimensions(accountId, propertyId));
   });
   if (customDimensions != []) {
-    writeToSheet(customDimensions, sheetNames.ua.customDimensions);
+    writeToSheet(customDimensions, sheetsMeta.ua.customDimensions.sheetName);
   }
 }
 

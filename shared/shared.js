@@ -21,7 +21,8 @@ const apiActionTaken = {
     created: 'Created',
     archived: 'Archived',
     skipped: 'Skipped',
-    error: 'Error'
+    error: 'Error',
+    updated: 'Updated'
   }
 };
 
@@ -156,6 +157,18 @@ function createGoal(request) {
  * @return {!Object|null} The specified range object.
  */
 function getSheetRange(name, type) {
+  for (n in sheetsMeta.ga4) {
+    if (name == sheetsMeta.ga4[n].sheetName) {
+      return sheetsMeta.ga4[n][type];
+    }
+  }
+  for (n in sheetsMeta.ua) {
+    if (name == sheetsMeta.ua[n].sheetName) {
+      return sheetsMeta.ua[n][type];
+    }
+  }
+  return null;
+  /*
   if (name == sheetNames.ua.viewDetails) {
     return sheetRanges.ua.viewDetailsList[type];
   } else if (name == sheetNames.ua.customDimensions) {
@@ -201,6 +214,7 @@ function getSheetRange(name, type) {
   } else {
     return null;
   }
+  */
 }
 /**
  * Returns an array of selected properties based on the selected views.
@@ -273,10 +287,9 @@ function getDataFromSheet(sheetName) {
     SpreadsheetApp.getUi().alert('Enter Settings');
     return;
   }
-  return sheet
-      .getRange(
-          ranges.row, ranges.column, sheet.getLastRow(), ranges.numColumns)
-      .getValues();
+  return sheet.getRange(
+    ranges.row, ranges.column, 
+    sheet.getLastRow(), ranges.numColumns).getValues();
 }
 /**
  * Retrieve settings from thee settings sheet.
@@ -300,7 +313,7 @@ function getSettings() {
  * views retrieved from the sheet.
  */
 function getSelectedViews() {
-  const views = getDataFromSheet(sheetNames.ua.accountSummaries);
+  const views = getDataFromSheet(sheetsMeta.ua.accountSummaries.sheetName);
   return views.filter(row => row[6]);
 }
 /**
@@ -310,7 +323,7 @@ function getSelectedViews() {
  * properties retrieved from the sheet.
  */
 function getSelectedGa4Properties() {
-  const properties = getDataFromSheet(sheetNames.ga4.accountSummaries);
+  const properties = getDataFromSheet(sheetsMeta.ga4.accountSummaries.sheetName);
   return properties.filter(row => row[4]);
 }
 /**
@@ -321,8 +334,8 @@ function getSelectedGa4Properties() {
 function showOrHideSheets(gaType, action) {
   const sheets = ss.getSheets();
   sheets.forEach(sheet => {
-    for (name in sheetNames[gaType]) {
-      if (sheetNames[gaType][name] == sheet.getName()) {
+    for (resource in sheetsMeta[gaType]) {
+      if (sheetsMeta[gaType][resource].sheetName == sheet.getName()) {
         if (action == 'hide') {
           sheet.hideSheet();
         } else if (action == 'show') {
@@ -368,25 +381,7 @@ function writeActionTakenToSheet(sheetName, index, actionTaken) {
 	// The actual row to be written to is offset from the index value by 2, so
 	// the index value must be increased by two.
 	const writeRow = index + 2; 
-  let actionTakenColumn = null;
-  // The action taken column number will be correctly set below;
-  if (sheetName == sheetNames.ga4.customDimensions) {
-    actionTakenColumn = sheetRanges.ga4.customDimensions.read.numColumns;
-  } else if (sheetName == sheetNames.ga4.customMetrics) {
-    actionTakenColumn = sheetRanges.ga4.customMetrics.read.numColumns;
-  } else if (sheetName == sheetNames.ga4.conversionEvents) {
-    actionTakenColumn = sheetRanges.ga4.conversionEvents.read.numColumns;
-  } else if (sheetName == sheetNames.ga4.googleAdsLinks) {
-    actionTakenColumn = sheetRanges.ga4.googleAdsLinks.read.numColumns;
-  } else if (sheetName == sheetNames.ga4.firebaseLinks) {
-    actionTakenColumn = sheetRanges.ga4.firebaseLinks.read.numColumns;
-  } else if (sheetName == sheetNames.ua.audiences) {
-    actionTakenColumn = sheetRanges.ua.audiences.read.numColumns;
-  } else if (sheetName == sheetNames.ga4.displayVideo360AdvertiserLinks) {
-    actionTakenColumn = sheetRanges.ga4.displayVideo360AdvertiserLinks.read.numColumns;
-  } else if (sheetName == sheetNames.ga4.properties) {
-    actionTakenColumn = sheetRanges.ga4.properties.read.numColumns;
-  }
+  const actionTakenColumn = ss.getSheetByName(sheetName).getLastColumn();
 	const numRows = 1;
 	const numColumns = 1;
 	ss.getSheetByName(sheetName).getRange(

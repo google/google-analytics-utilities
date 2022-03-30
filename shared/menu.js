@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,35 +51,38 @@ function onOpen(e) {
     .addSubMenu(
       ui.createMenu('Google Analytics 4')
       .addItem('List Account Summaries', 'writeGA4AccountSummariesToSheet')
-      .addItem('List Properties and Streams', 'writeGA4StreamsToSheet')
+      .addSubMenu(
+        ui.createMenu('Data Streams')
+        .addItem('List', 'writeGA4StreamsToSheet')
+        .addItem('Modify', 'modifyGA4Streams'))
       .addSubMenu(
         ui.createMenu('Custom Dimensions')
         .addItem('List', 'writeGA4CustomDimensionsToSheet')
-        .addItem('Archive or Create', 'modifyGA4CustomDimensions'))
+        .addItem('Modify', 'modifyGA4CustomDimensions'))
      .addSubMenu(
         ui.createMenu('Custom Metrics')
         .addItem('List', 'writeGA4CustomMetricsToSheet')
-        .addItem('Archive or Create', 'modifyGA4CustomMetrics'))
+        .addItem('Modify', 'modifyGA4CustomMetrics'))
       .addSubMenu(
         ui.createMenu('Conversion Events')
         .addItem('List', 'writeGA4ConversionEventsToSheet')
-        .addItem('Delete or Create', 'modifyGA4ConversionEvents'))
+        .addItem('Modify', 'modifyGA4ConversionEvents'))
       .addSubMenu(
         ui.createMenu('Google Ads Links')
         .addItem('List', 'writeGA4AdsLinksToSheet')
-        .addItem('Delete or Create', 'modifyGA4AdsLinks'))
+        .addItem('Modify', 'modifyGA4AdsLinks'))
       .addSubMenu(
         ui.createMenu('Firebase Links')
         .addItem('List', 'writeGA4FirebaseLinksToSheet')
-        .addItem('Delete or Create', 'modifyGA4FirebaseLinks'))
+        .addItem('Modify', 'modifyGA4FirebaseLinks'))
       .addSubMenu(
         ui.createMenu('DV360 Links')
         .addItem('List', 'writeGA4DV360LinksToSheet')
-        .addItem('Delete or Create', 'modifyGA4DV360Links'))
+        .addItem('Modify', 'modifyGA4DV360Links'))
       .addSubMenu(
         ui.createMenu('Properties')
-        .addItem('List Selected Properties', 'writeGA4PropertyDetailsToSheet')
-        .addItem('Delete or Create', 'modifyGA4Properties'))
+        .addItem('List Properties', 'writeGA4PropertyDetailsToSheet')
+        .addItem('Modify', 'modifyGA4Properties'))
     )
     .addSeparator()
     .addSubMenu(

@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ function constructMetricsReport(viewId, startDate, endDate) {
  * Retrieves the metric expressions from the sheet.
  */
 function getMetricHeaders() {
-  const headers = ss.getSheetByName(sheetNames.ua.metricsRequest)
+  const headers = ss.getSheetByName(sheetsMeta.ua.metricsRequest.sheetName)
 	.getRange(1, 7, 1, 10).getValues();
   return headers;
 }

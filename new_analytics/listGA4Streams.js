@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ function listSelectedGA4Streams(properties) {
   properties.forEach(property => {
     const propertyName = 'properties/' + property[3];
     const dataStreamsResponse = listGA4Entities(
-      'dataStreams', propertyName).dataStreams;
+      'streams', propertyName).dataStreams;
     if (dataStreamsResponse != undefined && dataStreamsResponse.length > 0) {
       dataStreamsResponse.forEach(stream => {
         const tempArray = [];
@@ -31,9 +31,9 @@ function listSelectedGA4Streams(properties) {
           property[1],
           property[2],
           property[3],
-          stream.type,
           stream.displayName,
-          stream.name.split('/')[1],
+          stream.name,
+          stream.type,
           '', '', '', '',
           stream.createTime,
           stream.updateTime,
@@ -62,5 +62,5 @@ function listSelectedGA4Streams(properties) {
 function writeGA4StreamsToSheet() {
   const selectedProperties = getSelectedGa4Properties();
   const streams = listSelectedGA4Streams(selectedProperties);
-  writeToSheet(streams, sheetNames.ga4.streams);
+  writeToSheet(streams, sheetsMeta.ga4.streams.sheetName);
 }

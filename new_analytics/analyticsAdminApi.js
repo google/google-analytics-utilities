@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ const ga4RequestDelay = 100;
 const ga4Resource = {
   accountSummaries: AnalyticsAdmin.AccountSummaries,
   accounts: AnalyticsAdmin.Accounts,
-  dataStreams: AnalyticsAdmin.Properties.DataStreams,
+  streams: AnalyticsAdmin.Properties.DataStreams,
   firebaseLinks: AnalyticsAdmin.Properties.FirebaseLinks,
   googleAdsLinks: AnalyticsAdmin.Properties.GoogleAdsLinks,
   customDimensions: AnalyticsAdmin.Properties.CustomDimensions,
@@ -87,6 +87,41 @@ function createGA4Entity(resourceKey, name, payload) {
 function deleteGA4Entity(resourceKey, name) {
   try {
     const response = ga4Resource[resourceKey].remove(name);
+		Utilities.sleep(ga4RequestDelay);
+		return response;
+  } catch(e) {
+    console.log(e);
+    return e;
+  }
+}
+
+function updateGA4Entity(resourceKey, name, payload, index) {
+  try {
+    let mask = null;
+    if (resourceKey == 'customMetrics') {
+      const customMetrics = JSON.parse(CacheService.getUserCache().get('customMetrics'));
+      if (customMetrics[index][4] != payload.displayName) {
+        mask = 'displayName';
+      }
+      if (customMetrics[index][8] != 'CURRENCY' && customMetrics[index][8] != payload.measurementUnit) {
+        if (mask != null) {
+          mask += ',measurementUnit';
+        } else {
+          mask = 'measurementUnit';
+        }
+      }
+      if (customMetrics[index][9] != payload.description) {
+        if (mask != null) {
+          mask += ',description';
+        } else {
+          mask = 'description';
+        }
+      }
+    }
+    if (mask == null) {
+      mask = '*';
+    }
+    const response = ga4Resource[resourceKey].patch(payload, name, {updateMask: mask});
 		Utilities.sleep(ga4RequestDelay);
 		return response;
   } catch(e) {

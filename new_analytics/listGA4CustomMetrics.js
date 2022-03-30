@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,6 +45,8 @@ function listSelectedGA4CustomMetrics(properties) {
       }
     }
   });
+  CacheService.getUserCache().remove('customMetrics');
+  CacheService.getUserCache().put('customMetrics', JSON.stringify(finalizedCms));
   return finalizedCms;
 }
 
@@ -55,6 +57,6 @@ function writeGA4CustomMetricsToSheet() {
   const selectedProperties = getSelectedGa4Properties();
   const cms = listSelectedGA4CustomMetrics(selectedProperties);
   if (cms.length > 0) {
-    writeToSheet(cms, sheetNames.ga4.customMetrics);
+    writeToSheet(cms, sheetsMeta.ga4.customMetrics.sheetName);
   }
 }

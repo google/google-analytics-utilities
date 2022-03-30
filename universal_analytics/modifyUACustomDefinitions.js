@@ -1,4 +1,20 @@
 /**
+ * Copyright 2022 Google LLC
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
  * Write an array of all properties to the sheet.
  * @param {string} sheetName The name of the sheet where the data will
  * be written.
@@ -103,15 +119,15 @@ function modifyUACustomDefinitions(
                 let resultsRange = {};
                 if (type == 'custom dimensions') {
                   response = updateCustomDimension(templateRequest);
-                  resultsSheetName = sheetNames.ua.modifyCdsResults;
-                  resultsRange = sheetRanges.ua.modifyCdsResults;
+                  resultsSheetName = sheetsMeta.ua.modifyCdsResults.sheetName;
+                  resultsRange = sheetsMeta.ua.modifyCdsResults;
                 } else if (type == 'custom metrics' && 
                 templateValue[4] != existingValue.min_value &&
                 templateValue[5] != existingValue.max_value &&
                 templateValue[6] != existingValue.type) {
                   response = updateCustomMetric(templateRequest);
-                  resultsSheetName = sheetNames.ua.modifyCmsResults;
-                  resultsRange = sheetRanges.ua.modifyCmsResults;
+                  resultsSheetName = sheetsMeta.ua.modifyCmsResults.sheetName;
+                  resultsRange = sheetsMeta.ua.modifyCmsResults;
                 }
                 writeUACustomDefinitionModificationToSheet(
                   type, response, property[1], property[3], 'created',
@@ -127,12 +143,12 @@ function modifyUACustomDefinitions(
             let resultsRange = {};
             if (type == 'custom dimensions') {
               response = createCustomDimension(templateRequest);
-              resultsSheetName = sheetNames.ua.modifyCdsResults;
-              resultsRange = sheetRanges.ua.modifyCdsResults;
+              resultsSheetName = sheetsMeta.ua.modifyCdsResults.sheetName;
+              resultsRange = sheetsMeta.ua.modifyCdsResults;
             } else if (type == 'custom metrics') {
               response = createCustomMetric(templateRequest);
-              resultsSheetName = sheetNames.ua.modifyCmsResults;
-              resultsRange = sheetRanges.ua.modifyCmsResults;
+              resultsSheetName = sheetsMeta.ua.modifyCmsResults.sheetName;
+              resultsRange = sheetsMeta.ua.modifyCmsResults;
             }
             writeUACustomDefinitionModificationToSheet(
               type, response, property[1], property[3], 'created',
@@ -144,12 +160,12 @@ function modifyUACustomDefinitions(
             let resultsRange = {};
             if (type == 'custom dimensions') {
               response = createCustomDimension(placeholderRequest);
-              resultsSheetName = sheetNames.ua.modifyCdsResults;
-              resultsRange = sheetRanges.ua.modifyCdsResults;
+              resultsSheetName = sheetsMeta.ua.modifyCdsResults.sheetName;
+              resultsRange = sheetsMeta.ua.modifyCdsResults;
             } else if (type == 'custom metrics') {
               response = createCustomMetric(placeholderRequest);
-              resultsSheetName = sheetNames.ua.modifyCmsResults;
-              resultsRange = sheetRanges.ua.modifyCmsResults;
+              resultsSheetName = sheetsMeta.ua.modifyCmsResults.sheetName;
+              resultsRange = sheetsMeta.ua.modifyCmsResults;
             }
             writeUACustomDefinitionModificationToSheet(
               type, response, property[1], property[3], 'created',
@@ -241,8 +257,8 @@ function writeUACustomDefinitionModificationToSheet(
  */
 function writeCustomDimensionDestinationPropertiesToSheet() {
   writeDestinationPropertiesToSheet(
-    sheetNames.ua.modifyCds,
-    sheetRanges.ua.modifyCdsDestinationProperties
+    sheetsMeta.ua.modifyCdsResults.sheetName,
+    sheetsMeta.ua.modifyCdsDestinationProperties
   );
 }
 
@@ -251,19 +267,22 @@ function writeCustomDimensionDestinationPropertiesToSheet() {
  */
 function writeTemplateCustomDimensionsToSheet() {
   writeTemplateCustomDefinitionsToSheet(
-    sheetNames.ua.modifyCds,
-    sheetRanges.ua.modifyCdsTemplateProperty,
-    sheetRanges.ua.modifyCdsTemplateDimensions, 
-    'custom dimensions'
-  );
+    sheetsMeta.ua.modifyCdsTemplateDimensions.sheetName,
+    sheetsMeta.ua.modifyCdsTemplateProperty,
+    sheetsMeta.ua.modifyCdsTemplateDimensions, 
+    'custom dimensions');
 }
 
 /**
  * Modify custom dimensions for the selected destination properties.
  */
 function modifyCustomDimensions() {
-  modifyUACustomDefinitions(sheetNames.ua.modifyCds, sheetRanges.ua.modifyCdsTemplateDimensions,
-  sheetRanges.ua.modifyCdsDestinationProperties, sheetRanges.ua.modifyCdsSettings, 'custom dimensions');
+  modifyUACustomDefinitions(
+    sheetsMeta.ua.modifyCdsDestinationProperties.sheetName, 
+    sheetsMeta.ua.modifyCdsTemplateDimensions,
+    sheetsMeta.ua.modifyCdsDestinationProperties,
+    sheetsMeta.ua.modifyCdsSettings, 
+    'custom dimensions');
 }
 
 /**
@@ -271,8 +290,8 @@ function modifyCustomDimensions() {
  */
 function writeCustomMetricDestinationPropertiesToSheet() {
   writeDestinationPropertiesToSheet(
-    sheetNames.ua.modifyCms,
-    sheetRanges.ua.modifyCmsDestinationProperties
+    sheetsMeta.ua.modifyCmsResults.sheetName,
+    sheetsMeta.ua.modifyCmsDestinationProperties
   );
 }
 
@@ -281,9 +300,9 @@ function writeCustomMetricDestinationPropertiesToSheet() {
  */
 function writeTemplateCustomMetricsToSheet() {
   writeTemplateCustomDefinitionsToSheet(
-    sheetNames.ua.modifyCms,
-    sheetRanges.ua.modifyCmsTemplateProperty,
-    sheetRanges.ua.modifyCmsTemplateMetrics, 
+    sheetsMeta.ua.modifyCmsTemplateMetrics.sheetName,
+    sheetsMeta.ua.modifyCmsTemplateProperty,
+    sheetsMeta.ua.modifyCmsTemplateMetrics, 
     'custom metrics'
   );
 }
@@ -292,6 +311,10 @@ function writeTemplateCustomMetricsToSheet() {
  * Modify custom metrics for the selected destination properties.
  */
 function modifyCustomMetrics() {
-  modifyUACustomDefinitions(sheetNames.ua.modifyCms, sheetRanges.ua.modifyCmsTemplateMetrics,
-  sheetRanges.ua.modifyCmsDestinationProperties, sheetRanges.ua.modifyCmsSettings, 'custom metrics');
+  modifyUACustomDefinitions(
+    sheetsMeta.ua.modifyCmsDestinationProperties.sheetName,
+    sheetsMeta.ua.modifyCmsTemplateMetrics,
+    sheetsMeta.ua.modifyCmsDestinationProperties,
+    sheetsMeta.ua.modifyCmsSettings,
+    'custom metrics');
 }
