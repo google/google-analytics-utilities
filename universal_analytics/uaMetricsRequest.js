@@ -121,5 +121,5 @@ function writeMetricsDataToSheet() {
     }
     Utilities.sleep(150);
   }
-  writeToSheet(finalData, sheetNames.ua.metricsRequest);
+  writeToSheet(finalData, sheetsMeta.ua.metricsRequest.sheetName);
 }
