@@ -62,5 +62,6 @@ function listSelectedGA4Streams(properties) {
 function writeGA4StreamsToSheet() {
   const selectedProperties = getSelectedGa4Properties();
   const streams = listSelectedGA4Streams(selectedProperties);
+  clearSheetContent(sheetsMeta.ga4.streams);
   writeToSheet(streams, sheetsMeta.ga4.streams.sheetName);
 }

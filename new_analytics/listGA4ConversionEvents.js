@@ -53,7 +53,6 @@ function listSelectedGA4ConversionEvents(properties) {
 function writeGA4ConversionEventsToSheet() {
   const selectedProperties = getSelectedGa4Properties();
   const conversionEvents = listSelectedGA4ConversionEvents(selectedProperties);
-  if (conversionEvents.length > 0) {
-    writeToSheet(conversionEvents, sheetsMeta.ga4.conversionEvents.sheetName);
-  }
+  clearSheetContent(sheetsMeta.ga4.conversionEvents);
+  writeToSheet(conversionEvents, sheetsMeta.ga4.conversionEvents.sheetName);
 }

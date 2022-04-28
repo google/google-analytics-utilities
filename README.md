@@ -54,9 +54,9 @@ The script currently performs the following functions:
     *   DV360 Links
         *   List, Create, Delete, Update
 
-These tasks can be completed by [joining the Google Group](https://groups.google.com/g/google-analytics-utilities-users), [copying the template spreadsheet](https://docs.google.com/spreadsheets/d/1kJqwYNed8RTuAgjy0aRUooD__MIPqzUeiDF5LZ7v1aI/), and clicking on various options under the Google Analytics Utilities menu. To enable Google Analytics 4 scripts, a user must [follow the steps](https://github.com/google/google-analytics-utilities#enable-google-analytics-4-utilities) outlined below.
+These tasks can be completed by [joining the Google Group](https://groups.google.com/g/google-analytics-utilities-users), [copying the template spreadsheet](https://docs.google.com/spreadsheets/d/1kJqwYNed8RTuAgjy0aRUooD__MIPqzUeiDF5LZ7v1aI/), and clicking on various options under the Google Analytics Utilities menu.
 
-In order to access information about a given Analytics account, a user must have at least read and analyze permissions for the accounts, properties, and views they are interested in. If a user wants to create or update settings, they must have edit permissions.
+To access information about a given Analytics account, a user must have at least viewer permissions for the accounts, properties, and views they are interested in. If a user wants to create or update settings, they must have editor permissions.
 
 All API requests are subject to the normal limitations [documented here](https://developers.google.com/analytics/devguides/config/mgmt/v3/limits-quotas).
 
@@ -89,7 +89,7 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 
 1. Navigate to the “UA Account Summaries” sheet.
 2. Click on Google Analytics Utilities > Universal Analytics > List Account Summaries. 
-3. The script will identify all of the Google Analytics accounts your email has access to and list a flattened table of accounts, properties, and views in the “UA Account Summaries” sheet. 
+3. The script will identify all the Google Analytics accounts your email has access to and list a flattened table of accounts, properties, and views in the “UA Account Summaries” sheet. 
     *   This sheet can then be used to select specific accounts, properties, or views for other functions, like listing custom dimensions or view settings.
 
 
@@ -101,7 +101,7 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 2. Select the specific views from which you want to retrieve view details.
 3. Navigate to the “View Details List” sheet.
 4. Click on Google Analytics Utilities > Universal Analytics > List View Details. 
-5. The script will save almost all of the information indicated [here](https://developers.google.com/analytics/devguides/config/mgmt/v3/mgmtReference/management/profiles) for each selected view in the “View Details List” sheet.
+5. The script will save most of the information indicated [here](https://developers.google.com/analytics/devguides/config/mgmt/v3/mgmtReference/management/profiles) for each selected view in the “View Details List” sheet.
 
 
 ### Events
@@ -140,7 +140,7 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 2. Since the account summaries sheet lists each sheet as a different row but custom dimensions exist at the property level, select one view per property for which you are interested and the script will identify the correct property.
 3. Navigate to the “UA Custom Dimensions” sheet.
 4. Click on Google Analytics Utilities > Universal Analytics > Custom Dimensions > List Custom Dimensions.
-5. The script will save all of the custom dimensions for the selected properties to the “UA Custom Dimensions” sheet.
+5. The script will save all the custom dimensions for the selected properties to the “UA Custom Dimensions” sheet.
 
 
 #### Create/Update Custom Dimensions
@@ -174,7 +174,7 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 2. Since the account summaries sheet lists each sheet as a different row but custom metrics exist at the property level, select one view per property for which you are interested and the script will identify the correct property.
 3. Navigate to the “UA Custom Metrics” sheet.
 4. Click on Google Analytics Utilities > Universal Analytics > Custom Metrics > List Custom Metrics.
-5. The script will save all of the custom metrics for the selected properties to the “UA Custom Metrics” sheet.
+5. The script will save all the custom metrics for the selected properties to the “UA Custom Metrics” sheet.
 
 
 #### Create/Update Custom Metrics
@@ -223,7 +223,7 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 2. Since the account summaries sheet lists each sheet as a different row but audiences exist at the property level, select one view per property for which you are interested and the script will identify the correct property.
 3. Navigate to the “UA Audiences” sheet.
 4. Click on GA Utilities > Universal Analytics > Remarketing Audiences > List Settings.
-5. The script will save all of the audiences and their respective settings that exist for the selected properties to the “UA Audiences” sheet. Audience size cannot be retrieved via the Google Analytics Management API and will not be saved to the sheet.
+5. The script will save all the audiences and their respective settings that exist for the selected properties to the “UA Audiences” sheet. Audience size cannot be retrieved via the Google Analytics Management API and will not be saved to the sheet.
 
 
 #### Delete
@@ -264,6 +264,23 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 ## Google Analytics 4
 
 
+### Color Coding
+
+For the GA4 functions, whenever you check a box to archive/delete, create, or update, the sheet will highlight specific cells in each row that need to have values for the given setting to be modified or created. Please see additional details below:
+
+
+
+*   If a highlighted cell is empty, a row will remain white.
+*   When all the necessary fields have been entered to archive/delete a setting, the row will turn red.
+*   When all the necessary fields have been entered to create a setting, the row will turn green.
+*   When all the necessary fields have been entered to update a setting,  the row will turn blue.
+
+
+### Action Taken Messages
+
+If you archive, delete, create, or update a GA4 setting, then a corresponding action taken will be recorded in the same row. Errors will also be recorded in the “Action Taken” column. If you are missing a necessary value when trying to modify a setting, then that will likely be recorded in the “Action Taken” column taken. If you see “Error 404: HttpResponseException” then you are likely missing a value in the resource name column  (or the account ID column in the Property Details sheet) and should probably list your values again.
+
+
 ### Account Summaries
 
 
@@ -273,7 +290,7 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 
 1. Navigate to “GA4 Account Summaries”
 2. Click on Google Analytics Utilities > Google Analytics 4 > List Account Summaries. 
-3. The script will identify all of the Google Analytics 4 properties your email has access to and list a flattened table of accounts and properties in the “GA4 Account Summaries” sheet. 
+3. The script will identify all the Google Analytics 4 properties your email has access to and list a flattened table of accounts and properties in the “GA4 Account Summaries” sheet. 
     *   This sheet can then be used to select specific accounts and properties for other functions.
 
 
@@ -647,19 +664,19 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 
 
 
-6. After listing your GA4 DV360 links, navigate to the “GA4 DV360 Links” sheet.
-7. Click on Google Analytics Utilities > Google Analytics 4 > DV360 Links > List.
-8. Check the “Delete” box for each DV360 link you want to delete.
-9. Click on Google Analytics Utilities > Google Analytics 4 > DV360 Links > Modify.
-10. The script will attempt to delete the selected DV360 links.
+1. After listing your GA4 DV360 links, navigate to the “GA4 DV360 Links” sheet.
+2. Click on Google Analytics Utilities > Google Analytics 4 > DV360 Links > List.
+3. Check the “Delete” box for each DV360 link you want to delete.
+4. Click on Google Analytics Utilities > Google Analytics 4 > DV360 Links > Modify.
+5. The script will attempt to delete the selected DV360 links.
 
 
 #### Update
 
 
 
-6. After listing your GA4 DV360 links, navigate to the “GA4 DV360 Links” sheet.
-7. Enter true or false for “Ads Personalization Enabled”
-8. Check the “Update” box for each DV360 link you want to update.
-9. Click on Google Analytics Utilities > Google Analytics 4 > DV360 Links > Modify.
-10. The script will attempt to update the selected Dv360 links.
+1. After listing your GA4 DV360 links, navigate to the “GA4 DV360 Links” sheet.
+2. Enter true or false for “Ads Personalization Enabled”
+3. Check the “Update” box for each DV360 link you want to update.
+4. Click on Google Analytics Utilities > Google Analytics 4 > DV360 Links > Modify.
+5. The script will attempt to update the selected Dv360 links.

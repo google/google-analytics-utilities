@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,8 +45,8 @@ function getFlattenedGA4AccountSummaries(summaries) {
  */
 function writeGA4AccountSummariesToSheet() {
   let summaries = listGA4Entities('accountSummaries')
-  const flattenedSummaries = getFlattenedGA4AccountSummaries(
-		summaries.accountSummaries
-  );
-  writeToSheet(flattenedSummaries, sheetNames.ga4.accountSummaries);
+  const flattenedSummaries = getFlattenedGA4AccountSummaries(summaries.accountSummaries);
+  setCheckboxesToFalse(sheetsMeta.ga4.accountSummaries);
+  clearMainContent(sheetsMeta.ga4.accountSummaries);
+  writeToSheet(flattenedSummaries, sheetsMeta.ga4.accountSummaries.sheetName);
 }

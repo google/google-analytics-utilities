@@ -37,7 +37,7 @@ const sheetsMeta = {
       }
     },
     customMetrics: {
-      sheetName: 'UA Custom Dimensions',
+      sheetName: 'UA Custom Metrics',
       read: {},
       write: {
         row: 2,
@@ -353,13 +353,13 @@ const sheetsMeta = {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 8
+        numColumns: 7
       },
       read: {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 12
+        numColumns: 11
       }
     },
     displayVideo360AdvertiserLinks: {

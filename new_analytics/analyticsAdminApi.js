@@ -52,7 +52,7 @@ function listGA4Entities(resourceKey, parent) {
     Utilities.sleep(ga4RequestDelay);
     while (options.pageToken != undefined) {
       const nextPage = ga4Resource[resourceKey].list(options);
-      response[resourceKey] = response[resourceKey].concat(nextPage.accountSummaries);
+      response[resourceKey] = response[resourceKey].concat(nextPage[resourceKey]);
       options.pageToken = nextPage.nextPageToken;
       Utilities.sleep(ga4RequestDelay);
     }
@@ -75,7 +75,13 @@ function archiveGA4CustomDefinition(resourceKey, customDefinitionName) {
 
 function createGA4Entity(resourceKey, name, payload) {
   try {
-    const response = ga4Resource[resourceKey].create(payload, name);
+    let response = null;
+    if (resourceKey == 'properties') {
+      payload.parent = name;
+      response = ga4Resource[resourceKey].create(payload);
+    } else {
+      response = ga4Resource[resourceKey].create(payload, name);
+    }
 		Utilities.sleep(ga4RequestDelay);
 		return response;
   } catch(e) {

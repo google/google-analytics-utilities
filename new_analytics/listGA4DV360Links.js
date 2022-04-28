@@ -55,7 +55,6 @@ function listSelectedDV360Links(properties) {
 function writeGA4DV360LinksToSheet() {
   const selectedProperties = getSelectedGa4Properties();
   const links = listSelectedDV360Links(selectedProperties);
-  if (links.length > 0) {
-    writeToSheet(links, sheetsMeta.ga4.displayVideo360AdvertiserLinks.sheetName);
-  }
+  clearSheetContent(sheetsMeta.ga4.displayVideo360AdvertiserLinks);
+  writeToSheet(links, sheetsMeta.ga4.displayVideo360AdvertiserLinks.sheetName);
 }

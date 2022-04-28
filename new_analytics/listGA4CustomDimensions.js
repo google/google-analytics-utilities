@@ -54,7 +54,6 @@ function listSelectedGA4CustomDimensions(properties) {
 function writeGA4CustomDimensionsToSheet() {
   const selectedProperties = getSelectedGa4Properties();
   const cds = listSelectedGA4CustomDimensions(selectedProperties);
-  if (cds.length > 0) {
-    writeToSheet(cds, sheetsMeta.ga4.customDimensions.sheetName);
-  }
+  clearSheetContent(sheetsMeta.ga4.customDimensions);
+  writeToSheet(cds, sheetsMeta.ga4.customDimensions.sheetName);
 }

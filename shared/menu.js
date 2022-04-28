@@ -52,6 +52,10 @@ function onOpen(e) {
       ui.createMenu('Google Analytics 4')
       .addItem('List Account Summaries', 'writeGA4AccountSummariesToSheet')
       .addSubMenu(
+        ui.createMenu('Properties')
+        .addItem('List', 'writeGA4PropertyDetailsToSheet')
+        .addItem('Modify', 'modifyGA4Properties'))
+      .addSubMenu(
         ui.createMenu('Data Streams')
         .addItem('List', 'writeGA4StreamsToSheet')
         .addItem('Modify', 'modifyGA4Streams'))
@@ -79,10 +83,10 @@ function onOpen(e) {
         ui.createMenu('DV360 Links')
         .addItem('List', 'writeGA4DV360LinksToSheet')
         .addItem('Modify', 'modifyGA4DV360Links'))
-      .addSubMenu(
-        ui.createMenu('Properties')
-        .addItem('List Properties', 'writeGA4PropertyDetailsToSheet')
-        .addItem('Modify', 'modifyGA4Properties'))
+      /*.addSubMenu(
+        ui.createMenu('Copy Properties')
+        .addItem('List Selected Properties', 'writeTemplatePropertiesAndStreamsToSheet')
+        .addItem('Copy', 'copyProperties')) */
     )
     .addSeparator()
     .addSubMenu(

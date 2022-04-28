@@ -52,7 +52,6 @@ function listSelectedGA4FirebaseLinks(properties) {
 function writeGA4FirebaseLinksToSheet() {
   const selectedProperties = getSelectedGa4Properties();
   const firebaseLinks = listSelectedGA4FirebaseLinks(selectedProperties);
-  if (firebaseLinks.length > 0) {
-    writeToSheet(firebaseLinks, sheetsMeta.ga4.firebaseLinks.sheetName);
-  }
+  clearSheetContent(sheetsMeta.ga4.firebaseLinks);
+  writeToSheet(firebaseLinks, sheetsMeta.ga4.firebaseLinks.sheetName);
 }

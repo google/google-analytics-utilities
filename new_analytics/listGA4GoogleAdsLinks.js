@@ -55,7 +55,6 @@ function listSelectedGA4AdsLinks(properties) {
 function writeGA4AdsLinksToSheet() {
   const selectedProperties = getSelectedGa4Properties();
   const adsLinks = listSelectedGA4AdsLinks(selectedProperties);
-  if (adsLinks.length > 0) {
-    writeToSheet(adsLinks, sheetsMeta.ga4.googleAdsLinks.sheetName);
-  }
+  clearSheetContent(sheetsMeta.ga4.googleAdsLinks);
+  writeToSheet(adsLinks, sheetsMeta.ga4.googleAdsLinks.sheetName);
 }

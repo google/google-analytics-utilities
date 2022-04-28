@@ -60,7 +60,6 @@ function modifyGA4DV360Links() {
  * Modifies GA4 properties.
  */
 function modifyGA4Properties() {
-  Logger.log(sheetsMeta.ga4.properties.sheetName);
   modifyGA4Entities(sheetsMeta.ga4.properties.sheetName);
 }
 
@@ -82,10 +81,8 @@ function modifyGA4Entities(sheetName) {
   let entities = getDataFromSheet(sheetName);
   const ga4Resource = Object.keys(sheetsMeta.ga4).find(
     key => sheetsMeta.ga4[key].sheetName === sheetName);
-  filteredEntity = entities.filter(
-		entity => entity[3] != '');
-  if (filteredEntity.length > 0) {
-    filteredEntity.forEach((entity, index) => {
+  if (entities.length > 0) {
+    entities.forEach((entity, index) => {
       let response = null;
       const remove = entity[entity.length - 4];
       const create = entity[entity.length - 3];
@@ -93,10 +90,14 @@ function modifyGA4Entities(sheetName) {
       let actionTaken = null;
 
       // Data consistent across GA4 sheets.
-			const propertyPath = 'properties/' + entity[3];
-			let entityPath = entity[5];
+      let parent = '';
+      let resourceName = '';
       if (sheetName == sheetsMeta.ga4.properties.sheetName) {
-        entityPath = propertyPath;
+        parent = 'accounts/' + entity[1]
+        resourceName = 'properties/' + entity[3];
+      } else {
+        parent = 'properties/' + entity[3];
+        resourceName = entity[5];
       }
       // An entity cannot be both created and archived/deleted, so if both
       // are true, then the response is null and row is marked as skipped.
@@ -107,22 +108,13 @@ function modifyGA4Entities(sheetName) {
 
       // Archives custom definitions and deletes anything else that can be deleted.
       } else if (remove) {
-        if (
-          sheetName == sheetsMeta.ga4.customDimensions.sheetName ||
-          sheetName == sheetsMeta.ga4.customMetrics.sheetName) {
-          response = archiveGA4CustomDefinition(ga4Resource, entityPath);
-          if (response.length == undefined) {
-            actionTaken = apiActionTaken.ga4.archived;
-          } else {
-            actionTaken = apiActionTaken.ga4.error;
-          }
+        if (sheetName == sheetsMeta.ga4.customDimensions.sheetName ||
+            sheetName == sheetsMeta.ga4.customMetrics.sheetName) {
+          response = archiveGA4CustomDefinition(ga4Resource, resourceName);
+          actionTaken = responseCheck(response, 'archive');
         } else {
-          response = deleteGA4Entity(ga4Resource, entityPath);
-          if (response.length == undefined) {
-            actionTaken = apiActionTaken.ga4.deleted;
-          } else {
-            actionTaken = apiActionTaken.ga4.error;
-          }
+          response = deleteGA4Entity(ga4Resource, resourceName);
+          actionTaken = responseCheck(response, 'delete');
         }
         // Writes that the entity was deleted or archived to the sheet.
         writeActionTakenToSheet(sheetName, index, actionTaken);
@@ -130,17 +122,43 @@ function modifyGA4Entities(sheetName) {
       // Creates the new entity.
       } else if (create) {
         const payload = buildCreatePayload(sheetName, entity);
-        response = createGA4Entity(ga4Resource, propertyPath, payload);
-        // Writes the creation of the entity to the sheet.
-        writeActionTakenToSheet(sheetName, index, apiActionTaken.ga4.created);
+        response = createGA4Entity(ga4Resource, parent, payload);
+        actionTaken = responseCheck(response, 'create');
+        writeActionTakenToSheet(sheetName, index, actionTaken);
 
       // Updates entities.
       } else if (update) {
         const payload = buildUpdatePayload(sheetName, entity);
-        response = updateGA4Entity(ga4Resource, entityPath, payload, index);
-        writeActionTakenToSheet(sheetName, index, apiActionTaken.ga4.updated);
+        response = updateGA4Entity(ga4Resource, resourceName, payload, index);
+        actionTaken = responseCheck(response, 'update');
+        writeActionTakenToSheet(sheetName, index, actionTaken);
       }
     });
+  }
+}
+
+/**
+ * Check if a write response has an error and returns error information or
+ * the action taken.
+ * @param {!Object} response The response to the write request.
+ * @param {string} requestType The kind of request that was made.
+ * @return {string} Either the action taken or error information.
+ */
+function responseCheck(response, requestType) {
+  if (response.details != undefined) {
+    return 'Error ' + response.details.code + ': ' + response.details.message;
+  } else if (response.statusCode != undefined) {
+    return 'Error ' + response.statusCode + ': ' + response.name;
+  } else {
+    if (requestType == 'create') {
+      return apiActionTaken.ga4.created;
+    } else if (requestType == 'update') {
+      return apiActionTaken.ga4.updated;
+    } else if (requestType == 'archive') {
+      return apiActionTaken.ga4.archived;
+    } else if (requestType == 'delete') {
+      return apiActionTaken.ga4.deleted;
+    }
   }
 }
 

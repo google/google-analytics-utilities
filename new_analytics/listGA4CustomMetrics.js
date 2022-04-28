@@ -45,8 +45,6 @@ function listSelectedGA4CustomMetrics(properties) {
       }
     }
   });
-  CacheService.getUserCache().remove('customMetrics');
-  CacheService.getUserCache().put('customMetrics', JSON.stringify(finalizedCms));
   return finalizedCms;
 }
 
@@ -56,7 +54,6 @@ function listSelectedGA4CustomMetrics(properties) {
 function writeGA4CustomMetricsToSheet() {
   const selectedProperties = getSelectedGa4Properties();
   const cms = listSelectedGA4CustomMetrics(selectedProperties);
-  if (cms.length > 0) {
-    writeToSheet(cms, sheetsMeta.ga4.customMetrics.sheetName);
-  }
+  clearSheetContent(sheetsMeta.ga4.customMetrics);
+  writeToSheet(cms, sheetsMeta.ga4.customMetrics.sheetName);
 }

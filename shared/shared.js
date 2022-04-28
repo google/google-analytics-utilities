@@ -270,8 +270,12 @@ function writeToSheet(data, sheetName) {
   if (sheet == undefined) {
     sheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet(sheetName);
   }
-  sheet.getRange(ranges.row, ranges.column, data.length, ranges.numColumns)
-      .setValues(data);
+  if (data.length > 0) {
+    sheet.getRange(ranges.row, ranges.column, data.length, ranges.numColumns)
+         .setValues(data);
+  } else {
+    SpreadsheetApp.getUi().alert('No settings were found so nothing was written to the sheet.');
+  }
 }
 /**
  * Retrieves data from a specified sheet.
@@ -400,4 +404,75 @@ function getData(report) {
   request.reportRequests = [];
   request.reportRequests.push(report);
   return AnalyticsReporting.Reports.batchGet(request).reports[0].data.rows;
+}
+
+/**
+ * Clears the main contents of a sheet.
+ * @param {!Object} sheetsMetaField
+ */
+function clearMainContent(sheetsMetaField) {
+  const sheet = ss.getSheetByName(sheetsMetaField.sheetName);
+  const ranges = sheetsMetaField.write;
+  sheet.getRange(ranges.row, ranges.column, sheet.getLastRow() - 1, ranges.numColumns).clearContent();
+}
+
+/**
+ * Sets all checkboxes in a range to false.
+ * @param {!Object} sheetsMetaField The object from the sheetsMeta variable.
+ */
+function setCheckboxesToFalse(sheetsMetaField) {
+  const sheet = ss.getSheetByName(sheetsMetaField.sheetName);
+  const startRow = 2;
+  let startCol = null;
+  const numRows = sheet.getLastRow() - 1;
+  let numCol = null;
+  if (sheetsMetaField.sheetName == sheetsMeta.ga4.accountSummaries.sheetName) {
+    startCol = sheetsMetaField.read.numColumns;
+    numCol = 1;
+  } else {
+    startCol = sheetsMetaField.read.numColumns - 3;
+    if (sheetsMetaField.sheetName == sheetsMeta.ga4.conversionEvents.sheetName ||
+        sheetsMetaField.sheetName == sheetsMeta.ga4.firebaseLinks.sheetName) {
+      numCol = 2;
+    } else {
+      numCol = 3;
+    }
+  }
+  if (numRows > 0) {
+    const values = [];
+    for (let i = 0; i < numRows; i++) {
+      const tempArray = [];
+      for (let j = 0; j < numCol; j++) {
+        tempArray.push(false);
+      }
+      values.push(tempArray);
+    }
+    sheet.getRange(startRow, startCol, numRows, numCol).setValues(values);
+  }
+}
+
+/**
+ * Clear actions taken.
+ * @param {!Object} sheetsMetaField The object from the sheetsMeta variable.
+ */
+function clearActionsTaken(sheetsMetaField) {
+  const sheet = ss.getSheetByName(sheetsMetaField.sheetName);
+  const range = sheetsMetaField.read;
+  if (sheet.getLastRow() - 1 > 0) {
+    const values = [];
+    for (let i = 0; i < sheet.getLastRow() - 1; i++) { 
+      values.push(['']);
+    }
+    sheet.getRange(range.row, range.numColumns, values.length, 1).setValues(values);
+  }
+}
+
+/**
+ * Clears a sheet of content.
+ * @param {!Object} sheetsMetaField The object from the sheetsMeta variable.
+ */
+function clearSheetContent(sheetsMetaField) {
+  setCheckboxesToFalse(sheetsMetaField);
+  clearActionsTaken(sheetsMetaField);
+  clearMainContent(sheetsMetaField);
 }

@@ -43,7 +43,7 @@ function listViewDetails(selectedViews) {
           tempViewDetails.accountId,
           row[0],
           tempViewDetails.webPropertyId,
-          propertyId,
+          row[2],
           tempViewDetails.name,
           tempViewDetails.id,
           tempViewDetails.currency,
