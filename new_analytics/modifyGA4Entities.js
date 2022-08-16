@@ -71,6 +71,14 @@ function modifyGA4Streams() {
 }
 
 /**
+ * Modifies GA4 audiences.
+ */
+
+function modifyGA4Audiences() {
+  modifyGA4Entities(sheetsMeta.ga4.audiences.sheetName);
+}
+
+/**
  * Loops through the rows on the sheet with data and checks either
  * skips, updates, removes, or creates an entity depending on what
  * was checked in a given sheet.
@@ -234,6 +242,20 @@ function buildCreatePayload(sheetName, entity) {
         bundleId: entity[8]
       }
     }
+  } else if (sheetName == sheetsMeta.ga4.audiences.sheetName) {
+    payload.displayName = entityDisplayNameOrId;
+    payload.description = entity[6];
+    payload.membershipDurationDays = entity[7];
+    if (entity[9] != '') {
+      payload.eventTrigger = {
+        eventName: entity[9],
+        logCondition: entity[10]
+      };
+    }
+    if (entity[11] != '') {
+      payload.exclusionDurationMode = entity[11];
+    }
+    payload.filterClauses = [JSON.parse(entity[12])];
   }
   return payload;
 }
@@ -291,6 +313,17 @@ function buildUpdatePayload(sheetName, entity) {
         bundleId: entity[8]
       }
     }
+  } else if (sheetName = sheetsMeta.ga4.audiences.sheetName) {
+    payload.displayName = entityDisplayNameOrId;
+    payload.description = entity[6];
+    /*
+    if (entity[9] != '') {
+      payload.eventTrigger = {
+        eventName: entity[9],
+        logCondition: entity[10]
+      };
+    }
+    */
   }
   return payload;
 }

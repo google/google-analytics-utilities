@@ -1,5 +1,3 @@
-
-
 ## Google Analytics Utilities
 
 This is not an officially supported Google product.
@@ -52,6 +50,8 @@ The script currently performs the following functions:
     *   GA4 Google Ads links
         *   List, Create, Delete, Update
     *   DV360 Links
+        *   List, Create, Delete, Update
+    *   GA4 Audiences
         *   List, Create, Delete, Update
 
 These tasks can be completed by [joining the Google Group](https://groups.google.com/g/google-analytics-utilities-users), [copying the template spreadsheet](https://docs.google.com/spreadsheets/d/1kJqwYNed8RTuAgjy0aRUooD__MIPqzUeiDF5LZ7v1aI/), and clicking on various options under the Google Analytics Utilities menu.
@@ -534,10 +534,9 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 
 
 1. After listing your GA4 conversion events, navigate to the "GA4 Conversion Events” sheet.
-2. Click on Google Analytics Utilities > Google Analytics 4 > Conversion Events > List.
-3. Check the “Delete” box for each conversion event you want to delete.
-4. Click on Google Analytics Utilities > Google Analytics 4 > Conversion Events > Modify.
-5. The script will attempt to delete the selected conversion events.
+2. Check the “Delete” box for each conversion event you want to delete.
+3. Click on Google Analytics Utilities > Google Analytics 4 > Conversion Events > Modify.
+4. The script will attempt to delete the selected conversion events.
 
 
 ### Firebase Links
@@ -612,10 +611,9 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 
 
 1. After listing your GA4 Google Ads links, navigate to the “GA4 Google Ads Links” sheet.
-2. Click on Google Analytics Utilities > Google Analytics 4 > Google Ads Links > List.
-3. Check the “Delete” box for each Google Ads link you want to delete.
-4. Click on Google Analytics Utilities > Google Analytics 4 > Google Ads Links > Modify.
-5. The script will attempt to delete the selected Google Ads links.
+2. Check the “Delete” box for each Google Ads link you want to delete.
+3. Click on Google Analytics Utilities > Google Analytics 4 > Google Ads Links > Modify.
+4. The script will attempt to delete the selected Google Ads links.
 
 
 #### Update
@@ -665,10 +663,9 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 
 
 1. After listing your GA4 DV360 links, navigate to the “GA4 DV360 Links” sheet.
-2. Click on Google Analytics Utilities > Google Analytics 4 > DV360 Links > List.
-3. Check the “Delete” box for each DV360 link you want to delete.
-4. Click on Google Analytics Utilities > Google Analytics 4 > DV360 Links > Modify.
-5. The script will attempt to delete the selected DV360 links.
+2. Check the “Delete” box for each DV360 link you want to delete.
+3. Click on Google Analytics Utilities > Google Analytics 4 > DV360 Links > Modify.
+4. The script will attempt to delete the selected DV360 links.
 
 
 #### Update
@@ -679,4 +676,60 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 2. Enter true or false for “Ads Personalization Enabled”
 3. Check the “Update” box for each DV360 link you want to update.
 4. Click on Google Analytics Utilities > Google Analytics 4 > DV360 Links > Modify.
-5. The script will attempt to update the selected Dv360 links.
+5. The script will attempt to update the selected DV360 links.
+
+
+### GA4 Audiences
+
+
+#### List
+
+
+
+1. List GA4 account summaries.
+2. Select the properties from which you want to retrieve DV360 links.
+3. Navigate to the “GA4 Audiences” sheet.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Audiences > List.
+5. The audiences for the selected properties will be listed in the “GA4 Audiences” sheet.
+
+
+#### Create
+
+
+
+1. Navigate to the “GA4 Audiences” sheet.
+2. Enter the following:
+    1. Property ID
+    2. Audience Name
+    3. Audience Description
+    4. Membership Duration
+    5. Filter Clauses
+    6. (Optional) Event Trigger Name
+    7. (Optional) Event Trigger Log Condition
+    8. (Only set with exclusion filter conditions) Exclusion Duration Mode
+    9. Repeat these steps in a new row for each DV360 link you want to create
+3. Click on Google Analytics Utilities > Google Analytics 4 > Audiences > Modify.
+4. The script will attempt to create a new audience based on the information in each row.
+
+
+#### Delete
+
+
+
+1. After listing your GA4 audiences, navigate to the “GA4 Audiences” sheet.
+2. Check the “Delete” box for each DV360 link you want to delete.
+3. Click on Google Analytics Utilities > Google Analytics 4 > Audiences > Modify.
+4. The script will attempt to delete the selected audiences.
+
+
+#### Update
+
+
+
+1. After listing your GA4 audiences, navigate to the “GA4 Audiences” sheet.
+2. The following can be updated:
+    1. Audience Name
+    2. Audience Description
+3. Check the “Update” box for each audience you want to update.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Audience > Modify.
+5. The script will attempt to update the selected audience.

@@ -406,6 +406,21 @@ const sheetsMeta = {
         numRows: 1,
         numColumns: 16
       }
+    },
+    audiences: {
+      sheetName: 'GA4 Audiences',
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 13
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 17
+      }
     }
   }
 };

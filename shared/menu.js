@@ -83,10 +83,10 @@ function onOpen(e) {
         ui.createMenu('DV360 Links')
         .addItem('List', 'writeGA4DV360LinksToSheet')
         .addItem('Modify', 'modifyGA4DV360Links'))
-      /*.addSubMenu(
-        ui.createMenu('Copy Properties')
-        .addItem('List Selected Properties', 'writeTemplatePropertiesAndStreamsToSheet')
-        .addItem('Copy', 'copyProperties')) */
+      .addSubMenu(
+        ui.createMenu('Audiences')
+        .addItem('List', 'writeGA4AudiencesToSheet')
+        .addItem('Modify', 'modifyGA4Audiences'))
     )
     .addSeparator()
     .addSubMenu(

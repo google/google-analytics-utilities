@@ -25,7 +25,8 @@ const ga4Resource = {
   customMetrics: AnalyticsAdmin.Properties.CustomMetrics,
   conversionEvents: AnalyticsAdmin.Properties.ConversionEvents,
   displayVideo360AdvertiserLinks: AnalyticsAdmin.Properties.DisplayVideo360AdvertiserLinks,
-  properties: AnalyticsAdmin.Properties
+  properties: AnalyticsAdmin.Properties,
+  audiences: AnalyticsAdmin.Properties.Audiences
 };
 
 /**
@@ -52,6 +53,37 @@ function listGA4Entities(resourceKey, parent) {
     Utilities.sleep(ga4RequestDelay);
     while (options.pageToken != undefined) {
       const nextPage = ga4Resource[resourceKey].list(options);
+      response[resourceKey] = response[resourceKey].concat(nextPage[resourceKey]);
+      options.pageToken = nextPage.nextPageToken;
+      Utilities.sleep(ga4RequestDelay);
+    }
+    return response;
+  } catch(e) {
+    console.log(e);
+    return e;
+  }
+}
+
+/**
+ * Audits user links for GA4 accounts and properties.
+ * @param {string} resourceKey The GA4 entity being requested.
+ * @param {string} parent
+ * @return {!Object} Either a response from the API or an error message.
+ */
+function auditUserLinks(resourceKey, parent) {
+  try {
+    const options = {pageSize: 200};
+    let response = {};
+    if (parent != undefined) {
+      parent.pageSize = 200;
+      response = ga4Resource[resourceKey].userLinks.audit(parent);
+    } else {
+      response = ga4Resource[resourceKey].list(options);
+    }
+    options.pageToken = response.nextPageToken;
+    Utilities.sleep(ga4RequestDelay);
+    while (options.pageToken != undefined) {
+      const nextPage = ga4Resource[resourceKey].userLinks.audit(options);
       response[resourceKey] = response[resourceKey].concat(nextPage[resourceKey]);
       options.pageToken = nextPage.nextPageToken;
       Utilities.sleep(ga4RequestDelay);
@@ -103,28 +135,32 @@ function deleteGA4Entity(resourceKey, name) {
 
 function updateGA4Entity(resourceKey, name, payload, index) {
   try {
-    let mask = null;
+    let mask = '';
     if (resourceKey == 'customMetrics') {
       const customMetrics = JSON.parse(CacheService.getUserCache().get('customMetrics'));
       if (customMetrics[index][4] != payload.displayName) {
         mask = 'displayName';
       }
       if (customMetrics[index][8] != 'CURRENCY' && customMetrics[index][8] != payload.measurementUnit) {
-        if (mask != null) {
+        if (mask != '') {
           mask += ',measurementUnit';
         } else {
           mask = 'measurementUnit';
         }
       }
       if (customMetrics[index][9] != payload.description) {
-        if (mask != null) {
+        if (mask != '') {
           mask += ',description';
         } else {
           mask = 'description';
         }
       }
+    } else if (resourceKey == 'audiences') {
+      for (field in payload) {
+        mask += field + ','
+      }
     }
-    if (mask == null) {
+    if (mask == '') {
       mask = '*';
     }
     const response = ga4Resource[resourceKey].patch(payload, name, {updateMask: mask});
