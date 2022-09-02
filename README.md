@@ -687,7 +687,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 
 
 1. List GA4 account summaries.
-2. Select the properties from which you want to retrieve DV360 links.
+2. Select the properties from which you want to retrieve audiences.
 3. Navigate to the “GA4 Audiences” sheet.
 4. Click on Google Analytics Utilities > Google Analytics 4 > Audiences > List.
 5. The audiences for the selected properties will be listed in the “GA4 Audiences” sheet.
@@ -707,7 +707,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
     6. (Optional) Event Trigger Name
     7. (Optional) Event Trigger Log Condition
     8. (Only set with exclusion filter conditions) Exclusion Duration Mode
-    9. Repeat these steps in a new row for each DV360 link you want to create
+    9. Repeat these steps in a new row for each audience you want to create
 3. Click on Google Analytics Utilities > Google Analytics 4 > Audiences > Modify.
 4. The script will attempt to create a new audience based on the information in each row.
 
@@ -717,7 +717,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 
 
 1. After listing your GA4 audiences, navigate to the “GA4 Audiences” sheet.
-2. Check the “Delete” box for each DV360 link you want to delete.
+2. Check the “Delete” box for each audience link you want to delete.
 3. Click on Google Analytics Utilities > Google Analytics 4 > Audiences > Modify.
 4. The script will attempt to delete the selected audiences.
 
