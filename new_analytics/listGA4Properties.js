@@ -38,8 +38,8 @@ function listSelectedGA4Properties(accounts) {
         prop.timeZone,
         prop.currencyCode,
         prop.serviceLevel,
-        AnalyticsAdmin.Properties.getDataRetentionSettings('properties/' + property[3] + '/googleSignalsSettings').state,
-        AnalyticsAdmin.Properties.getGoogleSignalsSettings('properties/' + property[3] + '/dataRetentionSettings').eventDataRetention
+        AnalyticsAdmin.Properties.getDataRetentionSettings(prop.name + '/googleSignalsSettings').state,
+        AnalyticsAdmin.Properties.getGoogleSignalsSettings(prop.name + '/dataRetentionSettings').eventDataRetention
       ]
       arr.push(subArray);
       return arr;
