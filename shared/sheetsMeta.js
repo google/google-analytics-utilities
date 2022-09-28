@@ -398,13 +398,13 @@ const sheetsMeta = {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 12
+        numColumns: 15
       },
       read: {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 16
+        numColumns: 19
       }
     },
     audiences: {

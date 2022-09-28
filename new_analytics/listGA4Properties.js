@@ -27,6 +27,7 @@ function listSelectedGA4Properties(accounts) {
     const parent = {filter: 'parent:accounts/' + property[1], pageSize: 200};
     const properties = listGA4Entities('properties', parent).properties;
     data = data.concat(properties.reduce((arr, prop) => {
+      const attributionSettings = AnalyticsAdmin.Properties.getAttributionSettings(prop.name + '/attributionSettings');
       const subArray = [
         property[0],
         property[1],
@@ -39,7 +40,10 @@ function listSelectedGA4Properties(accounts) {
         prop.currencyCode,
         prop.serviceLevel,
         AnalyticsAdmin.Properties.getDataRetentionSettings(prop.name + '/googleSignalsSettings').state,
-        AnalyticsAdmin.Properties.getGoogleSignalsSettings(prop.name + '/dataRetentionSettings').eventDataRetention
+        AnalyticsAdmin.Properties.getGoogleSignalsSettings(prop.name + '/dataRetentionSettings').eventDataRetention,
+        attributionSettings.acquisitionConversionEventLookbackWindow,
+        attributionSettings.otherConversionEventLookbackWindow,
+        attributionSettings.reportingAttributionModel
       ]
       arr.push(subArray);
       return arr;

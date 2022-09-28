@@ -257,7 +257,7 @@ function writeUACustomDefinitionModificationToSheet(
  */
 function writeCustomDimensionDestinationPropertiesToSheet() {
   writeDestinationPropertiesToSheet(
-    sheetsMeta.ua.modifyCdsResults.sheetName,
+    sheetsMeta.ua.modifyCdsDestinationProperties.sheetName,
     sheetsMeta.ua.modifyCdsDestinationProperties
   );
 }
@@ -290,7 +290,7 @@ function modifyCustomDimensions() {
  */
 function writeCustomMetricDestinationPropertiesToSheet() {
   writeDestinationPropertiesToSheet(
-    sheetsMeta.ua.modifyCmsResults.sheetName,
+    sheetsMeta.ua.modifyCmsDestinationProperties.sheetName,
     sheetsMeta.ua.modifyCmsDestinationProperties
   );
 }
