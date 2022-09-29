@@ -273,9 +273,8 @@ function writeToSheet(data, sheetName) {
   if (data.length > 0) {
     sheet.getRange(ranges.row, ranges.column, data.length, ranges.numColumns)
          .setValues(data);
-  } else {
-    SpreadsheetApp.getUi().alert('No settings were found so nothing was written to the sheet.');
   }
+  checkRelease()
 }
 /**
  * Retrieves data from a specified sheet.
