@@ -197,7 +197,9 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 7. Click  on Google Analytics Utilities > Universal Analytics > Custom Metrics > Modify Custom Metrics > List Destination Properties
 8. Select the destination properties where the custom metrics will be copied to.
 9. Click  on Google Analytics Utilities > Universal Analytics > Custom Metrics > Modify Custom Metrics > Modify Custom Metrics
-10. The script will now go through the process of updating and/or creating custom metrics. The results will be recorded in the UA Custom Metrics - Modify - Results sheet.
+10. The script will now go through the process of updating and/or creating custom metrics. The results will be recorded in the UA Custom Metrics - Modify - Results sheet. \
+ \
+Note: TIME event types must have a minimum value of at least 0 and cannot be left blank. If the event type is TIME, then the default value will be set to 0. If the max value is set to greater than the minimum value for a given metric, then the max value will be removed from any update or create request.
 
 
 ### Filters

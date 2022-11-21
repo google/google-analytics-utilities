@@ -18,7 +18,7 @@ const messageText = {
   newRelease: `
     There is a new version of this tool available. Please use the latest version of the tool by using the files 
     on Github or making a copy of this spreadsheet:
-    https://docs.google.com/spreadsheets/d/1yZVgAlMJbCpZDyimdj0h4QHQbogLJZv83oXqRwT-A40/
+    https://docs.google.com/spreadsheets/d/1kJqwYNed8RTuAgjy0aRUooD__MIPqzUeiDF5LZ7v1aI/
     
     Update Details:
   `

@@ -223,9 +223,9 @@ function buildCreatePayload(sheetName, entity) {
   } else if (sheetName == sheetsMeta.ga4.properties.sheetName) {
     // Add fields to modify a property.
     payload.displayName = entity[2];
-    payload.industryCategory = entity[6];
-    payload.timeZone = entity[7];
-    payload.currencyCode = entity[8];
+    payload.industryCategory = entity[7];
+    payload.timeZone = entity[8];
+    payload.currencyCode = entity[9];
   } else if (sheetName == sheetsMeta.ga4.streams.sheetName) {
     payload.displayName = entity[4];
     payload.type = entity[6];
