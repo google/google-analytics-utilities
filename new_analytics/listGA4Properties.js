@@ -24,7 +24,7 @@
 function listSelectedGA4Properties(accounts) {
   let data = [];
   accounts.forEach(property => {
-    const parent = {filter: 'parent:accounts/' + property[1], pageSize: 200};
+    const parent = {filter: 'ancestor:accounts/' + property[1], pageSize: 200};
     const properties = listGA4Entities('properties', parent).properties;
     data = data.concat(properties.reduce((arr, prop) => {
       const attributionSettings = AnalyticsAdmin.Properties.getAttributionSettings(prop.name + '/attributionSettings');
@@ -33,6 +33,7 @@ function listSelectedGA4Properties(accounts) {
         property[1],
         prop.displayName,
         prop.name.split('/')[1],
+        prop.propertyType,
         prop.createTime,
         prop.updateTime,
         prop.industryCategory,

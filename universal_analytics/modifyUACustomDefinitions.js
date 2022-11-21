@@ -21,6 +21,9 @@
  * @param {string} rangeName The range for the given sheet were the data
  * will be written.
  */
+
+const uaCustomDefinationsWriteDelay = 800;
+
 function writeDestinationPropertiesToSheet(sheetName, rangeName) {
   const allProperties = getAllProperties();
   allProperties.forEach(property => property.push(false));
@@ -101,11 +104,20 @@ function modifyUACustomDefinitions(
           }
         };
         if (type == 'custom metrics') {
-          templateRequest.body.minValue = templateValue[4];
-          templateRequest.body.maxValue = templateValue[5];
+          templateRequest.body.min_value = templateValue[4];
+          templateRequest.body.max_value = templateValue[5];
+          if (templateValue[6] == 'TIME') {
+            if (templateRequest.body.min_value == '') {
+              templateRequest.body.min_value = 0;
+            }
+          }
+          if (templateRequest.body.max_value == '' || 
+          templateRequest.body.max_value < templateRequest.body.min_value) {
+              delete templateRequest.body.max_value;
+          }
           templateRequest.body.type = templateValue[6];
-          placeholderRequest.body.minValue = modifySettings[4][0];
-          placeholderRequest.body.maxValue = modifySettings[5][0];
+          placeholderRequest.body.min_value = modifySettings[4][0];
+          placeholderRequest.body.max_value = modifySettings[5][0];
           placeholderRequest.body.type = modifySettings[6][0] || 'INTEGER';
         }
         if (existingValue != undefined) {
@@ -132,7 +144,6 @@ function modifyUACustomDefinitions(
                 writeUACustomDefinitionModificationToSheet(
                   type, response, property[1], property[3], 'created',
                   resultsSheetName, resultsRange);
-                Utilities.sleep(750);
               }
             }
           }
@@ -153,7 +164,6 @@ function modifyUACustomDefinitions(
             writeUACustomDefinitionModificationToSheet(
               type, response, property[1], property[3], 'created',
               resultsSheetName, resultsRange);
-            Utilities.sleep(750);
           } else {
             let response = null;
             let resultsSheetName = '';
@@ -170,7 +180,6 @@ function modifyUACustomDefinitions(
             writeUACustomDefinitionModificationToSheet(
               type, response, property[1], property[3], 'created',
               resultsSheetName, resultsRange);
-            Utilities.sleep(750);
           }
         }
       }
@@ -250,6 +259,7 @@ function writeUACustomDefinitionModificationToSheet(
     ss.getSheetByName(sheetName).getLastRow() + 1, 
     sheetRange.write.column, 1,
     sheetRange.write.numColumns).setValues(result);
+  Utilities.sleep(uaCustomDefinationsWriteDelay);
 }
 
 /**
