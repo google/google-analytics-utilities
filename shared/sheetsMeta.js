@@ -254,6 +254,21 @@ const sheetsMeta = {
         numRows: 1,
         numColumns: 16
       }
+    },
+    users: {
+      sheetName: 'UA Users',
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 10
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 14
+      }
     }
   },
   ga4: {
@@ -420,6 +435,21 @@ const sheetsMeta = {
         column: 1,
         numRows: 1,
         numColumns: 17
+      }
+    },
+    userLinks: {
+      sheetName: 'GA4 Users',
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 8
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 12
       }
     }
   }

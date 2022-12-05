@@ -73,9 +73,15 @@ function modifyGA4Streams() {
 /**
  * Modifies GA4 audiences.
  */
-
 function modifyGA4Audiences() {
   modifyGA4Entities(sheetsMeta.ga4.audiences.sheetName);
+}
+
+/**
+ * Modifies GA4 user links.
+ */
+function modifyGA4UserLinks() {
+  modifyGA4Entities(sheetsMeta.ga4.userLinks.sheetName);
 }
 
 /**
@@ -87,7 +93,7 @@ function modifyGA4Audiences() {
  */
 function modifyGA4Entities(sheetName) {
   let entities = getDataFromSheet(sheetName);
-  const ga4Resource = Object.keys(sheetsMeta.ga4).find(
+  let ga4Resource = Object.keys(sheetsMeta.ga4).find(
     key => sheetsMeta.ga4[key].sheetName === sheetName);
   if (entities.length > 0) {
     entities.forEach((entity, index) => {
@@ -106,6 +112,13 @@ function modifyGA4Entities(sheetName) {
       } else {
         parent = 'properties/' + entity[3];
         resourceName = entity[5];
+      }
+      if (sheetName == sheetsMeta.ga4.userLinks.sheetName && entity[3] == '') {
+        parent = 'accounts/' + entity[1]
+        ga4Resource = 'accountUserLinks';
+      } else if (sheetName == sheetsMeta.ga4.userLinks.sheetName && entity[3] != '') {
+        ga4Resource = 'propertyUserLinks';
+        parent = 'properties/' + entity[3];
       }
       // An entity cannot be both created and archived/deleted, so if both
       // are true, then the response is null and row is marked as skipped.
@@ -256,6 +269,11 @@ function buildCreatePayload(sheetName, entity) {
       payload.exclusionDurationMode = entity[11];
     }
     payload.filterClauses = [JSON.parse(entity[12])];
+  } else if (sheetName == sheetsMeta.ga4.userLinks.sheetName) {
+    delete payload.displayName;
+    delete payload.description;
+    payload.emailAddress = entity[4].trim();
+    payload.directRoles = [entity[7].trim()];
   }
   return payload;
 }
@@ -313,7 +331,7 @@ function buildUpdatePayload(sheetName, entity) {
         bundleId: entity[8]
       }
     }
-  } else if (sheetName = sheetsMeta.ga4.audiences.sheetName) {
+  } else if (sheetName == sheetsMeta.ga4.audiences.sheetName) {
     payload.displayName = entityDisplayNameOrId;
     payload.description = entity[6];
     /*
@@ -324,6 +342,10 @@ function buildUpdatePayload(sheetName, entity) {
       };
     }
     */
+  } else if (sheetName == sheetsMeta.ga4.userLinks.sheetName) {
+    delete payload.displayName;
+    delete payload.description;
+    payload.directRoles = [entity[7]];
   }
   return payload;
 }
