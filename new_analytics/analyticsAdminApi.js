@@ -26,7 +26,9 @@ const ga4Resource = {
   conversionEvents: AnalyticsAdmin.Properties.ConversionEvents,
   displayVideo360AdvertiserLinks: AnalyticsAdmin.Properties.DisplayVideo360AdvertiserLinks,
   properties: AnalyticsAdmin.Properties,
-  audiences: AnalyticsAdmin.Properties.Audiences
+  audiences: AnalyticsAdmin.Properties.Audiences,
+  accountUserLinks: AnalyticsAdmin.Accounts.UserLinks,
+  propertyUserLinks: AnalyticsAdmin.Properties.UserLinks
 };
 
 /**
@@ -37,12 +39,16 @@ const ga4Resource = {
  */
 function listGA4Entities(resourceKey, parent) {
   try {
+    let items = resourceKey;
     const options = {pageSize: 200};
     let response = {};
     if (parent != undefined) {
       if (resourceKey == 'properties') {
         parent.pageSize = 200;
         response = ga4Resource[resourceKey].list(parent);
+      } else if (resourceKey == 'accountUserLinks' || resourceKey == 'propertyUserLinks') { 
+        items = 'userLinks';
+        response = ga4Resource[resourceKey].list(parent, options);
       } else {
         response = ga4Resource[resourceKey].list(parent, options);
       }
@@ -53,43 +59,13 @@ function listGA4Entities(resourceKey, parent) {
     Utilities.sleep(ga4RequestDelay);
     while (options.pageToken != undefined) {
       const nextPage = ga4Resource[resourceKey].list(options);
-      response[resourceKey] = response[resourceKey].concat(nextPage[resourceKey]);
+      response[items] = response[items].concat(nextPage[items]);
       options.pageToken = nextPage.nextPageToken;
       Utilities.sleep(ga4RequestDelay);
     }
     return response;
   } catch(e) {
     console.log(e);
-    return e;
-  }
-}
-
-/**
- * Audits user links for GA4 accounts and properties.
- * @param {string} resourceKey The GA4 entity being requested.
- * @param {string} parent
- * @return {!Object} Either a response from the API or an error message.
- */
-function auditUserLinks(resourceKey, parent) {
-  try {
-    const options = {pageSize: 200};
-    let response = {};
-    if (parent != undefined) {
-      parent.pageSize = 200;
-      response = ga4Resource[resourceKey].userLinks.audit(parent);
-    } else {
-      response = ga4Resource[resourceKey].list(options);
-    }
-    options.pageToken = response.nextPageToken;
-    Utilities.sleep(ga4RequestDelay);
-    while (options.pageToken != undefined) {
-      const nextPage = ga4Resource[resourceKey].userLinks.audit(options);
-      response[resourceKey] = response[resourceKey].concat(nextPage[resourceKey]);
-      options.pageToken = nextPage.nextPageToken;
-      Utilities.sleep(ga4RequestDelay);
-    }
-    return response;
-  } catch(e) {
     return e;
   }
 }
@@ -107,7 +83,7 @@ function archiveGA4CustomDefinition(resourceKey, customDefinitionName) {
 
 function createGA4Entity(resourceKey, name, payload) {
   try {
-    let response = null;
+    let response = {};
     if (resourceKey == 'properties') {
       payload.parent = name;
       response = ga4Resource[resourceKey].create(payload);
@@ -136,6 +112,7 @@ function deleteGA4Entity(resourceKey, name) {
 function updateGA4Entity(resourceKey, name, payload, index) {
   try {
     let mask = '';
+    let response = {};
     if (resourceKey == 'customMetrics') {
       const customMetrics = JSON.parse(CacheService.getUserCache().get('customMetrics'));
       if (customMetrics[index][4] != payload.displayName) {
@@ -159,11 +136,14 @@ function updateGA4Entity(resourceKey, name, payload, index) {
       for (field in payload) {
         mask += field + ','
       }
-    }
-    if (mask == '') {
+    } else {
       mask = '*';
     }
-    const response = ga4Resource[resourceKey].patch(payload, name, {updateMask: mask});
+    if (resourceKey == 'accountUserLinks' || resourceKey == 'propertyUserLinks') {
+      response = ga4Resource[resourceKey].patch(payload, name);
+    } else {
+      response = ga4Resource[resourceKey].patch(payload, name, {updateMask: mask});
+    }
 		Utilities.sleep(ga4RequestDelay);
 		return response;
   } catch(e) {

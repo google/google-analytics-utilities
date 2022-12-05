@@ -32,6 +32,8 @@ The script currently performs the following functions:
         *   List settings, Delete
     *   Goal settings
         *   List, Create
+    *   Users
+        *   List
 *   Google Analytics 4
     *   Account Summaries,
         *   List
@@ -52,6 +54,8 @@ The script currently performs the following functions:
     *   DV360 Links
         *   List, Create, Delete, Update
     *   GA4 Audiences
+        *   List, Create, Delete, Update
+    *   Users
         *   List, Create, Delete, Update
 
 These tasks can be completed by [joining the Google Group](https://groups.google.com/g/google-analytics-utilities-users), [copying the template spreadsheet](https://docs.google.com/spreadsheets/d/1kJqwYNed8RTuAgjy0aRUooD__MIPqzUeiDF5LZ7v1aI/), and clicking on various options under the Google Analytics Utilities menu.
@@ -261,6 +265,17 @@ Note: TIME event types must have a minimum value of at least 0 and cannot be lef
 2. Select which goals that are going to be created by checking the box under column W.
 3. Click on Google Analytics Utilities > Universal Analytics > Goals > Create Goals.
 4. The script will create the goals in the specified views based on the information entered in the “Goal Settings” sheet.
+
+
+### List Users
+
+
+
+1. List UA account summaries.
+2. When listing users, the script will automatically loop through all of the properties and views under a selected account, so you only need to select one row for any account you are interested in.
+3. Navigate to the “UA Users” sheet.
+4. Click on Google Analytics Utilities > Universal Analytics > Users > List Users. 
+5. The script will save all of the account, property, and view user links for the selected accounts to the sheet. Only direct permissions will be listed. Batching of requests is not enabled. User information will only be listed if you have the necessary permissions.
 
 
 ## Google Analytics 4
@@ -735,3 +750,71 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 3. Check the “Update” box for each audience you want to update.
 4. Click on Google Analytics Utilities > Google Analytics 4 > Audience > Modify.
 5. The script will attempt to update the selected audience.
+
+
+### GA4 Users
+
+
+#### List
+
+
+
+1. List GA4 account summaries.
+2. Select the properties from which you want to retrieve user links.
+3. Navigate to the “GA4 Users” sheet.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Users > List.
+5. The user links for the selected properties will be listed in the “GA4 Users” sheet. User links will only be displayed if the user requesting the information has the necessary permissions. If possible, the user links for the accounts associated with each property will also be listed. Only direct roles will be listed.
+
+
+#### Create
+
+
+
+1. Navigate to the “GA4 Users” sheet.
+2. Enter the following in a new row:
+    1. Account User Link:
+        1. Account ID
+        2. User Email
+        3. Permissions - Must be one of the following:
+            1. predefinedRoles/viewer
+            2. predefinedRoles/analyst
+            3. predefinedRoles/editor
+            4. predefinedRoles/admin
+            5. predefinedRoles/no-cost-data
+            6. predefinedRoles/no-revenue-data
+    2. Property User Link:
+        4. Account ID
+        5. Property ID
+        6. User Email
+        7. Permissions - Must be one of the following:
+            7. predefinedRoles/viewer
+            8. predefinedRoles/analyst
+            9. predefinedRoles/editor
+            10. predefinedRoles/admin
+            11. predefinedRoles/no-cost-data
+            12. predefinedRoles/no-revenue-data
+3. Check the “Create” box for the row.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Users > Modify.
+5. The script will attempt to create a new user link based on the information in each row. Batching of requests is not enabled.
+
+
+#### Delete
+
+
+
+1. After listing your GA4 user links, navigate to the “GA4 Users” sheet.
+2. Check the “Delete” box for each user link you want to delete.
+3. Click on Google Analytics Utilities > Google Analytics 4 > Users > Modify.
+4. The script will attempt to delete the selected user links. Batching of requests is not enabled.
+
+
+#### Update
+
+
+
+1. After listing your GA4 user links, navigate to the “GA4 Users” sheet.
+2. The following can be updated:
+    1. Permissions
+3. Check the “Update” box for each user link you want to update.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Users > Modify.
+5. The script will attempt to update the selected user links. Batching of requests is not enabled.

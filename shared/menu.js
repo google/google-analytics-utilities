@@ -47,7 +47,11 @@ function onOpen(e) {
       .addSubMenu(
         ui.createMenu('Goals')
         .addItem('List Goals', 'writeGoalsToSheet')
-        .addItem('Create Goals', 'createGoals')))
+        .addItem('Create Goals', 'createGoals'))
+      .addSubMenu(
+        ui.createMenu('Users')
+        .addItem('List Users', 'writeUAUsersToSheet')
+      ))
     .addSubMenu(
       ui.createMenu('Google Analytics 4')
       .addItem('List Account Summaries', 'writeGA4AccountSummariesToSheet')
@@ -87,6 +91,10 @@ function onOpen(e) {
         ui.createMenu('Audiences')
         .addItem('List', 'writeGA4AudiencesToSheet')
         .addItem('Modify', 'modifyGA4Audiences'))
+      .addSubMenu(
+        ui.createMenu('Users')
+        .addItem('List', 'writeGA4UserLinksToSheet')
+        .addItem('Modify', 'modifyGA4UserLinks'))
     )
     .addSeparator()
     .addSubMenu(
