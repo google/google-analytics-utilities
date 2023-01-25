@@ -274,7 +274,7 @@ function writeToSheet(data, sheetName) {
     sheet.getRange(ranges.row, ranges.column, data.length, ranges.numColumns)
          .setValues(data);
   }
-  checkRelease()
+//  checkRelease();
 }
 /**
  * Retrieves data from a specified sheet.
@@ -285,14 +285,9 @@ function writeToSheet(data, sheetName) {
 function getDataFromSheet(sheetName) {
   const ranges = getSheetRange(sheetName, 'read');
   let sheet = ss.getSheetByName(sheetName);
-  if (sheet == undefined) {
-    sheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet(sheetName);
-    SpreadsheetApp.getUi().alert('Enter Settings');
-    return;
-  }
   return sheet.getRange(
     ranges.row, ranges.column, 
-    sheet.getLastRow(), ranges.numColumns).getValues();
+    sheet.getLastRow() - ranges.row + 1, ranges.numColumns).getValues();
 }
 /**
  * Retrieve settings from thee settings sheet.
@@ -412,7 +407,11 @@ function getData(report) {
 function clearMainContent(sheetsMetaField) {
   const sheet = ss.getSheetByName(sheetsMetaField.sheetName);
   const ranges = sheetsMetaField.write;
-  sheet.getRange(ranges.row, ranges.column, sheet.getLastRow() - 1, ranges.numColumns).clearContent();
+  let lastRow = sheet.getLastRow();
+  if (lastRow > 1) {
+    lastRow -= 1;
+  }
+  sheet.getRange(ranges.row, ranges.column, lastRow, ranges.numColumns).clearContent();
 }
 
 /**
@@ -474,4 +473,53 @@ function clearSheetContent(sheetsMetaField) {
   setCheckboxesToFalse(sheetsMetaField);
   clearActionsTaken(sheetsMetaField);
   clearMainContent(sheetsMetaField);
+}
+
+/**
+ * Builds a GA4 report object.
+ * @param {!Array<string>} dimensions Dimensions requested in the report.
+ * @param {!Array<string>} metrics Metrics requested in the report.
+ * @param {string} startDate Start date for the report.
+ * @param {string} endDate End date for the report.
+ * @param {!Object} dimensionFilter Dimension filters for the report.
+ * @returns {!Object} Analytics report object.
+ */
+function generateGA4DataReportRequest(dimensions, metrics, startDate, endDate, dimensionFilter) {
+  const request = AnalyticsData.newRunReportRequest();
+  // Sets metrics.
+  if (metrics.length > 0) {
+    const reportMetrics = [];
+    metrics.forEach(metric => {
+      const newMetric = AnalyticsData.newMetric();
+      newMetric.name = metric;
+      reportMetrics.push(newMetric);
+    });
+    request.metrics = reportMetrics;
+  }
+  // Sets dimensions.
+  if (dimensions.length > 0) {
+    const reportDimensions = [];
+    dimensions.forEach(dimension => {
+      const newDimension = AnalyticsData.newDimension();
+      newDimension.name = dimension;
+      reportDimensions.push(newDimension);
+    });
+    request.dimensions = reportDimensions;
+  }
+  // Sets date range.
+  const dateRange = AnalyticsData.newDateRange();
+  dateRange.startDate = startDate;
+  dateRange.endDate = endDate;
+  request.dateRanges = dateRange;
+  // Sets dimension filter.
+  if (Object.keys(dimensionFilter).length > 0) {
+    const newFilter = AnalyticsData.newFilterExpression();
+    newFilter.filter = AnalyticsData.newFilter();
+    newFilter.filter.fieldName = dimensionFilter.name;
+    newFilter.filter.stringFilter = AnalyticsData.newStringFilter();
+    newFilter.filter.stringFilter.matchType = dimensionFilter.matchType;
+    newFilter.filter.stringFilter.value = dimensionFilter.value;
+    request.dimensionFilter = newFilter;
+  }
+  return request;
 }

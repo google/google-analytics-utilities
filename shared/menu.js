@@ -95,6 +95,9 @@ function onOpen(e) {
         ui.createMenu('Users')
         .addItem('List', 'writeGA4UserLinksToSheet')
         .addItem('Modify', 'modifyGA4UserLinks'))
+      .addSubMenu(
+        ui.createMenu('Health Report')
+        .addItem('Create Report', 'createHealthReport'))
     )
     .addSeparator()
     .addSubMenu(

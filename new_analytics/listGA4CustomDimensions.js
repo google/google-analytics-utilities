@@ -30,17 +30,18 @@ function listSelectedGA4CustomDimensions(properties) {
       'customDimensions', propertyName).customDimensions;
     if (cds != undefined) {
       for (let i = 0; i < cds.length; i++) {
+        const currentCd = cds[i];
         finalizedCds.push([
           property[0],
           property[1],
           property[2],
           property[3],
-          cds[i].displayName,
-          cds[i].name,
-          cds[i].parameterName,
-          cds[i].scope,
-          cds[i].disallowAdsPersonalization,
-          cds[i].description
+          currentCd.displayName,
+          currentCd.name,
+          currentCd.parameterName,
+          currentCd.scope,
+          currentCd.disallowAdsPersonalization,
+          currentCd.description
         ]);
       }
     }

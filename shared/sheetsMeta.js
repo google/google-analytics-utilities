@@ -338,13 +338,13 @@ const sheetsMeta = {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 9
+        numColumns: 10
       },
       read: {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 13
+        numColumns: 14
       }
     },
     googleAdsLinks: {
@@ -413,13 +413,13 @@ const sheetsMeta = {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 16
+        numColumns: 17
       },
       read: {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 20
+        numColumns: 21
       }
     },
     audiences: {
@@ -450,6 +450,15 @@ const sheetsMeta = {
         column: 1,
         numRows: 1,
         numColumns: 12
+      }
+    },
+    healthReport: {
+      sheetName: 'GA4 Report Settings',
+      read: {
+        row: 4,
+        column: 1,
+        numRows: 1,
+        numColumns: 4
       }
     }
   }

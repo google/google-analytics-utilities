@@ -15,7 +15,9 @@
  */
 
 /**
- * 
+ * Lists the users for all accounts, properties, and views under a given account.
+ * @params {!Array<!Array>} selectedAccounts A double array of selected accounts.
+ * @return {!Array<!Array>} A double array of user settings.
  */
 function listUAUsers(selectedAccounts) {
   const userList = [];
@@ -86,7 +88,7 @@ function listUAUsers(selectedAccounts) {
 }
 
 /**
- * 
+ * Writes Universaly Analytics users to a sheet.
  */
 function writeUAUsersToSheet() {
   const views = getSelectedViews();

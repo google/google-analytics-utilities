@@ -15,6 +15,8 @@
  */
 
 /**
+ * Lists the users for all properties and their associated accounts.
+ * @param {!Array<!Array>} A double array of selected properties.
  * 
  */
 function listGA4UserLinks(properties) {
@@ -60,7 +62,7 @@ function listGA4UserLinks(properties) {
 }
 
 /**
- * 
+ * Writes GA4 user link settings to a sheet.
  */
 function writeGA4UserLinksToSheet() {
   const selectedProperties = getSelectedGa4Properties();

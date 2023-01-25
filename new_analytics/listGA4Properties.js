@@ -16,39 +16,53 @@
 
 /**
  * Retrieves the property details for a given set of accounts.
- * @param {!Array<!Array>} account A two dimensional array of
+ * @param {!Array<!Array>} properties A two dimensional array of
  * account and property names and ids.
  * @return {!Array<!Array>} A two dimensional array where each
  * inner array contains metadata for a given property.
  */
-function listSelectedGA4Properties(accounts) {
+function listSelectedGA4Properties(selectedProperties) {  
   let data = [];
-  accounts.forEach(property => {
-    const parent = {filter: 'ancestor:accounts/' + property[1], pageSize: 200};
-    const properties = listGA4Entities('properties', parent).properties;
-    data = data.concat(properties.reduce((arr, prop) => {
-      const attributionSettings = AnalyticsAdmin.Properties.getAttributionSettings(prop.name + '/attributionSettings');
-      const subArray = [
-        property[0],
-        property[1],
-        prop.displayName,
-        prop.name.split('/')[1],
-        prop.propertyType,
-        prop.createTime,
-        prop.updateTime,
-        prop.industryCategory,
-        prop.timeZone,
-        prop.currencyCode,
-        prop.serviceLevel,
-        AnalyticsAdmin.Properties.getDataRetentionSettings(prop.name + '/googleSignalsSettings').state,
-        AnalyticsAdmin.Properties.getGoogleSignalsSettings(prop.name + '/dataRetentionSettings').eventDataRetention,
-        attributionSettings.acquisitionConversionEventLookbackWindow,
-        attributionSettings.otherConversionEventLookbackWindow,
-        attributionSettings.reportingAttributionModel
-      ]
-      arr.push(subArray);
-      return arr;
-    }, []));
+  const request = generateGA4DataReportRequest([], ['eventCount'], '7daysAgo', 'today', {});
+  const alreadyListedAccounts = [];
+  selectedProperties.forEach(property => {
+    if (alreadyListedAccounts.indexOf(property[1]) == -1) {
+      alreadyListedAccounts.push(property[1]);
+      const parent = {filter: 'ancestor:accounts/' + property[1], pageSize: 200};
+      const properties = listGA4Entities('properties', parent).properties;
+      data = data.concat(properties.reduce((arr, prop) => {
+        if (selectedProperties.filter(property => property[3] == prop.name.split('/')[1]).length > 0) {
+          const attributionSettings = AnalyticsAdmin.Properties.getAttributionSettings(prop.name + '/attributionSettings');
+          let eventCount = 0;
+          let eventRows = AnalyticsData.Properties.runReport(request, prop.name).rows;
+          if (eventRows) {
+            eventCount = eventRows[0].metricValues[0].value;
+          }
+          const subArray = [
+            property[0],
+            property[1],
+            prop.displayName,
+            prop.name.split('/')[1],
+            prop.propertyType,
+            prop.createTime,
+            prop.updateTime,
+            prop.industryCategory,
+            prop.timeZone,
+            prop.currencyCode,
+            prop.serviceLevel,
+            eventCount,
+            AnalyticsAdmin.Properties.getDataRetentionSettings(prop.name + '/googleSignalsSettings').state,
+            AnalyticsAdmin.Properties.getGoogleSignalsSettings(prop.name + '/dataRetentionSettings').eventDataRetention,
+            attributionSettings.acquisitionConversionEventLookbackWindow,
+            attributionSettings.otherConversionEventLookbackWindow,
+            attributionSettings.reportingAttributionModel
+          ]
+          arr.push(subArray);
+          return arr;
+        }
+        return arr;
+      }, []));
+    }
   });
   return data;
 }
@@ -57,8 +71,8 @@ function listSelectedGA4Properties(accounts) {
  * 
  */
 function writeGA4PropertyDetailsToSheet() {
-  const selectedAccounts = getSelectedGa4Properties();
-  const properties = listSelectedGA4Properties(selectedAccounts);
+  const selectedProperties = getSelectedGa4Properties();
+  const properties = listSelectedGA4Properties(selectedProperties);
   clearSheetContent(sheetsMeta.ga4.properties);
   writeToSheet(properties, sheetsMeta.ga4.properties.sheetName);
 }
