@@ -24,27 +24,52 @@
  */
 function listSelectedGA4ConversionEvents(properties) {
   const allConversionEvents = [];
+  const request = generateGA4DataReportRequest(
+    ['eventName', 'isConversionEvent'],
+    ['conversions'], '7daysAgo', 'today', 
+    {name: 'isConversionEvent', matchType: 'EXACT', value: 'true'});
   properties.forEach(property => {
     const propertyName = 'properties/' + property[3];
     const conversionEvents = listGA4Entities(
       'conversionEvents', propertyName).conversionEvents;
     if (conversionEvents != undefined) {
       for (let i = 0; i < conversionEvents.length; i++) {
+        const currentConversionEvent = conversionEvents[i];
         allConversionEvents.push([
           property[0],
           property[1],
           property[2],
           property[3],
-          conversionEvents[i].eventName,
-          conversionEvents[i].name,
-          conversionEvents[i].createTime,
-          conversionEvents[i].deletable,
-          conversionEvents[i].custom
+          currentConversionEvent.eventName,
+          currentConversionEvent.name,
+          currentConversionEvent.createTime,
+          currentConversionEvent.deletable,
+          currentConversionEvent.custom,
+          getConversionCount(request, currentConversionEvent, 'properties/' + property[3])
         ]);
       }
     }
   });
   return allConversionEvents;
+}
+
+/**
+ * Retrieves either the conversion count for a given event or zero.
+ * @param {!Object} request Analytics report request object.
+ * @param {!Object} conversionEvent
+ * @param {string} propertyName The proprty name.
+ * @return {number} conversionCount The number of conversions for a given event.
+ */
+function getConversionCount(request, conversionEvent, propertyName) {
+  let conversionCount = 0;
+  const conversions = AnalyticsData.Properties.runReport(request, propertyName);
+  if (conversions.rows) {
+    conversionRow = conversions.rows.find(row => row.dimensionValues[0].value == conversionEvent.eventName);
+    if (conversionRow) {
+      conversionCount = conversionRow.metricValues[0].value || 0;
+    }
+  }
+  return conversionCount;
 }
 
 /**

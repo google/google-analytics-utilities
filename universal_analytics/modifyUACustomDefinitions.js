@@ -73,7 +73,12 @@ function modifyUACustomDefinitions(
   const overwriteExisting = modifySettings[0][0];
   if (templateValues.length > 0 && selectedDestinationProperties.length > 0) {
     selectedDestinationProperties.forEach(property => {
-      const existingDestinationValues = getCustomDimensions(property[1], property[3]);
+      let = existingDestinationValues = [];
+      if (type == 'custom metrics') {
+        existingDestinationValues = getCustomMetrics(property[1], property[3]);
+      } else {
+        existingDestinationValues = getCustomDimensions(property[1], property[3]);
+      }
       for (let i = 0; i < templateValues.length; i++) {
         if (!property[5] && i > 19) {
           break;
@@ -106,9 +111,11 @@ function modifyUACustomDefinitions(
         if (type == 'custom metrics') {
           templateRequest.body.min_value = templateValue[4];
           templateRequest.body.max_value = templateValue[5];
-          if (templateValue[6] == 'TIME') {
-            if (templateRequest.body.min_value == '') {
+          if (templateRequest.body.min_value == '') {
+            if (templateValue[6] == 'TIME') {
               templateRequest.body.min_value = 0;
+            } else {
+              delete templateRequest.body.min_value;
             }
           }
           if (templateRequest.body.max_value == '' || 
@@ -133,16 +140,13 @@ function modifyUACustomDefinitions(
                   response = updateCustomDimension(templateRequest);
                   resultsSheetName = sheetsMeta.ua.modifyCdsResults.sheetName;
                   resultsRange = sheetsMeta.ua.modifyCdsResults;
-                } else if (type == 'custom metrics' && 
-                templateValue[4] != existingValue.min_value &&
-                templateValue[5] != existingValue.max_value &&
-                templateValue[6] != existingValue.type) {
+                } else if (type == 'custom metrics') {
                   response = updateCustomMetric(templateRequest);
                   resultsSheetName = sheetsMeta.ua.modifyCmsResults.sheetName;
                   resultsRange = sheetsMeta.ua.modifyCmsResults;
                 }
                 writeUACustomDefinitionModificationToSheet(
-                  type, response, property[1], property[3], 'created',
+                  type, response, property[1], property[3], 'updated',
                   resultsSheetName, resultsRange);
               }
             }

@@ -37,8 +37,7 @@ function listSelectedGA4FirebaseLinks(properties) {
           property[3],
           firebaseLinks[i].project,
           firebaseLinks[i].name,
-          firebaseLinks[i].createTime,
-          firebaseLinks[i].maximumUserAccess
+          firebaseLinks[i].createTime
         ]);
       }
     }

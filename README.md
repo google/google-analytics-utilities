@@ -818,3 +818,41 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 3. Check the “Update” box for each user link you want to update.
 4. Click on Google Analytics Utilities > Google Analytics 4 > Users > Modify.
 5. The script will attempt to update the selected user links. Batching of requests is not enabled.
+
+
+### GA4 Health Report
+
+
+#### Create a Report
+
+
+
+1. List GA4 account summaries.
+2. Select the properties for which you want to generate a report.
+3. Navigate to the “GA4 Report Settings” sheet.
+4. Enter the information as indicated for rows 4 - 7.
+    1. If the “Template Slides URL” value is left as “Default” or is blank, then the default template will be used. Otherwise, a Google Slides URL of a template presentation must be provided.
+    2. If the box for “Request New Settings Information” is checked, then GA Utilities will automatically list new information for several different GA4 sheets. This newly listed information will clear any existing settings listed in the sheets. This includes the following sheets: 
+        1. GA4 Property Details
+        2. GA4 Audiences
+        3. GA4 Data Streams
+        4. GA4 Conversions
+        5. GA4 Custom Dimensions
+        6. GA4 Custom Metrics
+        7. GA4 Google Ads Links
+        8. GA4 DV360 Links
+        9. GA4 Firebase Links
+5. The placeholder rows starting at row 10 can be added to, removed, or changed as you prefer. Each column works in the following way:
+    3. **Placeholder Text:** This is the placeholder text found in the template spreadsheet. Each placeholder text can only be used once per slide. A placeholder can be whatever you want, but the behavior of the script will change if any of the following words are used:
+        10. **percent**: If the word “percent” (all in lowercase) is used in the placeholder, then the value in the slide will be properly formatted as a percent and will change color depending on the information entered for the percent range color scale. The value in the spreadsheet must be a number.
+        11. **image, graphic, or logo**: If the image, graphic, or logo (all lowercase) are used in the placeholder, then the value must be a URL that points to an image. The script will then try to swap out the placeholder in the template with the image from the URL.
+        12. **list**: If the word “list” is used in the placeholder, then the script will try to create a bulleted list in the slide based on the value in the spreadsheet. The value in the spreadsheet will be split by the presence of double semicolons (;;). For example, the following would be split into two bullet points: <code><em>hello, world;;example list</em></code>. You can either construct a list value in a single line, or you can have multiple rows with the exact same placeholder name and the script will create a list for you from those rows. 
+    4. <strong>Template Slide</strong>: The template slide column is used to determine which slide a given placeholder text belongs to. The template slide text must exist in the speaker notes section for a given slide in order for the script to identify the correct slide.
+    5. <strong>Include</strong>: Either check the box or use a formula to determine if a placeholder should be considered when building the final presentation.
+    6. <strong>Value</strong>: The final value that will appear on the slide where the placeholder text is present.
+6. If your template includes one or more slides that need to be duplicated, then you must navigate to the “GA4 Report Settings - Snapshot” sheet and enter settings for those slides. This sheet can be customized in the following way:
+    7. Column A: Contains the property ID for a given GA4 property and is included to make it easier to create formulas in other columns.
+    8. Column B: Contains the template slide placeholder and is used to identify the template slide.
+    9. Columns C - ♾️: The headers for these columns should contain the placeholder text that will be swapped with with a real value when the report is complete.  Every row after the header should have a value for that specific property. These values can be derived from the other GA Utilities sheets or entered as plain text. The placeholder name rules are the same as previously stated: percent formats the number value as a percent on the slide, list creates a bulleted list, image/graphic/logo uses a provided URL as an image, and any other name just replaces the value on the slide as is.
+7. Once all values have been entered, click GA Utilities > Health Report > Create Report
+8. Once the health report has been created, a link to the report will be placed in cell D1 in the “GA4 Report Settings” sheet.
