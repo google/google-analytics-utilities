@@ -11,6 +11,8 @@ The script makes use of the following APIs:
 *   Google Analytics Management API 
 *   Google Analytics Reporting API version 4
 *   Google Analytics Admin API
+*   Google Analytics Data API
+*   Google Drive API
 
 The script currently performs the following functions:
 
@@ -57,6 +59,8 @@ The script currently performs the following functions:
         *   List, Create, Delete, Update
     *   Users
         *   List, Create, Delete, Update
+    *   Settings Report
+        *   Create
 
 These tasks can be completed by [joining the Google Group](https://groups.google.com/g/google-analytics-utilities-users), [copying the template spreadsheet](https://docs.google.com/spreadsheets/d/1kJqwYNed8RTuAgjy0aRUooD__MIPqzUeiDF5LZ7v1aI/), and clicking on various options under the Google Analytics Utilities menu.
 
@@ -319,7 +323,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 
 
 1. List GA4 account summaries.
-2. Select one account row to list the details for the properties underneath it.
+2. Select each property for which you want to see details.
 3. Navigate to the “GA4 Property Details” sheet.
 4. Click on Google Analytics Utilities > Google Analytics 4 > Properties > List.
 5. The details for the selected properties will be listed in the “GA4 Property Details” sheet.
@@ -820,7 +824,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 5. The script will attempt to update the selected user links. Batching of requests is not enabled.
 
 
-### GA4 Health Report
+### GA4 Settings Report
 
 
 #### Create a Report
@@ -843,16 +847,17 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
         8. GA4 DV360 Links
         9. GA4 Firebase Links
 5. The placeholder rows starting at row 10 can be added to, removed, or changed as you prefer. Each column works in the following way:
-    3. **Placeholder Text:** This is the placeholder text found in the template spreadsheet. Each placeholder text can only be used once per slide. A placeholder can be whatever you want, but the behavior of the script will change if any of the following words are used:
-        10. **percent**: If the word “percent” (all in lowercase) is used in the placeholder, then the value in the slide will be properly formatted as a percent and will change color depending on the information entered for the percent range color scale. The value in the spreadsheet must be a number.
-        11. **image, graphic, or logo**: If the image, graphic, or logo (all lowercase) are used in the placeholder, then the value must be a URL that points to an image. The script will then try to swap out the placeholder in the template with the image from the URL.
-        12. **list**: If the word “list” is used in the placeholder, then the script will try to create a bulleted list in the slide based on the value in the spreadsheet. The value in the spreadsheet will be split by the presence of double semicolons (;;). For example, the following would be split into two bullet points: <code><em>hello, world;;example list</em></code>. You can either construct a list value in a single line, or you can have multiple rows with the exact same placeholder name and the script will create a list for you from those rows. 
-    4. <strong>Template Slide</strong>: The template slide column is used to determine which slide a given placeholder text belongs to. The template slide text must exist in the speaker notes section for a given slide in order for the script to identify the correct slide.
-    5. <strong>Include</strong>: Either check the box or use a formula to determine if a placeholder should be considered when building the final presentation.
-    6. <strong>Value</strong>: The final value that will appear on the slide where the placeholder text is present.
+    1. **Placeholder Text:** This is the placeholder text found in the template spreadsheet. Each placeholder text can only be used once per slide. A placeholder can be whatever you want, but the behavior of the script will change if any of the following words are used:
+        1. **percent**: If the word “percent” (all in lowercase) is used in the placeholder, then the value in the slide will be properly formatted as a percent and will change color depending on the information entered for the percent range color scale. The value in the spreadsheet must be a number.
+        2. **image, graphic, or logo**: If the image, graphic, or logo (all lowercase) are used in the placeholder, then the value must be a URL that points to an image. The script will then try to swap out the placeholder in the template with the image from the URL.
+        3. **list**: If the word “list” is used in the placeholder, then the script will try to create a bulleted list in the slide based on the value in the spreadsheet. The value in the spreadsheet will be split by the presence of double semicolons (;;). For example, the following would be split into two bullet points: <code><em>hello, world;;example list</em></code>. You can either construct a list value in a single line, or you can have multiple rows with the exact same placeholder name and the script will create a list for you from those rows. 
+    2. <strong>Template Slide</strong>: The template slide column is used to determine which slide a given placeholder text belongs to. The template slide text must exist in the speaker notes section for a given slide in order for the script to identify the correct slide.
+    3. <strong>Include</strong>: Either check the box or use a formula to determine if a placeholder should be considered when building the final presentation.
+    4. <strong>Value</strong>: The final value that will appear on the slide where the placeholder text is present.
 6. If your template includes one or more slides that need to be duplicated, then you must navigate to the “GA4 Report Settings - Snapshot” sheet and enter settings for those slides. This sheet can be customized in the following way:
-    7. Column A: Contains the property ID for a given GA4 property and is included to make it easier to create formulas in other columns.
-    8. Column B: Contains the template slide placeholder and is used to identify the template slide.
-    9. Columns C - ♾️: The headers for these columns should contain the placeholder text that will be swapped with with a real value when the report is complete.  Every row after the header should have a value for that specific property. These values can be derived from the other GA Utilities sheets or entered as plain text. The placeholder name rules are the same as previously stated: percent formats the number value as a percent on the slide, list creates a bulleted list, image/graphic/logo uses a provided URL as an image, and any other name just replaces the value on the slide as is.
+    1. Column A: Contains the property ID for a given GA4 property and is included to make it easier to create formulas in other columns.
+    2. Column B: Contains the template slide placeholder and is used to identify the template slide.
+    3. Columns C - ♾️: The headers for these columns should contain the placeholder text that will be swapped with with a real value when the report is complete.  Every row after the header should have a value for that specific property. These values can be derived from the other GA Utilities sheets or entered as plain text. The placeholder name rules are the same as previously stated: percent formats the number value as a percent on the slide, list creates a bulleted list, image/graphic/logo uses a provided URL as an image, and any other name just replaces the value on the slide as is.
 7. Once all values have been entered, click GA Utilities > Health Report > Create Report
 8. Once the health report has been created, a link to the report will be placed in cell D1 in the “GA4 Report Settings” sheet.
+9. Review the new report and make any necessary adjustments. There may be some placeholders that aren’t removed if said placeholder was not included in the sheet but was present in the template. This is expected and you should delete the placeholder manually. You may also need to adjust image sizes, which is expected.
