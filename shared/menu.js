@@ -51,6 +51,11 @@ function onOpen(e) {
       .addSubMenu(
         ui.createMenu('Users')
         .addItem('List Users', 'writeUAUsersToSheet')
+      ).addSubMenu(
+        ui.createMenu('Auto Config')
+        .addItem('List Properties', 'writeUAPropertiesToSheet')
+        .addItem('List Opt Out Statuses', 'writeSelectedOptOutStatusesToSheet')
+        .addItem('Update Opt Out Statuses', 'updateSelectedOptOutStatuses')
       ))
     .addSubMenu(
       ui.createMenu('Google Analytics 4')

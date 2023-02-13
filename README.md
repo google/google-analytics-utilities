@@ -282,6 +282,28 @@ Note: TIME event types must have a minimum value of at least 0 and cannot be lef
 5. The script will save all of the account, property, and view user links for the selected accounts to the sheet. Only direct permissions will be listed. Batching of requests is not enabled. User information will only be listed if you have the necessary permissions.
 
 
+
+### UA GA4 Auto Configuration Opt Out
+
+#### List Properties
+
+1. Navigate to the "UA Auto Config Opt Out" sheet.
+2. Click on Google Analytics Utilities > Universal Analytics > Auto Config > List Properties
+3. All of the properties to which you have access should be listed in the sheet.
+
+#### List Current Opt Out Status
+
+1. After listing your properties, select the checkbox under the "Get or Update Opt Out Status" column for a given property to get its opt out status.
+2. Click on Google Analytics Utilities > Universal Analytics > Auto Config > List Opt Out Statuses.
+3. The opt out statuses for the properties you selected should be listed as either "TRUE" or "FALSE" under the "Opt Out?" column. All unselected properties should have a blank value.
+
+#### Update Opt Out Status
+
+1. After listing your properties, select the checkbox under the "Get or Update Opt Out Status" column for a given property to update its status.
+2. Enter the new opt out statuses for the properties you selected.
+3. Click on Google Analytics Utilities > Universal Analytics > Auto Config > Update Opt Out Statuses.
+4. The "Action Taken" column should be updated for each property you updated with the word "Updated". If an error occurred for a given property, the "Action Taken" column should say "Error:" and the error message. If a property was not selected, then the "Action Taken" cell for that row will be cleared.
+
 ## Google Analytics 4
 
 

@@ -233,8 +233,8 @@ function getSelectedProperties(selectedViews) {
 }
 /**
  * Returns a double array of all properties in all accounts.
- * @return {!Array<!Array>} A double array of all propertiesunder all accounts a
- *     user has access to.
+ * @return {!Array<!Array>} A double array of all properties under all accounts 
+ * a user has access to.
  */
 function getAllProperties() {
   const finalProperties = [];
@@ -247,12 +247,14 @@ function getAllProperties() {
       for (let j = 0; j < properties.length; j++) {
         const propertyName = properties[j].name;
         const propertyId = properties[j].id;
+        const internalPropertyId = properties[j].internalWebPropertyId;
         let is360 = false;
         if (properties[j].level == 'PREMIUM') {
           is360 = true;
         }
         finalProperties.push(
-            [accountName, accountId, propertyName, propertyId, is360]);
+            [accountName, accountId, propertyName, propertyId, 
+            internalPropertyId, is360]);
       }
     }
   }

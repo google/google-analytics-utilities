@@ -269,6 +269,21 @@ const sheetsMeta = {
         numRows: 1,
         numColumns: 14
       }
+    },
+    optOut: {
+      sheetName: 'UA Auto Config Opt Out',
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 6
+      },
+        read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+          numColumns: 8
+      }
     }
   },
   ga4: {
