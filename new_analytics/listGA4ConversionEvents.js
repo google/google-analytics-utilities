@@ -33,8 +33,20 @@ function listSelectedGA4ConversionEvents(properties) {
     const conversionEvents = listGA4Entities(
       'conversionEvents', propertyName).conversionEvents;
     if (conversionEvents != undefined) {
+      let conversionsReport = null;
+      try {
+        conversionsReport = AnalyticsData.Properties.runReport(request, propertyName);
+      } catch(e) {
+        conversionsReport = 'No Access';
+      }
       for (let i = 0; i < conversionEvents.length; i++) {
         const currentConversionEvent = conversionEvents[i];
+        let conversionCount = null;
+        if (conversionsReport != 'No Access') {
+          conversionCount = getConversionCount(request, currentConversionEvent)
+        } else {
+          conversionCount = conversionsReport;
+        }
         allConversionEvents.push([
           property[0],
           property[1],
@@ -45,7 +57,7 @@ function listSelectedGA4ConversionEvents(properties) {
           currentConversionEvent.createTime,
           currentConversionEvent.deletable,
           currentConversionEvent.custom,
-          getConversionCount(request, currentConversionEvent, 'properties/' + property[3])
+          conversionCount
         ]);
       }
     }
@@ -55,15 +67,13 @@ function listSelectedGA4ConversionEvents(properties) {
 
 /**
  * Retrieves either the conversion count for a given event or zero.
- * @param {!Object} request Analytics report request object.
+ * @param {!Object} conversionsReport Analytics report object.
  * @param {!Object} conversionEvent
- * @param {string} propertyName The proprty name.
  * @return {number} conversionCount The number of conversions for a given event.
  */
-function getConversionCount(request, conversionEvent, propertyName) {
+function getConversionCount(conversionsReport, conversionEvent) {
   let conversionCount = 0;
-  const conversions = AnalyticsData.Properties.runReport(request, propertyName);
-  if (conversions.rows) {
+  if (conversionsReport.rows) {
     conversionRow = conversions.rows.find(row => row.dimensionValues[0].value == conversionEvent.eventName);
     if (conversionRow) {
       conversionCount = conversionRow.metricValues[0].value || 0;

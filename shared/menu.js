@@ -101,6 +101,13 @@ function onOpen(e) {
         .addItem('List', 'writeGA4UserLinksToSheet')
         .addItem('Modify', 'modifyGA4UserLinks'))
       .addSubMenu(
+        ui.createMenu('SA360 Links')
+        .addItem('List', 'writeGA4SA360LinksToSheet')
+        .addItem('Modify', 'modifyGA4SA360Links'))
+        .addSubMenu(
+        ui.createMenu('BigQuery')
+        .addItem('List', 'writeGA4BigQueryLinksToSheet'))
+      .addSubMenu(
         ui.createMenu('Health Report')
         .addItem('Create Report', 'createHealthReport'))
     )

@@ -69,7 +69,7 @@ function updateSelectedOptOutStatuses() {
 function fetchOptOutStatus(internalPropertyId) {
   try {
   const status = AnalyticsAdmin.Properties.fetchAutomatedGa4ConfigurationOptOut(
-    {property: 'properties/' + internalPropertyId}).optOut;
+    {property: 'properties/' + internalPropertyId}).optOut || false;
   Utilities.sleep(ga4RequestDelay);
   return status;
   } catch(e) {
@@ -98,6 +98,6 @@ function setOptOutStatus(internalPropertyId, status) {
  * Writes UA properties to a sheet.
  */
 function writeUAPropertiesToSheet() {
-  const properties = getAllProperties();
+  const properties = getAllPropertiesWithInternalIds();
   writeToSheet(properties, sheetsMeta.ua.optOut.sheetName);
 }
