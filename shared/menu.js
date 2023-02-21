@@ -51,6 +51,11 @@ function onOpen(e) {
       .addSubMenu(
         ui.createMenu('Users')
         .addItem('List Users', 'writeUAUsersToSheet')
+      ).addSubMenu(
+        ui.createMenu('Auto Config')
+        .addItem('List Properties', 'writeUAPropertiesToSheet')
+        .addItem('List Opt Out Statuses', 'writeSelectedOptOutStatusesToSheet')
+        .addItem('Update Opt Out Statuses', 'updateSelectedOptOutStatuses')
       ))
     .addSubMenu(
       ui.createMenu('Google Analytics 4')
@@ -95,6 +100,13 @@ function onOpen(e) {
         ui.createMenu('Users')
         .addItem('List', 'writeGA4UserLinksToSheet')
         .addItem('Modify', 'modifyGA4UserLinks'))
+      .addSubMenu(
+        ui.createMenu('SA360 Links')
+        .addItem('List', 'writeGA4SA360LinksToSheet')
+        .addItem('Modify', 'modifyGA4SA360Links'))
+        .addSubMenu(
+        ui.createMenu('BigQuery')
+        .addItem('List', 'writeGA4BigQueryLinksToSheet'))
       .addSubMenu(
         ui.createMenu('Health Report')
         .addItem('Create Report', 'createHealthReport'))

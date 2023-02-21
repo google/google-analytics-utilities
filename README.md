@@ -41,6 +41,7 @@ The script currently performs the following functions:
         *   List
     *   Properties
         *   List, Create, Delete, Update
+        *   Attribution
     *   Data Streams
         *   List, Create, Delete, Update
     *   GA4 custom dimensions
@@ -57,6 +58,10 @@ The script currently performs the following functions:
         *   List, Create, Delete, Update
     *   GA4 Audiences
         *   List, Create, Delete, Update
+    *   SA360 Links
+        *   List, Create, Delete, Update
+    *   BigQuery links
+        *   List
     *   Users
         *   List, Create, Delete, Update
     *   Settings Report
@@ -282,6 +287,37 @@ Note: TIME event types must have a minimum value of at least 0 and cannot be lef
 5. The script will save all of the account, property, and view user links for the selected accounts to the sheet. Only direct permissions will be listed. Batching of requests is not enabled. User information will only be listed if you have the necessary permissions.
 
 
+### UA GA4 Auto Configuration Opt Out
+
+
+#### List Properties
+
+
+
+1. Navigate to the “UA Auto Config Opt Out” sheet.
+2. Click on Google Analytics Utilities > Universal Analytics > Auto Config > List Properties
+3. All of the properties to which you have access should be listed in the sheet.
+
+
+#### List Current Opt Out Status
+
+
+
+1. After listing your properties, select the checkbox under the “Get or Update Opt Out Status” column for a given property to get its opt out status.
+2. Click on Google Analytics Utilities > Universal Analytics > Auto Config > List Opt Out Statuses.
+3. The opt out statuses for the properties you selected should be listed as either “TRUE” or “FALSE” under the “Opt Out?” column. All unselected properties should have a blank value.
+
+
+#### Update Opt Out Status
+
+
+
+1. After listing your properties, select the checkbox under the “Get or Update Opt Out Status” column for a given property to update its status.
+2. Enter the new opt out statuses for the properties you selected.
+3. Click on Google Analytics Utilities > Universal Analytics > Auto Config > Update Opt Out Statuses.
+4. The “Action Taken” column should be updated for each property you updated with the word “Updated”. If an error occurred for a given property, the “Action Taken” column should say “Error:” and the error message. If a property was not selected, then the “Action Taken” cell for that row will be cleared.
+
+
 ## Google Analytics 4
 
 
@@ -360,7 +396,17 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 
 
 1. After listing your GA4 data streams, navigate to the “GA4 Property Details” sheet.
-2. Enter a new property name, industry category, time zone, or currency code for a given property.
+2. Modify any of the following for a given property:
+    1. Property Name
+    2. Industry category
+    3. Time zone
+    4. Currency code
+    5. Data Retention Duration
+        1. Note - The following values are only available for 360 properties:
+            1. TWENTY\_SIX\_MONTHS
+            2. THIRTY\_EIGHT\_MONTHS
+            3. FIFTY\_MONTHS
+    6. Reset User Data on New Activity 
 3. Check the “Update” box for each property you want to update.
 4. Click on Google Analytics Utilities > Google Analytics 4 > Properties > Modify.
 5. The script will attempt to update the selected properties.
@@ -756,6 +802,75 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 5. The script will attempt to update the selected audience.
 
 
+### SA360 Links
+
+
+#### List
+
+
+
+1. List GA4 account summaries.
+2. Select the properties from which you want to retrieve SA360 links.
+3. Navigate to the “GA4 SA360 Links” sheet.
+4. Click on Google Analytics Utilities > Google Analytics 4 > SA360 Links > List.
+5. The SA360 links for the selected properties will be listed in the “GA4 SA360 Links” sheet.
+
+
+#### Create
+
+
+
+1. Navigate to the “GA4 SA360 Links” sheet.
+2. Enter the following:
+    1. Property ID
+    2. Advertiser ID
+    3. True or false for “Ads Personalization Enabled”
+    4. True or false for “Campaign Data Sharing Enabled”
+    5. True or false for “Cost Data Sharing Enabled”
+    6. True or false for “Site States Sharing Enabled”
+    7. Check the box for “Create”
+    8. Repeat these steps in a new row for each SA360 link you want to create
+3. Click on Google Analytics Utilities > Google Analytics 4 > SA360 Links > Modify.
+4. The script will attempt to create a new SA360 link based on the information in each row.
+
+
+#### Delete
+
+
+
+1. After listing your GA4 SA360 links, navigate to the “GA4 SA360 Links” sheet.
+2. Check the “Delete” box for each SA360 link you want to delete.
+3. Click on Google Analytics Utilities > Google Analytics 4 > SA360 Links > Modify.
+4. The script will attempt to delete the selected SA360 links.
+
+
+#### Update
+
+
+
+1. After listing your GA4 SA360 links, navigate to the “GA4 SA360 Links” sheet.
+2. Edit the following:
+    1. Enter true or false for “Ads Personalization Enabled”
+    2. Enter true or false for “Site States Sharing Enabled”
+3. Check the “Update” box for each SA360 link you want to update.
+4. Click on Google Analytics Utilities > Google Analytics 4 > SA360 Links > Modify.
+5. The script will attempt to update the selected SA360 links.
+
+
+### BigQuery Links
+
+
+#### List
+
+
+
+1. List GA4 account summaries.
+2. Select the properties from which you want to retrieve BigQuery links.
+3. Navigate to the “GA4 BigQuery Links” sheet.
+4. Click on Google Analytics Utilities > Google Analytics 4 > BigQuery Links > List.
+5. The BigQuery links for the selected properties will be listed in the “GA4 BigQuery Links” sheet.
+
+
 ### GA4 Users
 
 
@@ -834,7 +949,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 1. List GA4 account summaries.
 2. Select the properties for which you want to generate a report.
 3. Navigate to the “GA4 Report Settings” sheet.
-4. Enter the information as indicated for rows 4 - 7.
+4. Enter the information as indicated for rows 4-9.
     1. If the “Template Slides URL” value is left as “Default” or is blank, then the default template will be used. Otherwise, a Google Slides URL of a template presentation must be provided.
     2. If the box for “Request New Settings Information” is checked, then GA Utilities will automatically list new information for several different GA4 sheets. This newly listed information will clear any existing settings listed in the sheets. This includes the following sheets: 
         1. GA4 Property Details
@@ -857,7 +972,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 6. If your template includes one or more slides that need to be duplicated, then you must navigate to the “GA4 Report Settings - Snapshot” sheet and enter settings for those slides. This sheet can be customized in the following way:
     1. Column A: Contains the property ID for a given GA4 property and is included to make it easier to create formulas in other columns.
     2. Column B: Contains the template slide placeholder and is used to identify the template slide.
-    3. Columns C - ♾️: The headers for these columns should contain the placeholder text that will be swapped with with a real value when the report is complete.  Every row after the header should have a value for that specific property. These values can be derived from the other GA Utilities sheets or entered as plain text. The placeholder name rules are the same as previously stated: percent formats the number value as a percent on the slide, list creates a bulleted list, image/graphic/logo uses a provided URL as an image, and any other name just replaces the value on the slide as is.
+    3. Columns C+: The headers for these columns should contain the placeholder text that will be swapped with a real value when the report is complete.  Every row after the header should have a value for that specific property. These values can be derived from the other GA Utilities sheets or entered as plain text. The placeholder name rules are the same as previously stated: percent formats the number value as a percent on the slide, list creates a bulleted list, image/graphic/logo uses a provided URL as an image, and any other name just replaces the value on the slide as is.
 7. Once all values have been entered, click GA Utilities > Health Report > Create Report
-8. Once the health report has been created, a link to the report will be placed in cell D1 in the “GA4 Report Settings” sheet.
+8. Once the health report has been created, a link to the report and the date of its creation will be appended to columns F and G in the “GA4 Report Settings” sheet. The date of creation will default to MM-DD-YYYY format, but that can be reformatted if you so wish.
 9. Review the new report and make any necessary adjustments. There may be some placeholders that aren’t removed if said placeholder was not included in the sheet but was present in the template. This is expected and you should delete the placeholder manually. You may also need to adjust image sizes, which is expected.

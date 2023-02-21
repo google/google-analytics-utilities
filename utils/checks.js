@@ -69,3 +69,32 @@ function checkRelease() {
     }
   }
 }
+
+/**
+ * Check if a write response has an error and returns error information or
+ * the action taken.
+ * @param {!Array<!Object>} responses The response to the write request.
+ * @param {string} requestType The kind of request that was made.
+ * @return {string} Either the action taken or error information.
+ */
+function responseCheck(responses, requestType) {
+  const output = [];
+  responses.forEach(response => {
+    if (response.details != undefined) {
+      output.push('Error ' + response.details.code + ': ' + response.details.message);
+    } else if (response.statusCode != undefined) {
+      output.push('Error ' + response.statusCode + ': ' + response.name);
+    } else {
+      if (requestType == 'create') {
+        output.push(response.name + ': ' + apiActionTaken.ga4.created);
+      } else if (requestType == 'update') {
+        output.push(response.name + ': ' + apiActionTaken.ga4.updated);
+      } else if (requestType == 'archive') {
+        output.push(response.name + ': ' + apiActionTaken.ga4.archived);
+      } else if (requestType == 'delete') {
+        output.push(response.name + ': ' + apiActionTaken.ga4.deleted);
+      }
+    }
+  });
+  return output.join('; ');
+}

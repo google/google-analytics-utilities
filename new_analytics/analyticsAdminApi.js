@@ -28,7 +28,9 @@ const ga4Resource = {
   properties: AnalyticsAdmin.Properties,
   audiences: AnalyticsAdmin.Properties.Audiences,
   accountUserLinks: AnalyticsAdmin.Accounts.UserLinks,
-  propertyUserLinks: AnalyticsAdmin.Properties.UserLinks
+  propertyUserLinks: AnalyticsAdmin.Properties.UserLinks,
+  searchAds360Links: AnalyticsAdmin.Properties.SearchAds360Links,
+  bigqueryLinks: AnalyticsAdmin.Properties.BigQueryLinks
 };
 
 /**
@@ -151,3 +153,24 @@ function updateGA4Entity(resourceKey, name, payload, index) {
     return e;
   }
 }
+
+/**
+ * Updates the data retention settings for a property.
+ * @returns {!Object} Either the updated data retention setting or an error
+ */
+function updateDataRetentionSettings(
+  evenDataRetention, resetUserDataOnNewActivity, parent) {
+  try {
+    let response = '';
+    response = AnalyticsAdmin.Properties.updateDataRetentionSettings({
+      eventDataRetention: evenDataRetention,
+      resetUserDataOnNewActivity: resetUserDataOnNewActivity
+    }, parent, {updateMask: '*'});
+		Utilities.sleep(ga4RequestDelay);
+		return response;
+  } catch(e) {
+    console.log(e);
+    return e;
+  }
+}
+          

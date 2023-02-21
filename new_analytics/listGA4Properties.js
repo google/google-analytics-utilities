@@ -33,8 +33,15 @@ function listSelectedGA4Properties(selectedProperties) {
       data = data.concat(properties.reduce((arr, prop) => {
         if (selectedProperties.filter(property => property[3] == prop.name.split('/')[1]).length > 0) {
           const attributionSettings = AnalyticsAdmin.Properties.getAttributionSettings(prop.name + '/attributionSettings');
+          const dataRetentionSettings = AnalyticsAdmin.Properties.getGoogleSignalsSettings(prop.name + '/dataRetentionSettings');
+          const googleSignalsSettings = AnalyticsAdmin.Properties.getDataRetentionSettings(prop.name + '/googleSignalsSettings');
           let eventCount = 0;
-          let eventRows = AnalyticsData.Properties.runReport(request, prop.name).rows;
+          let eventRows = null;
+          try {
+            eventRows = AnalyticsData.Properties.runReport(request, prop.name).rows;
+          } catch(e) {
+            eventCount = 'No Access';
+          }
           if (eventRows) {
             eventCount = eventRows[0].metricValues[0].value;
           }
@@ -51,8 +58,9 @@ function listSelectedGA4Properties(selectedProperties) {
             prop.currencyCode,
             prop.serviceLevel,
             eventCount,
-            AnalyticsAdmin.Properties.getDataRetentionSettings(prop.name + '/googleSignalsSettings').state,
-            AnalyticsAdmin.Properties.getGoogleSignalsSettings(prop.name + '/dataRetentionSettings').eventDataRetention,
+            googleSignalsSettings.state,
+            dataRetentionSettings.eventDataRetention,
+            dataRetentionSettings.resetUserDataOnNewActivity || false,
             attributionSettings.acquisitionConversionEventLookbackWindow,
             attributionSettings.otherConversionEventLookbackWindow,
             attributionSettings.reportingAttributionModel

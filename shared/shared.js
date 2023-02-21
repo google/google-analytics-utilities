@@ -168,53 +168,6 @@ function getSheetRange(name, type) {
     }
   }
   return null;
-  /*
-  if (name == sheetNames.ua.viewDetails) {
-    return sheetRanges.ua.viewDetailsList[type];
-  } else if (name == sheetNames.ua.customDimensions) {
-    return sheetRanges.ua.customDimensions[type];
-  } else if (name == sheetNames.ua.modifyCdsResults) {
-    return sheetRanges.ua.modifyCdsResults[type];
-  } else if (name == sheetNames.ua.customMetrics) {
-    return sheetRanges.ua.customMetrics[type];
-  } else if (name == sheetNames.ua.events) {
-    return sheetRanges.ua.events[type];
-  } else if (name == sheetNames.ua.accountSummaries) {
-    return sheetRanges.ua.accountSummaries[type];
-  } else if (name == sheetNames.ua.settings) {
-    return sheetRanges.ua.settings[type];
-  } else if (name == sheetNames.ua.filters) {
-    return sheetRanges.ua.filters[type];
-  } else if (name == sheetNames.ua.audiences) {
-    return sheetRanges.ua.audiences[type];
-  } else if (name == sheetNames.ua.goals) {
-    return sheetRanges.ua.goals[type];
-  } else if (name == sheetNames.ga4.accountSummaries) {
-    return sheetRanges.ga4.accountSummaries[type];
-  } else if (name == sheetNames.ga4.streams) {
-    return sheetRanges.ga4.streams[type];
-  } else if (name == sheetNames.ga4.customDimensions) {
-    return sheetRanges.ga4.customDimensions[type];
-  } else if (name == sheetNames.ga4.customMetrics) {
-    return sheetRanges.ga4.customMetrics[type];
-  } else if (name == sheetNames.ga4.conversionEvents) {
-    return sheetRanges.ga4.conversionEvents[type];
-  } else if (name == sheetNames.ga4.googleAdsLinks) {
-    return sheetRanges.ga4.googleAdsLinks[type];
-  } else if (name == sheetNames.ga4.firebaseLinks) {
-    return sheetRanges.ga4.firebaseLinks[type];
-  } else if (name == sheetNames.ua.metricsRequest) { 
-    return sheetRanges.ua.metricsRequest[type];
-  } else if (name == sheetNames.ga4.displayVideo360AdvertiserLinks) {
-    return sheetRanges.ga4.displayVideo360AdvertiserLinks[type];
-  } else if (name == sheetNames.ga4.copyProperties) {
-    return sheetRanges.ga4.copyProperties[type];
-  } else if (name == sheetNames.ga4.properties) {
-    return sheetRanges.ga4.properties[type];
-  } else {
-    return null;
-  }
-  */
 }
 /**
  * Returns an array of selected properties based on the selected views.
@@ -253,6 +206,35 @@ function getAllProperties() {
         }
         finalProperties.push(
             [accountName, accountId, propertyName, propertyId, is360]);
+      }
+    }
+  }
+  return finalProperties;
+}
+/**
+ * Returns a double array of all properties in all accounts.
+ * @return {!Array<!Array>} A double array of all properties under all accounts 
+ * a user has access to.
+ */
+function getAllPropertiesWithInternalIds() {
+  const finalProperties = [];
+  const summaries = getAccountSummaries();
+  for (let i = 0; i < summaries.items.length; i++) {
+    const accountName = summaries.items[i].name;
+    const accountId = summaries.items[i].id;
+    const properties = summaries.items[i].webProperties;
+    if (properties !== undefined) {
+      for (let j = 0; j < properties.length; j++) {
+        const propertyName = properties[j].name;
+        const propertyId = properties[j].id;
+        const internalPropertyId = properties[j].internalWebPropertyId;
+        let is360 = false;
+        if (properties[j].level == 'PREMIUM') {
+          is360 = true;
+        }
+        finalProperties.push(
+            [accountName, accountId, propertyName, propertyId, 
+            internalPropertyId, is360]);
       }
     }
   }

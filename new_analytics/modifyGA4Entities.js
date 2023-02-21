@@ -85,6 +85,13 @@ function modifyGA4UserLinks() {
 }
 
 /**
+ * Modifies GA4 SA360 links.
+ */
+function modifyGA4SA360Links() {
+  modifyGA4Entities(sheetsMeta.ga4.sa360Links.sheetName);
+}
+
+/**
  * Loops through the rows on the sheet with data and checks either
  * skips, updates, removes, or creates an entity depending on what
  * was checked in a given sheet.
@@ -97,7 +104,7 @@ function modifyGA4Entities(sheetName) {
     key => sheetsMeta.ga4[key].sheetName === sheetName);
   if (entities.length > 0) {
     entities.forEach((entity, index) => {
-      let response = null;
+      const responses = [];
       const remove = entity[entity.length - 4];
       const create = entity[entity.length - 3];
       const update = entity[entity.length - 2];
@@ -131,11 +138,11 @@ function modifyGA4Entities(sheetName) {
       } else if (remove) {
         if (sheetName == sheetsMeta.ga4.customDimensions.sheetName ||
             sheetName == sheetsMeta.ga4.customMetrics.sheetName) {
-          response = archiveGA4CustomDefinition(ga4Resource, resourceName);
-          actionTaken = responseCheck(response, 'archive');
+          responses.push(rchiveGA4CustomDefinition(ga4Resource, resourceName));
+          actionTaken = responseCheck(responses, 'archive');
         } else {
-          response = deleteGA4Entity(ga4Resource, resourceName);
-          actionTaken = responseCheck(response, 'delete');
+          responses.push(deleteGA4Entity(ga4Resource, resourceName));
+          actionTaken = responseCheck(responses, 'delete');
         }
         // Writes that the entity was deleted or archived to the sheet.
         writeActionTakenToSheet(sheetName, index, actionTaken);
@@ -143,43 +150,32 @@ function modifyGA4Entities(sheetName) {
       // Creates the new entity.
       } else if (create) {
         const payload = buildCreatePayload(sheetName, entity);
-        response = createGA4Entity(ga4Resource, parent, payload);
-        actionTaken = responseCheck(response, 'create');
+        const createResponse = createGA4Entity(ga4Resource, parent, payload)
+        responses.push(createResponse);
+        if (ga4Resource == 'properties') {
+          if (entity[13] != 'TWO_MONTHS' || entity[14] != false) {
+            responses.push(
+              updateDataRetentionSettings(entity[13], entity[14], 
+                createResponse.name + '/dataRetentionSettings'));
+          }
+        }
+        actionTaken = responseCheck(responses, 'create');
         writeActionTakenToSheet(sheetName, index, actionTaken);
 
       // Updates entities.
       } else if (update) {
         const payload = buildUpdatePayload(sheetName, entity);
-        response = updateGA4Entity(ga4Resource, resourceName, payload, index);
-        actionTaken = responseCheck(response, 'update');
+        responses.push(
+          updateGA4Entity(ga4Resource, resourceName, payload, index));
+        if (ga4Resource == 'properties') {
+          responses.push(
+            updateDataRetentionSettings(entity[13], entity[14],
+            resourceName + '/dataRetentionSettings'));
+        }
+        actionTaken = responseCheck(responses, 'update');
         writeActionTakenToSheet(sheetName, index, actionTaken);
       }
     });
-  }
-}
-
-/**
- * Check if a write response has an error and returns error information or
- * the action taken.
- * @param {!Object} response The response to the write request.
- * @param {string} requestType The kind of request that was made.
- * @return {string} Either the action taken or error information.
- */
-function responseCheck(response, requestType) {
-  if (response.details != undefined) {
-    return 'Error ' + response.details.code + ': ' + response.details.message;
-  } else if (response.statusCode != undefined) {
-    return 'Error ' + response.statusCode + ': ' + response.name;
-  } else {
-    if (requestType == 'create') {
-      return apiActionTaken.ga4.created;
-    } else if (requestType == 'update') {
-      return apiActionTaken.ga4.updated;
-    } else if (requestType == 'archive') {
-      return apiActionTaken.ga4.archived;
-    } else if (requestType == 'delete') {
-      return apiActionTaken.ga4.deleted;
-    }
   }
 }
 
@@ -274,6 +270,13 @@ function buildCreatePayload(sheetName, entity) {
     delete payload.description;
     payload.emailAddress = entity[4].trim();
     payload.directRoles = [entity[7].trim()];
+  } else if (sheetName == sheetsMeta.ga4.sa360Links.sheetName) {
+    AnalyticsAdmin.Properties.SearchAds360Links.create().
+    payload.advertiserId = entityDisplayNameOrId.trim();
+    payload.adsPersonalizationEnabled = entity[7];
+    payload.campaignDataSharingEnabled = entity[8];
+    payload.costDataSharingEnabled = entity[9];
+    payload.siteStatsSharingEnabled = entity[10];
   }
   return payload;
 }
@@ -346,6 +349,9 @@ function buildUpdatePayload(sheetName, entity) {
     delete payload.displayName;
     delete payload.description;
     payload.directRoles = [entity[7]];
+  } else if (sheetName == sheetsMeta.ga4.sa360Links.sheetName) {
+    payload.adsPersonalizationEnabled = entity[7];
+    payload.siteStatsSharingEnabled = entity[10];
   }
   return payload;
 }

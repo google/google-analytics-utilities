@@ -30,8 +30,8 @@ function listCustomMetrics(accountId, propertyId) {
       finalizedCms.push([
         accountId,
         propertyId,
-        cms[i].index,
         cms[i].name,
+        cms[i].index,
         cms[i].scope,
         cms[i].active,
         cms[i].min_value || '',

@@ -269,6 +269,21 @@ const sheetsMeta = {
         numRows: 1,
         numColumns: 14
       }
+    },
+    optOut: {
+      sheetName: 'UA Auto Config Opt Out',
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 6
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 8
+      }
     }
   },
   ga4: {
@@ -413,13 +428,13 @@ const sheetsMeta = {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 17
+        numColumns: 18
       },
       read: {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 21
+        numColumns: 22
       }
     },
     audiences: {
@@ -459,6 +474,36 @@ const sheetsMeta = {
         column: 1,
         numRows: 1,
         numColumns: 4
+      }
+    },
+    bigqueryLinks: {
+      sheetName: 'GA4 BigQuery Links',
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 12
+      },
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 12
+      }
+    },
+    sa360Links: {
+      sheetName: 'GA4 SA360 Links',
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 10
+      },
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 14
       }
     }
   }

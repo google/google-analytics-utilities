@@ -15,42 +15,105 @@
  */
 
 /**
- * Creates the GA4 health report by pulling information for each of the report components and saving
- * that datat to their respective sheets. The settings data for both the aggregate slides and
- * snapshot slides is then formatted and looped through to build a new Google Slides presentation
- * where placeholders are replaced with new values.
+ * Creates the GA4 health report by pulling information for each of the report 
+ * components and saving that datat to their respective sheets. The settings 
+ * data for both the aggregate slides and snapshot slides is then formatted and 
+ * looped through to build a new Google Slides presentation where placeholders 
+ * are replaced with new values.
  */
 function createHealthReport() {
-  writeGA4AudiencesToSheet();
-  writeGA4ConversionEventsToSheet();
-  writeGA4StreamsToSheet();
-  writeGA4PropertyDetailsToSheet();
-  writeGA4CustomDimensionsToSheet();
-  writeGA4CustomMetricsToSheet();
-  writeGA4AdsLinksToSheet();
-  writeGA4DV360LinksToSheet();
-  writeGA4FirebaseLinksToSheet();
+  if (SpreadsheetApp.getActive().getSheetByName('GA4 Report Settings')
+  .getRange('C8').getValue()) {
+    writeGA4AudiencesToSheet();
+    writeGA4ConversionEventsToSheet();
+    writeGA4StreamsToSheet();
+    writeGA4PropertyDetailsToSheet();
+    writeGA4CustomDimensionsToSheet();
+    writeGA4CustomMetricsToSheet();
+    writeGA4AdsLinksToSheet();
+    writeGA4DV360LinksToSheet();
+    writeGA4FirebaseLinksToSheet();
+    writeGA4SA360LinksToSheet();
+    writeGA4BigQueryLinksToSheet();
+  }
 
   const healthReportSettings = formatHealthReportSettings();
-  let presentationTemplate = '';
-  if (healthReportSettings.templateUrl == 'Default') {
-    presentationTemplateId = DriveApp.getFileById('1FikbCtbaU4BLqH8477wpFHCLDUMWalnnWW1VSchsR1s').makeCopy().getId();
-    presentationTemplate = SlidesApp.openById(presentationTemplateId);
-  } else {
-    presentationTemplateId = DriveApp.getFileById(healthReportSettings.templateUrl.split('/')[5]).makeCopy().getId();
-    presentationTemplate = SlidesApp.openById(presentationTemplateId);
-  }
-  const richTextValue = SpreadsheetApp.newRichTextValue()
-    .setText("Report Output").setLinkUrl(presentationTemplate.getUrl()).build();
-  SpreadsheetApp.getActive().getSheetByName('GA4 Report Settings').getRange('D1').setRichTextValue(richTextValue);
 
+  const presentationTemplate = createNewPresentation(
+    healthReportSettings.templateUrl,
+    healthReportSettings.emails,
+    healthReportSettings.access);
   presentationTemplate.setName(healthReportSettings.reportName);
+  setReportListValue(
+    healthReportSettings.reportName, presentationTemplate.getUrl());
+
   if (healthReportSettings.templateInfo.length > 0) {
     healthReportSettings.templateInfo.forEach(templateInfo => {
-      replaceSingleSlidePlaceholders(presentationTemplate, templateInfo, healthReportSettings.percentColorRanges);
+      replaceSingleSlidePlaceholders(
+        presentationTemplate,
+        templateInfo,
+        healthReportSettings.percentColorRanges);
     });
   }
-  createRepeatingSlides(presentationTemplate, healthReportSettings.percentColorRanges);
+  createRepeatingSlides(
+    presentationTemplate,
+    healthReportSettings.percentColorRanges);
+}
+
+/**
+ * Creates new Google Slides presentation and shares it based on provided 
+ * settings.
+ * @param {string} templateUrl
+ * @param {string} emailString
+ * @param {string} access
+ * @return {!Object} The presentation object.
+ */
+function createNewPresentation(templateUrl, emailString, access) {
+  let presentationTemplate = '';
+  if (templateUrl == 'Default') {
+    presentationTemplateId = DriveApp.getFileById(
+      '1FikbCtbaU4BLqH8477wpFHCLDUMWalnnWW1VSchsR1s').makeCopy().getId();
+    presentationTemplate = SlidesApp.openById(presentationTemplateId);
+  } else {
+    presentationTemplateId = DriveApp.getFileById(templateUrl.split('/')[5])
+    .makeCopy().getId();
+    presentationTemplate = SlidesApp.openById(presentationTemplateId);
+  }
+
+  if (emailString.length > 0) {
+    const emailArray = emailString.split(',').map(email => email.trim());
+    if (access == 'View') {
+      presentationTemplate.addViewers(emailArray);
+    } else if (access == 'Comment') {
+      presentationTemplate.addCommenters(emailArray);
+    } else if (access == 'Edit') {
+      presentationTemplate.addEditors(emailArray);
+    }
+  }
+  return presentationTemplate;
+}
+
+/**
+ * Sets report URL and date created in the sheet.
+ * @param {string} reportName
+ * @param {string} reportUrl
+ */
+function setReportListValue(reportName, reportUrl) {
+  const richTextValue = SpreadsheetApp.newRichTextValue().setText(reportName)
+  .setLinkUrl(reportUrl).build();
+  const reportSheet = SpreadsheetApp.getActive()
+  .getSheetByName('GA4 Report Settings');
+  const reportRange = SpreadsheetApp.getActive()
+  .getSheetByName('GA4 Report Settings')
+    .getRange(3, 6, reportSheet.getLastRow(),1);
+  const reportValues = reportRange.getValues();
+  let firstBlankCellIndex = reportValues.flat().indexOf('');
+  if (firstBlankCellIndex + 2 == reportSheet.getLastRow()) {
+    reportSheet.insertRowAfter(reportSheet.getLastRow());
+  }
+  reportSheet.getRange(firstBlankCellIndex + 3, 6, 1, 1)
+  .setRichTextValue(richTextValue);
+  reportSheet.getRange(firstBlankCellIndex + 3, 7, 1, 1).setValue(new Date());
 }
 
 /**
@@ -65,10 +128,16 @@ function getSettingsKeyName(index) {
     case 1:
       return 'templateUrl';
     case 2:
-      return 'percentColorRanges'
+      return 'emails'
     case 3:
-      return 'trueColor';
+      return 'access'
     case 4:
+      return 'pullData';
+    case 5:
+      return 'percentColorRanges'
+    case 6:
+      return 'trueColor';
+    case 7:
       return 'falseColor';
   }
 }
@@ -87,9 +156,9 @@ function formatHealthReportSettings() {
   const generalSettings = generalRows.reduce((obj, settingRow, index) => {
     const key = getSettingsKeyName(index);
     const value = settingRow[2];
-    if (index != 2) {
+    if (index != 5) {
       obj[key] = value;
-    } else if (index == 2 && value.length > 0) {
+    } else if (index == 5 && value.length > 0) {
       obj[key] = formatColorRangeObject(value);
     }
     return obj;
@@ -99,10 +168,10 @@ function formatHealthReportSettings() {
   const templateRows = settings.slice(blankRowIndex + 2);
   const templateSettings = templateRows.reduce((obj, settingRow) => {
   // Starts constructing template objects.
-    const templatePlaceholder = settingRow[0] // The template placeholder text.
-    const templateSlideId = settingRow[1]; // The template slide placeholder text.
+    const templatePlaceholder = settingRow[0]
+    const templateSlideId = settingRow[1]; 
     const include = settingRow[2];
-    const templateValue = settingRow[3]; // The value replacing the template placeholder text.
+    const templateValue = settingRow[3];
     if (include) {
       const placeholderValuePair = {};
       placeholderValuePair[templatePlaceholder] = templateValue;
@@ -114,18 +183,24 @@ function formatHealthReportSettings() {
           templatePairs: [placeholderValuePair]
         }];
       } else {
-        // Checks if a template slide ID already exists in the templateInfo object.
-        if(obj.templateInfo.find(template => template.templateSlideId == templateSlideId)) {
-          // Adds the new placeholder/value pair object to the templatePairs array.
-          const templateObj = obj.templateInfo.find(template => template.templateSlideId == templateSlideId);
-          const existingPair = templateObj.templatePairs.find(pair => Object.keys(pair)[0] == templatePlaceholder);
+        // Checks if a template slide ID already exists in the templateInfo 
+        // object.
+        if(obj.templateInfo.find(
+          template => template.templateSlideId == templateSlideId)) {
+          // Adds the new placeholder/value pair object to the templatePairs 
+          // array.
+          const templateObj = obj.templateInfo.find(
+            template => template.templateSlideId == templateSlideId);
+          const existingPair = templateObj.templatePairs.find(
+            pair => Object.keys(pair)[0] == templatePlaceholder);
           if (/list/.test(templatePlaceholder) && existingPair != undefined) {
             existingPair[templatePlaceholder] += (';;' + templateValue);
           } else {
             templateObj.templatePairs.push(placeholderValuePair);
           }
         } else {
-          // Creates a new templateInfo object with the template slid ID and the first placeholder/value pair.
+          // Creates a new templateInfo object with the template slid ID and the
+          // first placeholder/value pair.
           obj.templateInfo.push({
             templateSlideId: templateSlideId,
             templatePairs: [placeholderValuePair]
@@ -139,15 +214,21 @@ function formatHealthReportSettings() {
 }
 
 /**
- * Creates the repeating slides, which are multiple slides within the larger presentation that follow
- * a set template. This process creates a new slide based on a template slide and then replaces
- * the placeholders with real values in the new template slide copy. 
+ * Creates the repeating slides, which are multiple slides within the larger 
+ * presentation that follow a set template. This process creates a new slide 
+ * based on a template slide and then replaces the placeholders with real values
+ * in the new template slide copy.
+ * @param {!Object} presentation
+ * @param {!Array} percentColorRanges
  */
 function createRepeatingSlides(presentation, percentColorRanges) {
   // Gets snapshot sheet.
-  const snapshotSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('GA4 Report Settings - Snapshot');
+  const snapshotSheet = SpreadsheetApp.getActiveSpreadsheet()
+  .getSheetByName('GA4 Report Settings - Snapshot');
   // Gets data from the snapshot sheet.
-  const snapshotData = snapshotSheet.getRange(1, 1, snapshotSheet.getLastRow(), snapshotSheet.getLastColumn()).getValues();
+  const snapshotData = snapshotSheet.getRange(
+    1, 1, snapshotSheet.getLastRow(), snapshotSheet.getLastColumn()
+  ).getValues();
   const templateSlideIds = [];
   
   // Checks if more than just the headers exists for the snapshot data.
@@ -162,7 +243,8 @@ function createRepeatingSlides(presentation, percentColorRanges) {
       }
       // Finds the template slide in the presentation
       const templateSlide = presentation.getSlides().find(
-        slide => slide.getNotesPage().getSpeakerNotesShape().getText().asString().trim() == templateSlideId);
+        slide => slide.getNotesPage().getSpeakerNotesShape().getText()
+        .asString().trim() == templateSlideId);
       // Makes a copy of the template slide
       if (templateSlide != undefined) {
         const templateSlideCopy = templateSlide.duplicate();
@@ -175,7 +257,8 @@ function createRepeatingSlides(presentation, percentColorRanges) {
           for (let j = 2; j < placeholders.length; j++) {
             const placeholder = placeholders[j];
             const value = values[j];
-            const selectedShape = shapes.find(shape => shape.getText().find(placeholder).length > 0);
+            const selectedShape = shapes.find(shape => shape.getText()
+            .find(placeholder).length > 0);
             replaceValues(placeholder, value, selectedShape, percentColorRanges);
           }
         }
@@ -186,7 +269,8 @@ function createRepeatingSlides(presentation, percentColorRanges) {
   if (templateSlideIds.length > 0) {
     templateSlideIds.forEach(templateSlideId => {
       const templateSlide = presentation.getSlides().find(
-        slide => slide.getNotesPage().getSpeakerNotesShape().getText().asString().trim() == templateSlideId);
+        slide => slide.getNotesPage().getSpeakerNotesShape().getText()
+        .asString().trim() == templateSlideId);
       templateSlide.remove();
     });
   }
@@ -199,7 +283,9 @@ function createRepeatingSlides(presentation, percentColorRanges) {
  * @param {!Object} textRange
  * @param {!string} percentColorRanges
  */
-function replaceWithList(templateValue, templatePlaceholder, textRange, percentColorRanges) {
+function replaceWithList(
+  templateValue, templatePlaceholder,
+  textRange, percentColorRanges) {
   const listBullets = templateValue.split(';;');
   if (listBullets.length > 0) {
     if (listBullets[listBullets.length - 1] == '') {
@@ -207,11 +293,14 @@ function replaceWithList(templateValue, templatePlaceholder, textRange, percentC
     }
     for (let k = 0; k < listBullets.length; k++) {
       if (k == 0) {
-        replaceWithTextOrNumber(textRange, templatePlaceholder, listBullets[k], percentColorRanges)
-        .getListStyle().applyListPreset(SlidesApp.ListPreset.DISC_CIRCLE_SQUARE);
+        replaceWithTextOrNumber(
+          textRange, templatePlaceholder, listBullets[k], percentColorRanges)
+        .getListStyle().applyListPreset(
+          SlidesApp.ListPreset.DISC_CIRCLE_SQUARE);
       } else {
         textRange.appendParagraph(listBullets[k])
-        .getRange().getListStyle().applyListPreset(SlidesApp.ListPreset.DISC_CIRCLE_SQUARE)
+        .getRange().getListStyle().applyListPreset(
+          SlidesApp.ListPreset.DISC_CIRCLE_SQUARE);
       }
     }
   }
@@ -234,15 +323,19 @@ function formatColorRangeObject(value) {
 }
 
 /**
- * Finds the template slides and replaces their content with values from the sheet.
+ * Finds the template slides and replaces their content with values from the 
+ * sheet.
  * @param {!Object} presentation The Google Slides presentation.
  * @param {!Object} templateInfo The the template info object.
- * @param {!Object} percentColorRanges The color ranges for percent values object.
+ * @param {!Object} percentColorRanges The color ranges for percent values 
+ * object.
  */
-function replaceSingleSlidePlaceholders(presentation, templateInfo, percentColorRanges) {
+function replaceSingleSlidePlaceholders(
+  presentation, templateInfo, percentColorRanges) {
   // Gets the template slide.
   const templateSlide = presentation.getSlides().find(
-    slide => slide.getNotesPage().getSpeakerNotesShape().getText().asString().trim() == templateInfo.templateSlideId);
+    slide => slide.getNotesPage().getSpeakerNotesShape().getText().asString()
+    .trim() == templateInfo.templateSlideId);
 
   // Get the shapes in the template slide.
   const shapes = templateSlide.getShapes();
@@ -252,11 +345,14 @@ function replaceSingleSlidePlaceholders(presentation, templateInfo, percentColor
     const templatePair = templateInfo.templatePairs[index];
     const templatePlaceholder = Object.keys(templatePair)[0];
     const templateValue = templatePair[templatePlaceholder];
-    const selectedShape = shapes.find(element => element.getText().asString().trim() == templatePlaceholder);
-    if (selectedShape != undefined && /logo|image|graphic/.test(templatePlaceholder)) {
+    const selectedShape = shapes.find(
+      element => element.getText().asString().trim() == templatePlaceholder);
+    if (selectedShape != undefined &&
+      /logo|image|graphic/.test(templatePlaceholder)) {
       shapes.splice(shapes.indexOf(selectedShape), 1);
     }
-    replaceValues(templatePlaceholder, templateValue, selectedShape, percentColorRanges);
+    replaceValues(templatePlaceholder, templateValue, 
+    selectedShape, percentColorRanges);
   }
 }
 
@@ -265,14 +361,16 @@ function replaceSingleSlidePlaceholders(presentation, templateInfo, percentColor
  * @param {!string} placeholder The placeholder string to be replaced.
  * @param {!value} value The string value to replace the placeholder string.
  * @param {!Object} shape The slide shape with the placeholder string.
- * @param {!Object} percentColorRanges The color ranges for percent values object.
+ * @param {!Object} percentColorRanges The color ranges for percent values 
+ * object.
  */
 function replaceValues(placeholder, value, shape, percentColorRanges) {
   if (shape != undefined) {
     // Gets the text from the template slide shape.
     const textRange = shape.getText();
 
-    // Checks if the placeholder value is present in the template slide shape text.
+    // Checks if the placeholder value is present in the template slide shape 
+    // text.
     if (textRange.find(placeholder).length > 0) {
       // Replaces the placeholder shape with an image with the same dimensions.
       if (/logo|image|graphic/.test(placeholder)) {
@@ -281,7 +379,9 @@ function replaceValues(placeholder, value, shape, percentColorRanges) {
         replaceWithList(value, placeholder, textRange, percentColorRanges);
       } else {
         // Replaces the placholder text with the actual text.
-        replaceWithTextOrNumber(textRange, placeholder, value, percentColorRanges);
+        replaceWithTextOrNumber(
+          textRange, placeholder,
+          value, percentColorRanges);
       }
     }
   }
@@ -301,14 +401,19 @@ function replaceTemplateWithImage(shape, templateValue) {
 }
 
 /**
- * Replaces the placeholder template string with the new value from the sheet. This value from the
- * sheet can be either a string or a number. If it is a number, it is transformed into a string.
- * @param {!Object} textRange The text range that contains the placeholder string.
+ * Replaces the placeholder template string with the new value from the sheet. 
+ * This value from the sheet can be either a string or a number. If it is a 
+ * number, it is transformed into a string.
+ * @param {!Object} textRange The text range that contains the placeholder 
+ * string.
  * @param {!string} templatePlaceholder The placeholder string to be replaced.
- * @param {!string} templateValue The value from the sheet that will replace the placeholder string.
- * @param {!Object} percentColorRanges The color ranges for percent values object.
+ * @param {!string} templateValue The value from the sheet that will replace the
+ * placeholder string.
+ * @param {!Object} percentColorRanges The color ranges for percent values 
+ * object.
  */
-function replaceWithTextOrNumber(textRange, templatePlaceholder, templateValue, percentColorRanges) {
+function replaceWithTextOrNumber(
+  textRange, templatePlaceholder, templateValue, percentColorRanges) {
   // Sets the percent color.
   if (/percent/.test(templatePlaceholder)) {
     // Converts the decimal to a percent.
@@ -319,18 +424,21 @@ function replaceWithTextOrNumber(textRange, templatePlaceholder, templateValue, 
     textRange.replaceAllText(templatePlaceholder.trim(), percentStringValue);
     // Gets the range of the replaced value in order to change its color.
     const percentTextRanges = textRange.find(percentStringValue);
-    // Loops through the percent color range values to set the color of the replaced value correctly.
+    // Loops through the percent color range values to set the color of the 
+    // replaced value correctly.
     percentTextRanges.forEach(percentTextRange => {
       if (percentColorRanges.length > 0) {
         percentColorRanges.forEach(range => {
-          if (percentNumValue >= parseInt(range.start) && percentNumValue <= parseInt(range.end)) {
+          if (percentNumValue >= parseInt(range.start) &&
+          percentNumValue <= parseInt(range.end)) {
             percentTextRange.getTextStyle().setForegroundColor(range.hex);
           }
         });
       }
     });
-  } else if (parseFloat(templateValue)) {
-    // Rounds the float to the nearest integer to display the value more clearly on the slide.
+  } else if (!isNaN(templateValue) && typeof templateValue != "boolean") {
+    // Rounds any potential float to the nearest integer to display the value 
+    // more clearly on the slide.
     const numValue = Math.round(parseFloat(templateValue));
     textRange.replaceAllText(templatePlaceholder.trim(), numValue);
   } else {
