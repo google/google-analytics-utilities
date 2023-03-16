@@ -23,7 +23,8 @@ The script currently performs the following functions:
         *   List
     *   View Details
         *   List
-    *   List up to 1000 unique event category, action, and label combinations per view
+    *   Events
+        *   List
     *   Report on specific metrics for selected views
     *   Custom dimensions
         *   List, Create, Update 
@@ -32,27 +33,27 @@ The script currently performs the following functions:
     *   List view level filter settings
     *   Audiences
         *   List settings, Delete
-    *   Goal settings
+    *   Goals
         *   List, Create
     *   Users
         *   List
 *   Google Analytics 4
-    *   Account Summaries,
+    *   Account Summaries
         *   List
     *   Properties
         *   List, Create, Delete, Update
         *   Attribution
     *   Data Streams
         *   List, Create, Delete, Update
-    *   GA4 custom dimensions
+    *   Custom dimensions
         *   List, Create, Archive, Update
-    *   GA4 custom metrics
+    *   Custom metrics
         *   List, Create, Archive, Update
     *   Conversion events
         *   List, Create, Delete
     *   Firebase links
         *   List, Create, Delete
-    *   GA4 Google Ads links
+    *   Google Ads links
         *   List, Create, Delete, Update
     *   DV360 Links
         *   List, Create, Delete, Update
@@ -62,10 +63,15 @@ The script currently performs the following functions:
         *   List, Create, Delete, Update
     *   BigQuery links
         *   List
-    *   Users
+    *   User Access Bindings
         *   List, Create, Delete, Update
     *   Settings Report
         *   Create
+    *   Expanded Data Sets
+        *   List
+    *   Easy Property Creation
+        *   List template properties
+        *   Create properties based on template settings
 
 These tasks can be completed by [joining the Google Group](https://groups.google.com/g/google-analytics-utilities-users), [copying the template spreadsheet](https://docs.google.com/spreadsheets/d/1kJqwYNed8RTuAgjy0aRUooD__MIPqzUeiDF5LZ7v1aI/), and clicking on various options under the Google Analytics Utilities menu.
 
@@ -93,6 +99,11 @@ If you are not copying the script, then the Google Analytics API and Analytics R
 To make managing the sheets easier, you can show or hide sheets related to Universal Analytics and Google Analytics 4.
 
 
+## Check for Updates
+
+It is recommended to periodically run the “Check for Updates” menu item to see if a new version of the tool has been released.
+
+
 ## Universal Analytics
 
 
@@ -109,6 +120,9 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 ### View Details
 
 
+#### List
+
+
 
 1. List account summaries. 
 2. Select the specific views from which you want to retrieve view details.
@@ -118,6 +132,9 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 
 
 ### Events
+
+
+#### List
 
 
 
@@ -145,7 +162,7 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 ### Custom Dimensions
 
 
-#### List Custom Dimensions
+#### List
 
 
 
@@ -179,7 +196,7 @@ To make managing the sheets easier, you can show or hide sheets related to Unive
 ### Custom Metrics
 
 
-#### List Custom Metrics
+#### List
 
 
 
@@ -218,6 +235,9 @@ Note: TIME event types must have a minimum value of at least 0 and cannot be lef
 ### Filters
 
 
+#### List
+
+
 
 1. List account summaries. 
 2. Select the specific views from which you want to retrieve filters settings.
@@ -227,7 +247,7 @@ Note: TIME event types must have a minimum value of at least 0 and cannot be lef
     *   Since the same filter may be applied to multiple views, that filter and its settings may appear in the sheet multiple times. A filter will not show up in the sheet if it is not applied to one of the selected views.
 
 
-### Google Analytics Remarketing Audiences
+### Audiences
 
 
 #### List Settings
@@ -254,7 +274,10 @@ Note: TIME event types must have a minimum value of at least 0 and cannot be lef
 7. The script will attempt to delete the selected audiences.
 
 
-### List Goals Settings
+### Goals
+
+
+#### List
 
 
 
@@ -265,7 +288,7 @@ Note: TIME event types must have a minimum value of at least 0 and cannot be lef
 5. The script will save all of the goal settings for the selected views to the “Goal Settings” sheet. The number of goal completions will not be saved to the sheet.
 
 
-### Create Goals
+#### Create
 
 
 
@@ -276,7 +299,10 @@ Note: TIME event types must have a minimum value of at least 0 and cannot be lef
 4. The script will create the goals in the specified views based on the information entered in the “Goal Settings” sheet.
 
 
-### List Users
+### Users
+
+
+#### List
 
 
 
@@ -871,6 +897,20 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 5. The BigQuery links for the selected properties will be listed in the “GA4 BigQuery Links” sheet.
 
 
+### Expanded Data Sets
+
+
+#### List
+
+
+
+1. List GA4 account summaries.
+2. Select the properties from which you want to retrieve expanded data sets.
+3. Navigate to the “GA4 Expanded Data Sets” sheet.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Expanded Data Sets > List.
+5. The expanded data sets for the selected properties will be listed in the “GA4 Expanded Data Sets” sheet.
+
+
 ### GA4 Users
 
 
@@ -879,10 +919,10 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 
 
 1. List GA4 account summaries.
-2. Select the properties from which you want to retrieve user links.
+2. Select the properties from which you want to retrieve access bindings.
 3. Navigate to the “GA4 Users” sheet.
 4. Click on Google Analytics Utilities > Google Analytics 4 > Users > List.
-5. The user links for the selected properties will be listed in the “GA4 Users” sheet. User links will only be displayed if the user requesting the information has the necessary permissions. If possible, the user links for the accounts associated with each property will also be listed. Only direct roles will be listed.
+5. The access bindings for the selected properties will be listed in the “GA4 Users” sheet. Access bindings will only be displayed if the user requesting the information has the necessary permissions. If possible, the access bindings for the accounts associated with each property will also be listed.
 
 
 #### Create
@@ -891,52 +931,59 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 
 1. Navigate to the “GA4 Users” sheet.
 2. Enter the following in a new row:
-    1. Account User Link:
+    1. Account Access Binding:
         1. Account ID
         2. User Email
-        3. Permissions - Must be one of the following:
+        3. Primary permissions - Must be one of the following:
             1. predefinedRoles/viewer
             2. predefinedRoles/analyst
             3. predefinedRoles/editor
             4. predefinedRoles/admin
-            5. predefinedRoles/no-cost-data
-            6. predefinedRoles/no-revenue-data
-    2. Property User Link:
-        4. Account ID
-        5. Property ID
-        6. User Email
-        7. Permissions - Must be one of the following:
-            7. predefinedRoles/viewer
-            8. predefinedRoles/analyst
-            9. predefinedRoles/editor
-            10. predefinedRoles/admin
-            11. predefinedRoles/no-cost-data
-            12. predefinedRoles/no-revenue-data
+        4. Secondary Permissions - Can be one of the following:
+            5. Blank
+            6. predefinedRoles/no-cost-data
+            7. predefinedRoles/no-revenue-data
+            8. predefinedRoles/no-cost-data, predefinedRoles/no-revenue-data
+    2. Property Access Binding:
+        5. Account ID
+        6. Property ID
+        7. User Email
+        8. Primary permissions - Must be one of the following:
+            9. predefinedRoles/viewer
+            10. predefinedRoles/analyst
+            11. predefinedRoles/editor
+            12. predefinedRoles/admin
+        9. Secondary Permissions - Can be one of the following:
+            13. Blank
+            14. predefinedRoles/no-cost-data
+            15. predefinedRoles/no-revenue-data
+            16. predefinedRoles/no-cost-data, predefinedRoles/no-revenue-data
 3. Check the “Create” box for the row.
 4. Click on Google Analytics Utilities > Google Analytics 4 > Users > Modify.
-5. The script will attempt to create a new user link based on the information in each row. Batching of requests is not enabled.
+5. The script will attempt to create a new access binding based on the information in each row. Batching is not used.
 
 
 #### Delete
 
 
 
-1. After listing your GA4 user links, navigate to the “GA4 Users” sheet.
-2. Check the “Delete” box for each user link you want to delete.
+1. After listing your GA4 access bindings, navigate to the “GA4 Users” sheet.
+2. Check the “Delete” box for each access binding you want to delete.
 3. Click on Google Analytics Utilities > Google Analytics 4 > Users > Modify.
-4. The script will attempt to delete the selected user links. Batching of requests is not enabled.
+4. The script will attempt to delete the selected access bindings. Batching is not used.
 
 
 #### Update
 
 
 
-1. After listing your GA4 user links, navigate to the “GA4 Users” sheet.
+1. After listing your GA4 access bindings, navigate to the “GA4 Users” sheet.
 2. The following can be updated:
-    1. Permissions
-3. Check the “Update” box for each user link you want to update.
+    1. Primary Permissions
+    2. Secondary Permissions
+3. Check the “Update” box for each access binding you want to update.
 4. Click on Google Analytics Utilities > Google Analytics 4 > Users > Modify.
-5. The script will attempt to update the selected user links. Batching of requests is not enabled.
+5. The script will attempt to update the selected access bindings. Batching is not used.
 
 
 ### GA4 Settings Report
@@ -976,3 +1023,35 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 7. Once all values have been entered, click GA Utilities > Health Report > Create Report
 8. Once the health report has been created, a link to the report and the date of its creation will be appended to columns F and G in the “GA4 Report Settings” sheet. The date of creation will default to MM-DD-YYYY format, but that can be reformatted if you so wish.
 9. Review the new report and make any necessary adjustments. There may be some placeholders that aren’t removed if said placeholder was not included in the sheet but was present in the template. This is expected and you should delete the placeholder manually. You may also need to adjust image sizes, which is expected.
+
+
+### Easy Property Creation
+
+
+#### List
+
+
+
+1. List GA4 account summaries.
+2. Select the properties you want to use as templates.
+3. Navigate to the “GA4 Easy Property Creation” sheet.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Easy Property Creation > List Templates.
+5. The selected properties and many of their associated settings will be listed in the “GA4 Easy Property Creation” sheet.
+
+
+#### Create
+
+
+
+1. Navigate to the “GA4 Easy Property Creation” sheet.
+2. Enter the following in the row for the property you want to make a copy of. If necessary, you can make copy the property settings into multiple rows:
+    1. Account ID for New Property 
+    2. New Property Name
+3. (Optional) If necessary, edit, add, or remove any of the settings in the various columns.
+4. Check the “Create” box for each row you want to use to make a property.
+5. Click on Google Analytics Utilities > Google Analytics 4 > Easy Property Creation > Create Properties.
+6. The script will attempt to create a new property for each selected row and
+   will also create the various settings (i.e. data streams, audiences,
+   conversion events, etc.) in the columns. **Note: Due to limitations with the
+   API, Google Signals will not be enabled in the newly created properties even
+   if the template properties had Google Signals enabled.**

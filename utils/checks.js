@@ -16,9 +16,9 @@
 
 const messageText = {
   newRelease: `
-    There is a new version of this tool available. Please use the latest version of the tool by using the files 
-    on Github or making a copy of this spreadsheet:
-    https://docs.google.com/spreadsheets/d/1kJqwYNed8RTuAgjy0aRUooD__MIPqzUeiDF5LZ7v1aI/
+    There is a new version of this tool available. Please use the latest version
+    of the tool by using the files on Github or making a copy of this spreadsheet:
+    https://docs.google.com/spreadsheets/d/1kJqwYNed8RTuAgjy0aRUooD__MIPqzUeiDF5LZ7v1aI/copy
     
     Update Details:
   `
@@ -32,41 +32,28 @@ const messageText = {
 function checkRelease() {
   const ui = SpreadsheetApp.getUi();
   const settingsSheet = ss.getSheetByName('Settings');
+
+  // Get sheet version.
   const rawReleaseVersion = settingsSheet.getRange(1, 2, 1, 1).getValue();
-  const dismissedUpdateRange =settingsSheet.getRange(2, 2, 1, 1);
-  if (!dismissedUpdateRange.getValue()) {
-    const releases = JSON.parse(
-      UrlFetchApp.fetch(
-        'https://api.github.com/repos/google/google-analytics-utilities/releases'
-      ).getContentText());
-    const sheetReleaseVersion = rawReleaseVersion.split('v')[1].split('.');
-    for (let i = 0; i < releases.length; i++) {
-      const release = releases[i];
-      const version = release.tag_name.split('v')[1].split('.');
-      const title = 'Update Avilable';
-      const message = messageText.newRelease + release.body + `
-      
-      ` + release.html_url;
-      if (parseInt(sheetReleaseVersion[0]) < parseInt(version[0])) {
-        const response = ui.alert(title, message, ui.ButtonSet.OK);
-        if (response == ui.Button.OK || response == ui.Button.CLOSE) {
-          dismissedUpdateRange.setValue(true);
-        }
-        break;
-      } else if (parseInt(sheetReleaseVersion[1]) < parseInt(version[1])) {
-        const response = ui.alert(title, message, ui.ButtonSet.OK);
-        if (response == ui.Button.OK || response == ui.Button.CLOSE) {
-          dismissedUpdateRange.setValue(true);
-        }
-        break;
-      } else if (parseInt(sheetReleaseVersion[2]) < parseInt(version[2])) {
-        const response = ui.alert(title, message, ui.ButtonSet.OK);
-        if (response == ui.Button.OK || response == ui.Button.CLOSE) {
-          dismissedUpdateRange.setValue(true);
-        }
-        break;
-      }
-    }
+  const sheetReleaseVersion = parseFloat(rawReleaseVersion.split('v')[1]);
+
+  // Get Github version.
+  const releases = JSON.parse(
+    UrlFetchApp.fetch(
+      'https://api.github.com/repos/google/google-analytics-utilities/releases'
+    ).getContentText());
+  const latestGithubRelease = releases[0];
+  const latestGithubVersion = parseFloat(
+    latestGithubRelease.tag_name.split('v')[1]);
+  
+  if (sheetReleaseVersion < latestGithubVersion) {
+    const title = 'Update Avilable';
+    const message = messageText.newRelease + latestGithubRelease.body + `
+  
+  ` + latestGithubRelease.html_url;
+    ui.alert(title, message, ui.ButtonSet.OK);
+  } else {
+    ui.alert('No updates avaialable.');
   }
 }
 

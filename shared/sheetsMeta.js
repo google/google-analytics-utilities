@@ -452,19 +452,19 @@ const sheetsMeta = {
         numColumns: 17
       }
     },
-    userLinks: {
+    accessBindings: {
       sheetName: 'GA4 Users',
       write: {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 8
+        numColumns: 9
       },
       read: {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 12
+        numColumns: 13
       }
     },
     healthReport: {
@@ -497,13 +497,43 @@ const sheetsMeta = {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 10
+        numColumns: 14
       },
       write: {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 14
+        numColumns: 10
+      }
+    },
+    expandedDataSets: {
+      sheetName: 'GA4 Expanded Data Sets',
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 15
+      },
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 11
+      }
+    },
+    fullPropertyDeployment: {
+      sheetName: 'GA4 Easy Property Creation',
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 23
+      },
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 18
       }
     }
   }

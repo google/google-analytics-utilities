@@ -28,24 +28,23 @@ function listGA4BigQueryLinks(properties) {
     const propertyName = 'properties/' + property[3];
     const links = listGA4Entities(
       'bigqueryLinks', propertyName).bigqueryLinks;
-    if (links != undefined) {
-      sheetValuesArray = links.reduce((arr, resource) => {
-        arr.push([
+     if (links != undefined) {
+       links.forEach(link => {
+        sheetValuesArray.push([
           property[0],
           property[1],
           property[2],
           property[3],
-          resource.project,
-          resource.name,
-          resource.createTime,
-          resource.dailyExportEnabled,
-          resource.excludedEvents || '',
-          resource.exportStreams.join(', '),
-          resource.includeAdvertisingId || '',
-          resource.streamingExportEnabled
+          link.project,
+          link.name,
+          link.createTime,
+          link.dailyExportEnabled,
+          link.excludedEvents || '',
+          link.exportStreams.join(', '),
+          link.includeAdvertisingId || '',
+          link.streamingExportEnabled
         ]);
-        return arr;
-      }, []);
+      });
     }
   });
   return sheetValuesArray;
