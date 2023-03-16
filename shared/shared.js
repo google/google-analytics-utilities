@@ -256,7 +256,6 @@ function writeToSheet(data, sheetName) {
     sheet.getRange(ranges.row, ranges.column, data.length, ranges.numColumns)
          .setValues(data);
   }
-//  checkRelease();
 }
 /**
  * Retrieves data from a specified sheet.
@@ -388,12 +387,20 @@ function getData(report) {
  */
 function clearMainContent(sheetsMetaField) {
   const sheet = ss.getSheetByName(sheetsMetaField.sheetName);
-  const ranges = sheetsMetaField.write;
+  let ranges = sheetsMetaField.write;
   let lastRow = sheet.getLastRow();
   if (lastRow > 1) {
     lastRow -= 1;
   }
-  sheet.getRange(ranges.row, ranges.column, lastRow, ranges.numColumns).clearContent();
+  if (sheetsMetaField.sheetName == 
+  sheetsMeta.ga4.fullPropertyDeployment.sheetName) {
+    sheet.getRange(ranges.row, ranges.column, lastRow, ranges.numColumns + 1)
+      .clearContent();
+  } else {
+    sheet.getRange(ranges.row, ranges.column, lastRow, ranges.numColumns)
+      .clearContent();
+  }
+  
 }
 
 /**
@@ -408,6 +415,10 @@ function setCheckboxesToFalse(sheetsMetaField) {
   let numCol = null;
   if (sheetsMetaField.sheetName == sheetsMeta.ga4.accountSummaries.sheetName) {
     startCol = sheetsMetaField.read.numColumns;
+    numCol = 1;
+  } else if (sheetsMetaField.sheetName == 
+    sheetsMeta.ga4.fullPropertyDeployment.sheetName) {
+    startCol = sheetsMetaField.read.numColumns - 3;
     numCol = 1;
   } else {
     startCol = sheetsMetaField.read.numColumns - 3;
@@ -504,4 +515,14 @@ function generateGA4DataReportRequest(dimensions, metrics, startDate, endDate, d
     request.dimensionFilter = newFilter;
   }
   return request;
+}
+
+/**
+ * Auto-resize all row heights for a sheet.
+ * @param {string} sheetName
+ * @param {number} rowHeight Row height in pixels.
+ */
+function resizeRowHeights(sheetName, rowHeight) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
+  sheet.setRowHeightsForced(2, sheet.getLastRow(), rowHeight);
 }

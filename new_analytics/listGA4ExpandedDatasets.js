@@ -15,32 +15,33 @@
  */
 
 /**
- * Retrieves the SA360 links for a given set of properties.
+ * Retrieves the expanded data sets for a given set of properties.
  * @param {!Array<!Array>} properties A two dimensional array of
  * account and property names and ids.
  * @return {!Array<!Array>} A two dimensional array where each
- * array contains metadata about the SA360 links for the given
+ * array contains metadata about the expanded datasets for the given
  * set of properties.
  */
-function listGA4SA360Links(properties) {
+function listGA4ExpandedDataSets(properties) {
   let sheetValuesArray = [];
   properties.forEach(property => {
     const propertyName = 'properties/' + property[3];
-    const links = listGA4Entities(
-      'searchAds360Links', propertyName).searchAds360Links;
-    if (links != undefined) {
-      links.forEach(link => {
+    const dataSets = listGA4Entities(
+      'expandedDataSets', propertyName).expandedDataSets;
+    if (dataSets != undefined) {
+      dataSets.forEach(dataSet => {
         sheetValuesArray.push([
           property[0],
           property[1],
           property[2],
           property[3],
-          link.advertiserId,
-          link.name,
-          link.advertiserDisplayName,
-          link.campaignDataSharingEnabled,
-          link.costDataSharingEnabled,
-          link.siteStatsSharingEnabled
+          dataSet.advertiserDisplayName,
+          dataSet.name,
+          dataSet.description,
+          dataSet.dimensionNames.join(', '),
+          dataSet.metricNames.join(', '),
+          dataSet.dimensionFilterExpression.toString(),
+          dataSet.dataCollectionStartTime
         ]);
       });
     }
@@ -49,11 +50,11 @@ function listGA4SA360Links(properties) {
 }
 
 /**
- * Writes GA4 SA360 link information to a sheet.
+ * Writes GA4 expanded dataSet information to a sheet.
  */
-function writeGA4SA360LinksToSheet() {
+function writeGA4ExpandedDataSetsToSheet() {
   const selectedProperties = getSelectedGa4Properties();
-  const sa360Links = listGA4SA360Links(selectedProperties);
-  clearSheetContent(sheetsMeta.ga4.sa360Links);
-  writeToSheet(sa360Links, sheetsMeta.ga4.sa360Links.sheetName);
+  const expandedDataSets = listGA4ExpandedDataSets(selectedProperties);
+  clearSheetContent(sheetsMeta.ga4.expandedDataSets);
+  writeToSheet(expandedDataSets, sheetsMeta.ga4.expandedDataSets.sheetName);
 }

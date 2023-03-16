@@ -98,8 +98,8 @@ function onOpen(e) {
         .addItem('Modify', 'modifyGA4Audiences'))
       .addSubMenu(
         ui.createMenu('Users')
-        .addItem('List', 'writeGA4UserLinksToSheet')
-        .addItem('Modify', 'modifyGA4UserLinks'))
+        .addItem('List', 'writeGA4AccessBindingsToSheet')
+        .addItem('Modify', 'modifyGA4AccessBindings'))
       .addSubMenu(
         ui.createMenu('SA360 Links')
         .addItem('List', 'writeGA4SA360LinksToSheet')
@@ -108,8 +108,17 @@ function onOpen(e) {
         ui.createMenu('BigQuery')
         .addItem('List', 'writeGA4BigQueryLinksToSheet'))
       .addSubMenu(
+        ui.createMenu('Expanded Data Sets')
+        .addItem('List', 'writeGA4ExpandedDataSetsToSheet'))
+      .addSubMenu(
         ui.createMenu('Health Report')
         .addItem('Create Report', 'createHealthReport'))
+      .addSubMenu(
+        ui.createMenu('Easy Property Creation')
+        .addItem('List Templates', 'writePropertyTemplatesToSheet')
+        .addItem('Create Properties', 'createPropertiesFromTemplates')
+        .addItem(
+          'Resize Row Heights', 'resizeEasyPropertyCreationSheetRowHeights'))
     )
     .addSeparator()
     .addSubMenu(
@@ -119,5 +128,7 @@ function onOpen(e) {
       .addItem('Hide GA4 Sheets', 'hideGA4Sheets')
       .addItem('Show GA4 Sheets', 'showGA4Sheets')
     )
+    .addSeparator()
+    .addItem('Check for Updates', 'checkRelease')
     .addToUi();
 }

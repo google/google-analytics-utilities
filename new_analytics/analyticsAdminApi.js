@@ -27,11 +27,29 @@ const ga4Resource = {
   displayVideo360AdvertiserLinks: AnalyticsAdmin.Properties.DisplayVideo360AdvertiserLinks,
   properties: AnalyticsAdmin.Properties,
   audiences: AnalyticsAdmin.Properties.Audiences,
-  accountUserLinks: AnalyticsAdmin.Accounts.UserLinks,
-  propertyUserLinks: AnalyticsAdmin.Properties.UserLinks,
+  accountAccessBindings: AnalyticsAdmin.Accounts.AccessBindings,
+  propertyAccessBindings: AnalyticsAdmin.Properties.AccessBindings,
   searchAds360Links: AnalyticsAdmin.Properties.SearchAds360Links,
-  bigqueryLinks: AnalyticsAdmin.Properties.BigQueryLinks
+  bigqueryLinks: AnalyticsAdmin.Properties.BigQueryLinks,
+  expandedDataSets: AnalyticsAdmin.Properties.ExpandedDataSets
 };
+
+/**
+ * Gets a resource.
+ * @param {string} resourceKey The GA4 entity being requested.
+ * @param {string} parent
+ * @return {!Object} Either a response from the API or an error message.
+ */
+function getGA4Resource(resourceKey, parent) {
+  try {
+    let response = ga4Resource[resourceKey].get(parent);
+    Utilities.sleep(ga4RequestDelay);
+    return response;
+  } catch(e) {
+    console.log(e);
+    return e;
+  }
+}
 
 /**
  * Lists most GA4 entities.
@@ -48,8 +66,9 @@ function listGA4Entities(resourceKey, parent) {
       if (resourceKey == 'properties') {
         parent.pageSize = 200;
         response = ga4Resource[resourceKey].list(parent);
-      } else if (resourceKey == 'accountUserLinks' || resourceKey == 'propertyUserLinks') { 
-        items = 'userLinks';
+      } else if (resourceKey == 'accountAccessBindings' || 
+        resourceKey == 'propertyAccessBindings') { 
+        items = 'userBindings';
         response = ga4Resource[resourceKey].list(parent, options);
       } else {
         response = ga4Resource[resourceKey].list(parent, options);
@@ -141,10 +160,12 @@ function updateGA4Entity(resourceKey, name, payload, index) {
     } else {
       mask = '*';
     }
-    if (resourceKey == 'accountUserLinks' || resourceKey == 'propertyUserLinks') {
+    if (resourceKey == 'accountAccessBindings' || 
+      resourceKey == 'propertyAccessBindings') {
       response = ga4Resource[resourceKey].patch(payload, name);
     } else {
-      response = ga4Resource[resourceKey].patch(payload, name, {updateMask: mask});
+      response = ga4Resource[resourceKey].patch(
+        payload, name, {updateMask: mask});
     }
 		Utilities.sleep(ga4RequestDelay);
 		return response;

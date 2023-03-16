@@ -80,8 +80,8 @@ function modifyGA4Audiences() {
 /**
  * Modifies GA4 user links.
  */
-function modifyGA4UserLinks() {
-  modifyGA4Entities(sheetsMeta.ga4.userLinks.sheetName);
+function modifyGA4AccessBindings() {
+  modifyGA4Entities(sheetsMeta.ga4.accessBindings.sheetName);
 }
 
 /**
@@ -120,11 +120,13 @@ function modifyGA4Entities(sheetName) {
         parent = 'properties/' + entity[3];
         resourceName = entity[5];
       }
-      if (sheetName == sheetsMeta.ga4.userLinks.sheetName && entity[3] == '') {
+      if (sheetName == sheetsMeta.ga4.accessBindings.sheetName &&
+        entity[3] == '') {
         parent = 'accounts/' + entity[1]
-        ga4Resource = 'accountUserLinks';
-      } else if (sheetName == sheetsMeta.ga4.userLinks.sheetName && entity[3] != '') {
-        ga4Resource = 'propertyUserLinks';
+        ga4Resource = 'accountAccessBindings';
+      } else if (sheetName == sheetsMeta.ga4.accessBindings.sheetName &&
+        entity[3] != '') {
+        ga4Resource = 'propertyAccessBindings';
         parent = 'properties/' + entity[3];
       }
       // An entity cannot be both created and archived/deleted, so if both
@@ -138,7 +140,7 @@ function modifyGA4Entities(sheetName) {
       } else if (remove) {
         if (sheetName == sheetsMeta.ga4.customDimensions.sheetName ||
             sheetName == sheetsMeta.ga4.customMetrics.sheetName) {
-          responses.push(rchiveGA4CustomDefinition(ga4Resource, resourceName));
+          responses.push(archiveGA4CustomDefinition(ga4Resource, resourceName));
           actionTaken = responseCheck(responses, 'archive');
         } else {
           responses.push(deleteGA4Entity(ga4Resource, resourceName));
@@ -265,11 +267,16 @@ function buildCreatePayload(sheetName, entity) {
       payload.exclusionDurationMode = entity[11];
     }
     payload.filterClauses = [JSON.parse(entity[12])];
-  } else if (sheetName == sheetsMeta.ga4.userLinks.sheetName) {
+  } else if (sheetName == sheetsMeta.ga4.accessBindings.sheetName) {
+    // Build access binding payload.
     delete payload.displayName;
     delete payload.description;
-    payload.emailAddress = entity[4].trim();
-    payload.directRoles = [entity[7].trim()];
+    let roles = entity[7].trim();
+    if ((entity[8].trim()).length > 0) {
+      roles += ', ' + entity[8].trim();
+    }
+    payload.user = entity[4].trim();
+    payload.roles = roles.split(', ');;
   } else if (sheetName == sheetsMeta.ga4.sa360Links.sheetName) {
     AnalyticsAdmin.Properties.SearchAds360Links.create().
     payload.advertiserId = entityDisplayNameOrId.trim();
@@ -345,10 +352,15 @@ function buildUpdatePayload(sheetName, entity) {
       };
     }
     */
-  } else if (sheetName == sheetsMeta.ga4.userLinks.sheetName) {
+  } else if (sheetName == sheetsMeta.ga4.accessBindings.sheetName) {
+    // Update access binding.
     delete payload.displayName;
     delete payload.description;
-    payload.directRoles = [entity[7]];
+    let roles = entity[7].trim();
+    if ((entity[8].trim()).length > 0) {
+      roles += ', ' + entity[8].trim();
+    }
+    payload.roles = roles.split(', ');
   } else if (sheetName == sheetsMeta.ga4.sa360Links.sheetName) {
     payload.adsPersonalizationEnabled = entity[7];
     payload.siteStatsSharingEnabled = entity[10];
