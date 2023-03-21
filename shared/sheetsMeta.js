@@ -284,6 +284,21 @@ const sheetsMeta = {
         numRows: 1,
         numColumns: 8
       }
+    },
+    adsLinks: {
+      sheetName: 'UA Google Ads Links',
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 7
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 7
+      }
     }
   },
   ga4: {
@@ -338,13 +353,13 @@ const sheetsMeta = {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 10
+        numColumns: 11
       },
       read: {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 14
+        numColumns: 15
       }
     },
     conversionEvents: {

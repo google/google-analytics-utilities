@@ -91,9 +91,9 @@ function listGA4Entities(resourceKey, parent) {
   }
 }
 
-function archiveGA4CustomDefinition(resourceKey, customDefinitionName) {
+function archiveGA4CustomDefinition(resourceKey, resourceName) {
   try {
-    const response = ga4Resource[resourceKey].archive({}, customDefinitionName)
+    const response = ga4Resource[resourceKey].archive({}, resourceName);
 		Utilities.sleep(ga4RequestDelay);
 		return response;
   } catch(e) {
@@ -135,23 +135,11 @@ function updateGA4Entity(resourceKey, name, payload, index) {
     let mask = '';
     let response = {};
     if (resourceKey == 'customMetrics') {
-      const customMetrics = JSON.parse(CacheService.getUserCache().get('customMetrics'));
-      if (customMetrics[index][4] != payload.displayName) {
-        mask = 'displayName';
-      }
-      if (customMetrics[index][8] != 'CURRENCY' && customMetrics[index][8] != payload.measurementUnit) {
-        if (mask != '') {
-          mask += ',measurementUnit';
-        } else {
-          mask = 'measurementUnit';
-        }
-      }
-      if (customMetrics[index][9] != payload.description) {
-        if (mask != '') {
-          mask += ',description';
-        } else {
-          mask = 'description';
-        }
+      if (payload.measurementUnit == 'CURRENCY') {
+        delete payload.measurementUnit;
+        mask = 'displayName,description,restrictedMetricType';
+      } else {
+        mask = 'displayName,measurementUnit,description,restrictedMetricType';
       }
     } else if (resourceKey == 'audiences') {
       for (field in payload) {

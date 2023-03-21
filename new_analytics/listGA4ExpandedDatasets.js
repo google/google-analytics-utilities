@@ -30,17 +30,21 @@ function listGA4ExpandedDataSets(properties) {
       'expandedDataSets', propertyName).expandedDataSets;
     if (dataSets != undefined) {
       dataSets.forEach(dataSet => {
+        let filterExpression = '';
+        if (dataSet.dimensionFilterExpression) {
+          filterExpression = dataSet.dimensionFilterExpression.toString();
+        }
         sheetValuesArray.push([
           property[0],
           property[1],
           property[2],
           property[3],
-          dataSet.advertiserDisplayName,
+          dataSet.displayName,
           dataSet.name,
           dataSet.description,
           dataSet.dimensionNames.join(', '),
           dataSet.metricNames.join(', '),
-          dataSet.dimensionFilterExpression.toString(),
+          filterExpression,
           dataSet.dataCollectionStartTime
         ]);
       });

@@ -136,10 +136,12 @@ function modifyGA4Entities(sheetName) {
         // Writes that the entity was skipped to the sheet.
         writeActionTakenToSheet(sheetName, index, actionTaken);
 
-      // Archives custom definitions and deletes anything else that can be deleted.
+      // Archives custom definitions and audiences. Deletes anything else that 
+      // can be deleted.
       } else if (remove) {
         if (sheetName == sheetsMeta.ga4.customDimensions.sheetName ||
-            sheetName == sheetsMeta.ga4.customMetrics.sheetName) {
+            sheetName == sheetsMeta.ga4.customMetrics.sheetName ||
+            sheetName == sheetsMeta.ga4.audiences.sheetName) {
           responses.push(archiveGA4CustomDefinition(ga4Resource, resourceName));
           actionTaken = responseCheck(responses, 'archive');
         } else {
@@ -208,6 +210,11 @@ function buildCreatePayload(sheetName, entity) {
     } else if (sheetName == sheetsMeta.ga4.customMetrics.sheetName) {
       // Add custom metric fields.
       const measurementUnit = entity[8];
+      if (measurementUnit == 'CURRENCY') {
+        if (entity[10].length > 0) {
+          payload.restrictedMetricType = entity[10].split(', ');
+        }
+      }
       payload.measurementUnit = measurementUnit;
     }
   } else if (sheetName == sheetsMeta.ga4.conversionEvents.sheetName) {
@@ -246,11 +253,11 @@ function buildCreatePayload(sheetName, entity) {
       }
     } else if (payload.type == 'ANDROID_APP_DATA_STREAM') {
       payload.androidAppStreamData = {
-        packageName: entity[7]
+        packageName: entity[8]
       }
     } else if (payload.type == 'IOS_APP_DATA_STREAM') {
       payload.iosAppStreamData = {
-        bundleId: entity[8]
+        bundleId: entity[9]
       }
     }
   } else if (sheetName == sheetsMeta.ga4.audiences.sheetName) {
@@ -311,6 +318,11 @@ function buildUpdatePayload(sheetName, entity) {
     } else if (sheetName == sheetsMeta.ga4.customMetrics.sheetName) {
       // Add custom metric fields.
       const measurementUnit = entity[8];
+      if (measurementUnit == 'CURRENCY') {
+        if (entity[10].length > 0) {
+          payload.restrictedMetricType = entity[10].split(', ');
+        }
+      }
       payload.measurementUnit = measurementUnit;
     }
   } else if (sheetName == sheetsMeta.ga4.googleAdsLinks.sheetName) {
@@ -334,11 +346,11 @@ function buildUpdatePayload(sheetName, entity) {
       }
     } else if (entity[6] == 'ANDROID_APP_DATA_STREAM') {
       payload.androidAppStreamData = {
-        packageName: entity[7]
+        packageName: entity[8]
       }
     } else if (entity[6] == 'IOS_APP_DATA_STREAM') {
       payload.iosAppStreamData = {
-        bundleId: entity[8]
+        bundleId: entity[9]
       }
     }
   } else if (sheetName == sheetsMeta.ga4.audiences.sheetName) {
