@@ -68,18 +68,25 @@ function responseCheck(responses, requestType) {
   const output = [];
   responses.forEach(response => {
     if (response.details != undefined) {
-      output.push('Error ' + response.details.code + ': ' + response.details.message);
+      output.push('Error ' + response.details.code + ': ' + 
+      response.details.message);
     } else if (response.statusCode != undefined) {
       output.push('Error ' + response.statusCode + ': ' + response.name);
     } else {
       if (requestType == 'create') {
         output.push(response.name + ': ' + apiActionTaken.ga4.created);
       } else if (requestType == 'update') {
-        output.push(response.name + ': ' + apiActionTaken.ga4.updated);
+        if (response.measurementUnit == 'CURRENCY') {
+          output.push(response.name + ': ' + apiActionTaken.ga4.updated + 
+          ' - NOTE: CURRENCY cannot be changed to a different measurement unit.'
+          );
+        } else {
+          output.push(response.name + ': ' + apiActionTaken.ga4.updated);
+        }
       } else if (requestType == 'archive') {
-        output.push(response.name + ': ' + apiActionTaken.ga4.archived);
+        output.push(apiActionTaken.ga4.archived);
       } else if (requestType == 'delete') {
-        output.push(response.name + ': ' + apiActionTaken.ga4.deleted);
+        output.push(apiActionTaken.ga4.deleted);
       }
     }
   });

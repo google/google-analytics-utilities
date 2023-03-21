@@ -56,6 +56,9 @@ function onOpen(e) {
         .addItem('List Properties', 'writeUAPropertiesToSheet')
         .addItem('List Opt Out Statuses', 'writeSelectedOptOutStatusesToSheet')
         .addItem('Update Opt Out Statuses', 'updateSelectedOptOutStatuses')
+      ).addSubMenu(
+        ui.createMenu('Google Ads Links')
+        .addItem('List Google Ads Links', 'writeUAAdsLinksToSheet')
       ))
     .addSubMenu(
       ui.createMenu('Google Analytics 4')

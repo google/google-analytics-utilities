@@ -30,6 +30,10 @@ function listSelectedGA4CustomMetrics(properties) {
       'customMetrics', propertyName).customMetrics;
     if (cms != undefined) {
       for (let i = 0; i < cms.length; i++) {
+        let rmt = '';
+        if (cms[i].restrictedMetricType) {
+          rmt = cms[i].restrictedMetricType.join(', ')
+        }
         finalizedCms.push([
           property[0],
           property[1],
@@ -40,7 +44,8 @@ function listSelectedGA4CustomMetrics(properties) {
           cms[i].parameterName,
           cms[i].scope,
           cms[i].measurementUnit,
-          cms[i].description
+          cms[i].description,
+          rmt
         ]);
       }
     }
