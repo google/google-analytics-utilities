@@ -33,6 +33,7 @@ function getFlattenedAccountSummaries() {
       for (var j = 0; j < properties.length; j++) {
         var propertyName = properties[j].name;
         var propertyId = properties[j].id;
+        const internalPropertyId = properties[j].internalWebPropertyId;
         var views = properties[j].profiles
         if (views !== undefined) {
           for (var k = 0; k < views.length; k++) {
@@ -43,6 +44,7 @@ function getFlattenedAccountSummaries() {
               accountId,
               propertyName,
               propertyId,
+              internalPropertyId,
               viewName,
               viewId
             ]);

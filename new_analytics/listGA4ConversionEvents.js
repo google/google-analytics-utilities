@@ -32,10 +32,11 @@ function listSelectedGA4ConversionEvents(properties) {
     const propertyName = 'properties/' + property[3];
     const conversionEvents = listGA4Entities(
       'conversionEvents', propertyName).conversionEvents;
-    if (conversionEvents != undefined) {
+    if (conversionEvents) {
       let conversionsReport = null;
       try {
-        conversionsReport = AnalyticsData.Properties.runReport(request, propertyName);
+        conversionsReport = AnalyticsData.Properties.runReport(
+          request, propertyName);
       } catch(e) {
         conversionsReport = 'No Access';
       }
@@ -43,7 +44,8 @@ function listSelectedGA4ConversionEvents(properties) {
         const currentConversionEvent = conversionEvents[i];
         let conversionCount = null;
         if (conversionsReport != 'No Access') {
-          conversionCount = getConversionCount(request, currentConversionEvent)
+          conversionCount = getConversionCount(
+            conversionsReport, currentConversionEvent);
         } else {
           conversionCount = conversionsReport;
         }
@@ -74,7 +76,8 @@ function listSelectedGA4ConversionEvents(properties) {
 function getConversionCount(conversionsReport, conversionEvent) {
   let conversionCount = 0;
   if (conversionsReport.rows) {
-    conversionRow = conversions.rows.find(row => row.dimensionValues[0].value == conversionEvent.eventName);
+    conversionRow = conversionsReport.rows.find(
+      row => row.dimensionValues[0].value == conversionEvent.eventName);
     if (conversionRow) {
       conversionCount = conversionRow.metricValues[0].value || 0;
     }

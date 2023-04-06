@@ -83,7 +83,7 @@ function fetchOptOutStatus(internalPropertyId) {
  */
 function setOptOutStatus(internalPropertyId, status) {
   try {
-    const x = AnalyticsAdmin.Properties.setAutomatedGa4ConfigurationOptOut({
+    AnalyticsAdmin.Properties.setAutomatedGa4ConfigurationOptOut({
       property: 'properties/' + internalPropertyId,
       optOut: status
     });

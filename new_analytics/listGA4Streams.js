@@ -25,6 +25,12 @@ function listSelectedGA4Streams(properties) {
       'streams', propertyName).dataStreams;
     if (dataStreamsResponse != undefined && dataStreamsResponse.length > 0) {
       dataStreamsResponse.forEach(stream => {
+        let enhancedMeasurementSettings = {};
+        if (stream.webStreamData) {
+          enhancedMeasurementSettings = AnalyticsAdmin
+            .Properties.DataStreams.getEnhancedMeasurementSettings(
+              `${stream.name}/enhancedMeasurementSettings`);
+        }
         const tempArray = [];
         tempArray.push(
           property[0],
@@ -42,6 +48,16 @@ function listSelectedGA4Streams(properties) {
           tempArray[7] = stream.webStreamData.measurementId || '';
           tempArray[10] = stream.webStreamData.firebaseAppId || '';
           tempArray[13] = stream.webStreamData.defaultUri || '';
+          tempArray[14] = enhancedMeasurementSettings.streamEnabled || false,
+          tempArray[15] = enhancedMeasurementSettings.scrollsEnabled || false,
+          tempArray[16] = enhancedMeasurementSettings.outboundClicksEnabled || false,
+          tempArray[17] = enhancedMeasurementSettings.siteSearchEnabled || false,
+          tempArray[18] = enhancedMeasurementSettings.videoEngagementEnabled || false,
+          tempArray[19] = enhancedMeasurementSettings.fileDownloadsEnabled || false,
+          tempArray[20] = enhancedMeasurementSettings.pageChangesEnabled || false,
+          tempArray[21] = enhancedMeasurementSettings.formInteractionsEnabled || false,
+          tempArray[22] = enhancedMeasurementSettings.searchQueryParameter,
+          tempArray[23] = enhancedMeasurementSettings.uriQueryParameter
         } else if (stream.androidAppStreamData != undefined) {
           tempArray[8] = stream.androidAppStreamData.packageName || '';
           tempArray[10] = stream.androidAppStreamData.firebaseAppId || '';
