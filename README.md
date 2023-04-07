@@ -6,6 +6,16 @@ This repository contains an app script that can be used in combination with a Go
 
 The script makes use of the following APIs:
 
+* Google Analytics Management API 
+* Google Analytics Reporting API version 4
+* Google Analytics Admin API
+* Google Analytics Data API
+* Google Drive API
+
+If you find this tool useful, please consider leaving feedback by filling out this quick, anonymous [survey](https://docs.google.com/forms/d/e/1FAIpQLScHrZbNU2RZGMtcWTVVEsxe5ZzARFvjqFQziixNPUPCsNcUUQ/viewform).
+
+The script currently performs the following functions:
+
 | Google Analytics Version | Resource                                                             | Capabilities                  |
 |--------------------------|----------------------------------------------------------------------|-------------------------------|
 | GA4                      | [Account Summaries](#account-summaries-1)                            | List                          |
@@ -36,18 +46,6 @@ The script makes use of the following APIs:
 | Universal Analytics      | [Google Ads Links](#google-ads-links)                                | List                          |
 | Universal Analytics      | [GA4 Auto Configuration Opt Out](#ua-ga4-auto-configuration-opt-out) | List, Set opt out status      |
 | Universal Analytics      | [Connected Site Tags](#connected-site-tags)                          | List, Create, Delete          |
-
-
-* Google Analytics Management API 
-* Google Analytics Reporting API version 4
-* Google Analytics Admin API
-* Google Analytics Data API
-* Google Drive API
-
-If you find this tool useful, please consider leaving feedback by filling out this quick, anonymous [survey](https://docs.google.com/forms/d/e/1FAIpQLScHrZbNU2RZGMtcWTVVEsxe5ZzARFvjqFQziixNPUPCsNcUUQ/viewform).
-
-The script currently performs the following functions:
-
 
 These tasks can be completed by [joining the Google Group](https://groups.google.com/g/google-analytics-utilities-users), [copying the template spreadsheet](https://docs.google.com/spreadsheets/d/1kJqwYNed8RTuAgjy0aRUooD__MIPqzUeiDF5LZ7v1aI/), and clicking on various options under the Google Analytics Utilities menu.
 
