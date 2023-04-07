@@ -35,11 +35,29 @@ function listAllFeatureSettings(properties) {
       const propertyName = property[2];
       const propertyId = property[3];
       const propertyResourceName = 'properties/' + propertyId;
-      const attributionSettings = AnalyticsAdmin.Properties
-        .getAttributionSettings(propertyResourceName + '/attributionSettings');
-      const dataRetentionSettings = AnalyticsAdmin.Properties.
-        getGoogleSignalsSettings(
-          propertyResourceName + '/dataRetentionSettings');
+      const attributionSettings = getGA4Resource(
+        'attributionSettings', 
+        `${propertyResourceName}/attributionSettings`);
+      const dataRetentionSettings = getGA4Resource(
+        'dataRetentionSettings',
+        `${propertyResourceName}/dataRetentionSettings`);
+      const dataStreams = listGA4Entities(
+        'streams', propertyResourceName).dataStreams;
+      if (dataStreams) {
+        dataStreams.forEach(stream => {
+          if (stream.webStreamData) {
+            stream.webStreamData.enhancedMeasurementSettings = getGA4Resource(
+              'enhancedMeasurementSettings',
+              `${stream.name}/enhancedMeasurementSettings`);
+          }
+        });
+      }
+      let audiencesExist = false;
+      const audiences = listGA4Entities(
+        'audiences', propertyResourceName).audiences;
+      if (audiences) {
+        audiencesExist = true;
+      }
       data.push([
         accountName,
         accountId,
@@ -52,25 +70,37 @@ function listAllFeatureSettings(properties) {
           'data retention',dataRetentionSettings), null, 2),
         JSON.stringify(cleanOutput(
           'attribution', attributionSettings), null, 2),
-        JSON.stringify(cleanOutput('audiences',
-          listGA4Entities('audiences', propertyResourceName).audiences), null, 2) || '[]',
-        JSON.stringify(cleanOutput('streams',
-          listGA4Entities('streams', propertyResourceName).dataStreams), null, 2) || '[]',
+        audiencesExist,
+        JSON.stringify(cleanOutput('streams', dataStreams), null, 2) || '[]',
         JSON.stringify(cleanOutput('customDimensions',
-          listGA4Entities('customDimensions', propertyResourceName).customDimensions), null, 2) || '[]',
+          listGA4Entities(
+            'customDimensions', 
+            propertyResourceName).customDimensions), null, 2) || '[]',
         JSON.stringify(cleanOutput('customMetrics',
-          listGA4Entities('customMetrics', propertyResourceName).customMetrics), null, 2) || '[]',
+          listGA4Entities(
+            'customMetrics', 
+            propertyResourceName).customMetrics), null, 2) || '[]',
         JSON.stringify(cleanOutput('conversionEvents',
-          listGA4Entities('conversionEvents', propertyResourceName).conversionEvents), null, 2) || '[]',
+          listGA4Entities(
+            'conversionEvents', 
+            propertyResourceName).conversionEvents), null, 2) || '[]',
         JSON.stringify(cleanOutput('googleAdsLinks',
-          listGA4Entities('googleAdsLinks', propertyResourceName).googleAdsLinks), null, 2) || '[]',
+          listGA4Entities(
+            'googleAdsLinks', 
+          propertyResourceName).googleAdsLinks), null, 2) || '[]',
         JSON.stringify(cleanOutput('displayVideo360AdvertiserLinks',
           listGA4Entities(
-            'displayVideo360AdvertiserLinks', propertyResourceName).displayVideo360AdvertiserLinks), null, 2) || '[]',
+            'displayVideo360AdvertiserLinks', 
+            propertyResourceName).displayVideo360AdvertiserLinks),
+          null, 2) || '[]',
         JSON.stringify(cleanOutput('searchAds360Links',
-          listGA4Entities('searchAds360Links', propertyResourceName).searchAds360Links), null, 2) || '[]',
+          listGA4Entities(
+            'searchAds360Links', 
+            propertyResourceName).searchAds360Links), null, 2) || '[]',
         JSON.stringify(cleanOutput('firebaseLinks',
-          listGA4Entities('firebaseLinks', propertyResourceName).firebaseLinks), null, 2) || '[]'
+          listGA4Entities(
+            'firebaseLinks', 
+            propertyResourceName).firebaseLinks), null, 2) || '[]'
       ]);
     });
   }
@@ -92,6 +122,9 @@ function cleanOutput(resourceType, value) {
     delete value.propertyType;
   } else if (resourceType == 'data retention') {
     delete value.name;
+    if (/twenty|thirty|fifty/.test(value.eventDataRetention)) {
+      value.evenDataRetention = 'FOURTEEN_MONTHS';
+    }
   } else if (resourceType == 'attribution') {
     delete value.name;
   } else if (resourceType == 'audiences') {
@@ -121,6 +154,7 @@ function cleanOutput(resourceType, value) {
         delete stream.createTime;
         if (stream.webStreamData) {
           delete stream.webStreamData.measurementId;
+          delete stream.webStreamData.enhancedMeasurementSettings.name;
         }
       });
     }
@@ -211,9 +245,9 @@ function createPropertiesFromTemplates() {
         // Parse settings.
         const settings = {
           property: JSON.parse(row[6] || '[]'),
-          dataRetention: JSON.parse(row[7] || '[]'),
-          attribution: JSON.parse(row[8] || '[]'),
-          audiences: JSON.parse(row[9] || '[]'),
+          dataRetentionSettings: JSON.parse(row[7] || '[]'),
+          attributionSettings: JSON.parse(row[8] || '[]'),
+          audiences: row[9],
           streams: JSON.parse(row[10] || '[]'),
           customDimensions: JSON.parse(row[11] || '[]'),
           customMetrics: JSON.parse(row[12] || '[]'),
@@ -227,40 +261,63 @@ function createPropertiesFromTemplates() {
         let newProperty = null;
         let responses = [];
         for (setting in settings) {
+          originalPropertyId = row[3];
           if (setting == 'property') {
             // Create new property.
             settings.property.displayName = row[5];
             newProperty = createGA4Entity(
               'properties', parentAccount, settings.property);
             responses.push(newProperty);
-            console.log(newProperty.name);
-          } else if (setting == 'dataRetention') {
+          } else if (setting == 'dataRetentionSettings') {
             // Set data retention settings.
-            const drs = AnalyticsAdmin.Properties.getDataRetentionSettings(
-              newProperty.name + '/dataRetentionSettings');
-            const response = AnalyticsAdmin.Properties
-            .updateDataRetentionSettings(
-              settings.dataRetention, drs.name, {updateMask: '*'});
+            const response = updateGA4Entity(
+              setting, 
+              `${newProperty.name}/${setting}`, 
+              settings[setting]
+            );
             responses.push(response);
-            Utilities.sleep(100);
-          } else if (setting == 'attribution') {
+          } else if (setting == 'attributionSettings') {
             // Set attribution settings.
-            const as = AnalyticsAdmin.Properties.getAttributionSettings(
-              newProperty.name + '/attributionSettings');
-            const response = AnalyticsAdmin.Properties
-              .updateAttributionSettings(settings.attribution, as.name, 
-              {
-                updateMask: 'acquisitionConversionEventLookbackWindow,otherConversionEventLookbackWindow,reportingAttributionModel'
-              });
+            const response = updateGA4Entity(
+              setting, 
+              `${newProperty.name}/${setting}`, 
+              settings[setting]
+            );
             responses.push(response);
-            Utilities.sleep(100);
           } else {
             // Create settings.
             const values = settings[setting];
-            if (values.length > 0) {
+            console.log(values);
+            console.log(setting);
+            console.log(typeof values == 'boolean' && setting == 'audiences');
+            if (values.length > 0 && setting != 'audiences') {
               values.forEach(value => {
+                if (value.webStreamData) {
+                  const ems = value.webStreamData.enhancedMeasurementSettings;
+                  delete value.webStreamData.enhancedMeasurementSettings;
+                  const newStream = createGA4Entity(
+                    setting, newProperty.name, value);
+                  responses.push(newStream);
+                  const newEnhancedMeasurementSettings = updateGA4Entity(
+                    'enhancedMeasurementSettings',
+                    `${newStream.name}/enhancedMeasurementSettings`,
+                    JSON.parse(JSON.stringify(ems))
+                  );
+                  responses.push(newEnhancedMeasurementSettings);
+                } else {
+                   const response = createGA4Entity(
+                    setting, newProperty.name, value);
+                  responses.push(response);
+                }
+              });
+            } else if (typeof values == 'boolean' && setting == 'audiences') {
+              const audiences = listGA4Entities(
+                setting, `properties/${originalPropertyId}`)[setting];
+              const templateValues = cleanOutput('audiences', audiences);
+              templateValues.forEach(resource => {
                 const response = createGA4Entity(
-                  setting, newProperty.name, value);
+                  setting, newProperty.name, 
+                  JSON.parse(JSON.stringify(resource)));
                 responses.push(response);
               });
             }

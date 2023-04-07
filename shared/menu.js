@@ -59,6 +59,10 @@ function onOpen(e) {
       ).addSubMenu(
         ui.createMenu('Google Ads Links')
         .addItem('List Google Ads Links', 'writeUAAdsLinksToSheet')
+      ).addSubMenu(
+        ui.createMenu('Connected Site Tags')
+        .addItem('List', 'writeUAConnectedSiteTagDataToSheet')
+        .addItem('Modify', 'modifyConnectedSiteTags')
       ))
     .addSubMenu(
       ui.createMenu('Google Analytics 4')
@@ -112,7 +116,8 @@ function onOpen(e) {
         .addItem('List', 'writeGA4BigQueryLinksToSheet'))
       .addSubMenu(
         ui.createMenu('Expanded Data Sets')
-        .addItem('List', 'writeGA4ExpandedDataSetsToSheet'))
+        .addItem('List', 'writeGA4ExpandedDataSetsToSheet')
+        .addItem('Modify', 'modifyGA4ExpandedDataSets'))
       .addSubMenu(
         ui.createMenu('Health Report')
         .addItem('Create Report', 'createHealthReport'))

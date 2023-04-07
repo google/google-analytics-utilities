@@ -292,7 +292,10 @@ function getSettings() {
  * views retrieved from the sheet.
  */
 function getSelectedViews() {
-  const views = getDataFromSheet(sheetsMeta.ua.accountSummaries.sheetName);
+  let views = getDataFromSheet(sheetsMeta.ua.accountSummaries.sheetName);
+  for (let i = 0; i < views.length; i++) {
+    views[i].splice(4, 1);
+  }
   return views.filter(row => row[6]);
 }
 /**
@@ -382,90 +385,15 @@ function getData(report) {
 }
 
 /**
- * Clears the main contents of a sheet.
- * @param {!Object} sheetsMetaField
- */
-function clearMainContent(sheetsMetaField) {
-  const sheet = ss.getSheetByName(sheetsMetaField.sheetName);
-  let ranges = sheetsMetaField.write;
-  let lastRow = sheet.getLastRow();
-  if (lastRow > 1) {
-    lastRow -= 1;
-  }
-  if (sheetsMetaField.sheetName == 
-  sheetsMeta.ga4.fullPropertyDeployment.sheetName) {
-    sheet.getRange(ranges.row, ranges.column, lastRow, ranges.numColumns + 1)
-      .clearContent();
-  } else {
-    sheet.getRange(ranges.row, ranges.column, lastRow, ranges.numColumns)
-      .clearContent();
-  }
-  
-}
-
-/**
- * Sets all checkboxes in a range to false.
- * @param {!Object} sheetsMetaField The object from the sheetsMeta variable.
- */
-function setCheckboxesToFalse(sheetsMetaField) {
-  const sheet = ss.getSheetByName(sheetsMetaField.sheetName);
-  const startRow = 2;
-  let startCol = null;
-  const numRows = sheet.getLastRow() - 1;
-  let numCol = null;
-  if (sheetsMetaField.sheetName == sheetsMeta.ga4.accountSummaries.sheetName) {
-    startCol = sheetsMetaField.read.numColumns;
-    numCol = 1;
-  } else if (sheetsMetaField.sheetName == 
-    sheetsMeta.ga4.fullPropertyDeployment.sheetName) {
-    startCol = sheetsMetaField.read.numColumns - 3;
-    numCol = 1;
-  } else {
-    startCol = sheetsMetaField.read.numColumns - 3;
-    if (sheetsMetaField.sheetName == sheetsMeta.ga4.conversionEvents.sheetName ||
-        sheetsMetaField.sheetName == sheetsMeta.ga4.firebaseLinks.sheetName) {
-      numCol = 2;
-    } else {
-      numCol = 3;
-    }
-  }
-  if (numRows > 0) {
-    const values = [];
-    for (let i = 0; i < numRows; i++) {
-      const tempArray = [];
-      for (let j = 0; j < numCol; j++) {
-        tempArray.push(false);
-      }
-      values.push(tempArray);
-    }
-    sheet.getRange(startRow, startCol, numRows, numCol).setValues(values);
-  }
-}
-
-/**
- * Clear actions taken.
- * @param {!Object} sheetsMetaField The object from the sheetsMeta variable.
- */
-function clearActionsTaken(sheetsMetaField) {
-  const sheet = ss.getSheetByName(sheetsMetaField.sheetName);
-  const range = sheetsMetaField.read;
-  if (sheet.getLastRow() - 1 > 0) {
-    const values = [];
-    for (let i = 0; i < sheet.getLastRow() - 1; i++) { 
-      values.push(['']);
-    }
-    sheet.getRange(range.row, range.numColumns, values.length, 1).setValues(values);
-  }
-}
-
-/**
  * Clears a sheet of content.
  * @param {!Object} sheetsMetaField The object from the sheetsMeta variable.
  */
 function clearSheetContent(sheetsMetaField) {
-  setCheckboxesToFalse(sheetsMetaField);
-  clearActionsTaken(sheetsMetaField);
-  clearMainContent(sheetsMetaField);
+  const sheet = SpreadsheetApp.getActive().getSheetByName(
+    sheetsMetaField.sheetName);
+  sheet.getRange(
+    2, 1, sheet.getLastRow() - 1, sheet.getLastColumn()
+  ).clearContent();
 }
 
 /**
@@ -524,5 +452,5 @@ function generateGA4DataReportRequest(dimensions, metrics, startDate, endDate, d
  */
 function resizeRowHeights(sheetName, rowHeight) {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
-  sheet.setRowHeightsForced(2, sheet.getLastRow(), rowHeight);
+  sheet.setRowHeightsForced(2, sheet.getLastRow() - 1, rowHeight);
 }

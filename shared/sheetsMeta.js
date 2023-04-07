@@ -62,13 +62,13 @@ const sheetsMeta = {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 7
+        numColumns: 8
       },
       write: {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 6
+        numColumns: 7
       }
     },
     filters: {
@@ -323,13 +323,13 @@ const sheetsMeta = {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 14
+        numColumns: 24
       },
       read: {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 18
+        numColumns: 28
       }
     },
     customDimensions: {
@@ -549,6 +549,21 @@ const sheetsMeta = {
         column: 1,
         numRows: 1,
         numColumns: 18
+      }
+    },
+    connectedSiteTags: {
+      sheetName: 'UA Connected Site Tags',
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 7
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 11
       }
     }
   }

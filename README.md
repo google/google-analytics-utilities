@@ -6,78 +6,54 @@ This repository contains an app script that can be used in combination with a Go
 
 The script makes use of the following APIs:
 
+| Google Analytics Version | Resource                                                             | Capabilities                  |
+|--------------------------|----------------------------------------------------------------------|-------------------------------|
+| GA4                      | [Account Summaries](#account-summaries-1)                            | List                          |
+| GA4                      | [Properties](#properties)                                            | List, Create, Delete, Update  |
+| GA4                      | [Data Streams](#data-streams)                                        | List, Create, Delete, Update  |
+| GA4                      | [Custom Dimensions](#custom-dimensions-1)                            | List, Create, Archive, Update |
+| GA4                      | [Custom Metrics](#custom-metrics-1)                                  | List, Create, Archive, Update |
+| GA4                      | [Conversion Events](#conversion-events)                              | List, Create, Delete          |
+| GA4                      | [Firebase Links](#firebase-links)                                    | List, Create, Delete          |
+| GA4                      | [Google Ads Links](#google-ads-links-1)                              | List, Create, Delete, Update  |
+| GA4                      | [DV360 Links](#dv360-links)                                          | List, Create, Delete, Update  |
+| GA4                      | [Audiences Settings](#ga4-audiences)                                 | List, Create, Delete, Update  |
+| GA4                      | [SA360 Links](#sa360-links)                                          | List, Create, Delete, Update  |
+| GA4                      | [BigQuery Links](#bigquery-links)                                    | List                          |
+| GA4                      | [User Access Bindings](#ga4-users)                                   | List, Create, Delete, Update  |
+| GA4                      | [Settings Report](#settings-report)                                  | Create                        |
+| GA4                      | [Expanded Data Sets](#expanded-data-sets)                            | List, Create, Delete, Update  |
+| GA4                      | [Easy Property Creation](#easy-property-creation)                    | Create                        |
+| Universal Analytics      | [Account Summaries](#account-summaries)                              | List                          |
+| Universal Analytics      | [View Details](#view-details)                                        | List                          |
+| Universal Analytics      | [Events](#events)                                                    | List                          |
+| Universal Analytics      | [Retrieve Metrics from Views](#retrieve-metrics-from-views)          |                               |
+| Universal Analytics      | [Custom Dimensions](#custom-dimensions)                              | List, Create, Update          |
+| Universal Analytics      | [Custom Metrics](#custom-metrics)                                    | List, Create, Update          |
+| Universal Analytics      | [Filters](#filters)                                                  | List                          |
+| Universal Analytics      | [Audience Settings](#audiences)                                      | List, Delete                  |
+| Universal Analytics      | [Goals](#goals)                                                      | List, Create                  |
+| Universal Analytics      | [Google Ads Links](#google-ads-links)                                | List                          |
+| Universal Analytics      | [GA4 Auto Configuration Opt Out](#ua-ga4-auto-configuration-opt-out) | List, Set opt out status      |
+| Universal Analytics      | [Connected Site Tags](#connected-site-tags)                          | List, Create, Delete          |
 
 
-*   Google Analytics Management API 
-*   Google Analytics Reporting API version 4
-*   Google Analytics Admin API
-*   Google Analytics Data API
-*   Google Drive API
+* Google Analytics Management API 
+* Google Analytics Reporting API version 4
+* Google Analytics Admin API
+* Google Analytics Data API
+* Google Drive API
+
+If you find this tool useful, please consider leaving feedback by filling out this quick, anonymous [survey](https://docs.google.com/forms/d/e/1FAIpQLScHrZbNU2RZGMtcWTVVEsxe5ZzARFvjqFQziixNPUPCsNcUUQ/viewform).
 
 The script currently performs the following functions:
 
-
-
-*   Universal Analytics
-    *   Account Summaries
-        *   List
-    *   View Details
-        *   List
-    *   Events
-        *   List
-    *   Report on specific metrics for selected views
-    *   Custom dimensions
-        *   List, Create, Update 
-    *   Custom metrics
-        *   List, Create, Update
-    *   List view level filter settings
-    *   Audiences
-        *   List settings, Delete
-    *   Goals
-        *   List, Create
-    *   Users
-        *   List
-*   Google Analytics 4
-    *   Account Summaries
-        *   List
-    *   Properties
-        *   List, Create, Delete, Update
-        *   Attribution
-    *   Data Streams
-        *   List, Create, Delete, Update
-    *   Custom dimensions
-        *   List, Create, Archive, Update
-    *   Custom metrics
-        *   List, Create, Archive, Update
-    *   Conversion events
-        *   List, Create, Delete
-    *   Firebase links
-        *   List, Create, Delete
-    *   Google Ads links
-        *   List, Create, Delete, Update
-    *   DV360 Links
-        *   List, Create, Delete, Update
-    *   GA4 Audiences
-        *   List, Create, Delete, Update
-    *   SA360 Links
-        *   List, Create, Delete, Update
-    *   BigQuery links
-        *   List
-    *   User Access Bindings
-        *   List, Create, Delete, Update
-    *   Settings Report
-        *   Create
-    *   Expanded Data Sets
-        *   List
-    *   Easy Property Creation
-        *   List template properties
-        *   Create properties based on template settings
 
 These tasks can be completed by [joining the Google Group](https://groups.google.com/g/google-analytics-utilities-users), [copying the template spreadsheet](https://docs.google.com/spreadsheets/d/1kJqwYNed8RTuAgjy0aRUooD__MIPqzUeiDF5LZ7v1aI/), and clicking on various options under the Google Analytics Utilities menu.
 
 To access information about a given Analytics account, a user must have at least viewer permissions for the accounts, properties, and views they are interested in. If a user wants to create or update settings, they must have editor permissions.
 
-All API requests are subject to the normal limitations [documented here](https://developers.google.com/analytics/devguides/config/mgmt/v3/limits-quotas).
+All API requests are subject to the limitations [documented here](https://developers.google.com/analytics/devguides/config/mgmt/v3/limits-quotas).
 
 
 ## How to Access the Spreadsheet
@@ -86,12 +62,10 @@ It is strongly recommended that you use the template spreadsheet to use the Goog
 
 
 
-1. Join [this group](https://groups.google.com/g/google-analytics-utilities-users) to gain access to the spreadsheet.
-2. Create a copy of [this spreadsheet](https://docs.google.com/spreadsheets/d/1kJqwYNed8RTuAgjy0aRUooD__MIPqzUeiDF5LZ7v1aI/).
+1. Join [this group](https://groups.google.com/g/google-analytics-utilities-users) to access the spreadsheet.
+2. Create a copy of [this spreadsheet](https://docs.google.com/spreadsheets/d/1kJqwYNed8RTuAgjy0aRUooD__MIPqzUeiDF5LZ7v1aI/copy).
 
-The spreadsheet is now ready to use the Google Analytics Utilities sheet. The first time you run a function from the menu, you will need to authorize the permissions for the script and then run the function a second time.
-
-If you are not copying the script, then the Google Analytics API and Analytics Reporting API services need to be enabled.
+The spreadsheet is now ready to use the Google Analytics Utilities script. The first time you run a function from the menu, you will need to authorize the permissions for the script and then run the function a second time. You may see a warning that the script is unauthorized. You should be able to proceed anyway. The script does not collect any information.
 
 
 ## Show and Hide Sheets
@@ -114,7 +88,7 @@ It is recommended to periodically run the “Check for Updates” menu item to s
 1. Navigate to the “UA Account Summaries” sheet.
 2. Click on Google Analytics Utilities > Universal Analytics > List Account Summaries. 
 3. The script will identify all the Google Analytics accounts your email has access to and list a flattened table of accounts, properties, and views in the “UA Account Summaries” sheet. 
-    *   This sheet can then be used to select specific accounts, properties, or views for other functions, like listing custom dimensions or view settings.
+    * This sheet can then be used to select specific accounts, properties, or views for other functions, like listing custom dimensions or view settings.
 
 
 ### View Details
@@ -146,7 +120,7 @@ It is recommended to periodically run the “Check for Updates” menu item to s
 6. The script will save up to 1000 unique combinations of the event category, action, and label values in the view to the “Events” sheet. If no events existed in the view for the selected view, a row will be added for the view, but the event information will be set to “No Events”.
 
 
-### Retrieve Metrics from Selected Views
+### Retrieve Metrics from Views
 
 
 
@@ -167,7 +141,7 @@ It is recommended to periodically run the “Check for Updates” menu item to s
 
 
 1. List account summaries. 
-2. Since the account summaries sheet lists each sheet as a different row but custom dimensions exist at the property level, select one view per property for which you are interested and the script will identify the correct property.
+2. Since the account summaries sheet lists each view as a different row but custom dimensions exist at the property level, select one view per property for which you are interested and the script will identify the correct property.
 3. Navigate to the “UA Custom Dimensions” sheet.
 4. Click on Google Analytics Utilities > Universal Analytics > Custom Dimensions > List Custom Dimensions.
 5. The script will save all the custom dimensions for the selected properties to the “UA Custom Dimensions” sheet.
@@ -201,7 +175,7 @@ It is recommended to periodically run the “Check for Updates” menu item to s
 
 
 1. List account summaries. 
-2. Since the account summaries sheet lists each sheet as a different row but custom metrics exist at the property level, select one view per property for which you are interested and the script will identify the correct property.
+2. Since the account summaries sheet lists each view as a different row but custom metrics exist at the property level, select one view per property for which you are interested and the script will identify the correct property.
 3. Navigate to the “UA Custom Metrics” sheet.
 4. Click on Google Analytics Utilities > Universal Analytics > Custom Metrics > List Custom Metrics.
 5. The script will save all the custom metrics for the selected properties to the “UA Custom Metrics” sheet.
@@ -244,7 +218,7 @@ Note: TIME event types must have a minimum value of at least 0 and cannot be lef
 3. Navigate to the “Filters” sheet.
 4. Click on Google Analytics Utilities > Universal Analytics > List Filters.
 5. The script will save all of the filters and their settings that are applied to the selected views to the “Filters” sheet. 
-    *   Since the same filter may be applied to multiple views, that filter and its settings may appear in the sheet multiple times. A filter will not show up in the sheet if it is not applied to one of the selected views.
+    * Since the same filter may be applied to multiple views, that filter and its settings may appear in the sheet multiple times. A filter will not show up in the sheet if it is not applied to one of the selected views.
 
 
 ### Audiences
@@ -255,7 +229,7 @@ Note: TIME event types must have a minimum value of at least 0 and cannot be lef
 
 
 1. List account summaries. 
-2. Since the account summaries sheet lists each sheet as a different row but audiences exist at the property level, select one view per property for which you are interested and the script will identify the correct property.
+2. Since the account summaries sheet lists each view as a different row but audiences exist at the property level, select one view per property for which you are interested and the script will identify the correct property.
 3. Navigate to the “UA Audiences” sheet.
 4. Click on GA Utilities > Universal Analytics > Remarketing Audiences > List Settings.
 5. The script will save all the audiences and their respective settings that exist for the selected properties to the “UA Audiences” sheet. Audience size cannot be retrieved via the Google Analytics Management API and will not be saved to the sheet.
@@ -266,7 +240,7 @@ Note: TIME event types must have a minimum value of at least 0 and cannot be lef
 
 
 1. List account summaries. 
-2. Since the account summaries sheet lists each sheet as a different row but audiences exist at the property level, select one view per property for which you are interested and the script will identify the correct property.
+2. Since the account summaries sheet lists each view as a different row but audiences exist at the property level, select one view per property for which you are interested and the script will identify the correct property.
 3. Navigate to the “UA Audiences” sheet.
 4. Click on Google Analytics Utilities > Universal Analytics > Remarketing Audiences > List Settings.
 5. Check the “Delete” box for each audience you want to delete.
@@ -322,7 +296,7 @@ Note: TIME event types must have a minimum value of at least 0 and cannot be lef
 
 1. Navigate to the “UA Auto Config Opt Out” sheet.
 2. Click on Google Analytics Utilities > Universal Analytics > Auto Config > List Properties
-3. All of the properties to which you have access should be listed in the sheet.
+3. All properties you have access to should be listed in the sheet.
 
 
 #### List Current Opt Out Status
@@ -344,6 +318,58 @@ Note: TIME event types must have a minimum value of at least 0 and cannot be lef
 4. The “Action Taken” column should be updated for each property you updated with the word “Updated”. If an error occurred for a given property, the “Action Taken” column should say “Error:” and the error message. If a property was not selected, then the “Action Taken” cell for that row will be cleared.
 
 
+### Google Ads Links
+
+
+#### List
+
+
+
+1. List UA account summaries.
+2. Since the account summaries sheet lists each view as a different row but Google Ads Links exist at the property level, select one view per property for which you are interested and the script will identify the correct property.
+3. Navigate to the “UA Google Ads Links” sheet.
+4. Click Google Analytics Utilities > Universal Analytics > Google Ads Links > List.
+5. The Google Ads Links will be listed for the selected properties. NOTE: The script will not list MCC links.
+
+
+### Connected Site Tags
+
+
+#### List
+
+
+
+1. List UA account summaries.
+2. Since the account summaries sheet lists each view as a different row but connected site tags exist at the property level, select one view per property for which you are interested and the script will identify the correct property.
+3. Navigate to the “UA Connected Site Tags” sheet.
+4. Click Google Analytics Utilities > Universal Analytics > Connected Site Tags > List.
+5. The connected site tags will be listed in the sheet.
+
+
+#### Create
+
+
+
+1. Naviga to “UA Connected Site Tags”.
+2. Enter the following information for each connected site tag you want to create:
+    1. Internal UA property ID.
+    2. Connected site tag name.
+    3. Connected site tag ID (a.k.a. A GA4 measurement ID).
+    4. Check the box for “Create”
+3. Click Google Analytics Utilities > Universal Analytics > Connected Site Tags > Modify.
+4. The script will attempt to create the connected site tags.
+
+
+#### Delete
+
+
+
+1. After listing your connected site tags, navigate to the “UA Connected Site Tags” sheet.
+2. Select the connected site tags you want to delete.
+3. Click Google Analytics Utilities > Universal Analytics > Connected Site Tags > Modify.
+4. The script will attempt to delete the selected connected site tags.
+
+
 ## Google Analytics 4
 
 
@@ -353,10 +379,10 @@ For the GA4 functions, whenever you check a box to archive/delete, create, or up
 
 
 
-*   If a highlighted cell is empty, a row will remain white.
-*   When all the necessary fields have been entered to archive/delete a setting, the row will turn red.
-*   When all the necessary fields have been entered to create a setting, the row will turn green.
-*   When all the necessary fields have been entered to update a setting,  the row will turn blue.
+* If a highlighted cell is empty, a row will remain white.
+* When all the necessary fields have been entered to archive/delete a setting, the row will turn red.
+* When all the necessary fields have been entered to create a setting, the row will turn green.
+* When all the necessary fields have been entered to update a setting,  the row will turn blue.
 
 
 ### Action Taken Messages
@@ -374,7 +400,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 1. Navigate to “GA4 Account Summaries”
 2. Click on Google Analytics Utilities > Google Analytics 4 > List Account Summaries. 
 3. The script will identify all the Google Analytics 4 properties your email has access to and list a flattened table of accounts and properties in the “GA4 Account Summaries” sheet. 
-    *   This sheet can then be used to select specific accounts and properties for other functions.
+    * This sheet can then be used to select specific accounts and properties for other functions.
 
 
 ### Properties
@@ -388,7 +414,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 2. Select each property for which you want to see details.
 3. Navigate to the “GA4 Property Details” sheet.
 4. Click on Google Analytics Utilities > Google Analytics 4 > Properties > List.
-5. The details for the selected properties will be listed in the “GA4 Property Details” sheet.
+5. The selected property details will be listed in the “GA4 Property Details” sheet.
 
 
 #### Create
@@ -402,7 +428,13 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
     3. [Industry category](https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1alpha/properties#IndustryCategory)
     4. [Time zone](https://www.iana.org/time-zones)
     5. [Currency code](https://en.wikipedia.org/wiki/ISO_4217)
-    6. Check the box for “Create”
+    6. Data Retention Duration
+        1. Note - The following values are only available for 360 properties:
+            1. TWENTY_SIX_MONTHS
+            2. THIRTY_EIGHT_MONTHS
+            3. FIFTY_MONTHS
+    7. Reset User Data on New Activity
+    8. Check the box for “Create”
 3. Click on Google Analytics Utilities > Google Analytics 4 > Properties > Modify.
 4. The script will attempt to create the selected properties.
 
@@ -429,9 +461,9 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
     4. Currency code
     5. Data Retention Duration
         1. Note - The following values are only available for 360 properties:
-            1. TWENTY\_SIX\_MONTHS
-            2. THIRTY\_EIGHT\_MONTHS
-            3. FIFTY\_MONTHS
+            1. TWENTY_SIX_MONTHS
+            2. THIRTY_EIGHT_MONTHS
+            3. FIFTY_MONTHS
     6. Reset User Data on New Activity 
 3. Check the “Update” box for each property you want to update.
 4. Click on Google Analytics Utilities > Google Analytics 4 > Properties > Modify.
@@ -460,9 +492,15 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 2. Each row represents a separate data stream. Enter the following information:
     1. Property ID
     2. Stream Name
-    3. Stream type: WEB\_DATA\_STREAM, ANDROID\_APP\_DATA\_STREAM, or IOS\_APP\_DATA\_STREAM
-    4. Default URI, bundle ID, package ID (as relevant to the respective stream type)
-    5. Check the box for “Create”
+    3. Stream type: 
+        1. WEB_DATA_STREAM
+            1. Enter the relevant Enhanced Measurement Settings
+            2. Enter the default URI
+        2. ANDROID_APP_DATA_STREAM
+            3. Enter package ID
+        3. IOS_APP_DATA_STREAM
+            4. Enter bundle ID
+    4. Check the box for “Create”
 3. Click on Google Analytics Utilities > Google Analytics 4 > Data Streams > Modify.
 4. The script will attempt to create the selected data streams.
 
@@ -483,6 +521,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 
 1. After listing your GA4 data streams, navigate to the “GA4 Data Streams” sheet.
 2. Enter a new stream name for a given data stream.
+    1. If the the stream type is WEB_DATA_STREAM, then you can enter the relevant Enhanced Measurement Settings
 3. Check the “Update” box for each data stream you want to update.
 4. Click on Google Analytics Utilities > Google Analytics 4 > Data Streams > Modify.
 5. The script will attempt to update the selected data streams.
@@ -907,8 +946,50 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 1. List GA4 account summaries.
 2. Select the properties from which you want to retrieve expanded data sets.
 3. Navigate to the “GA4 Expanded Data Sets” sheet.
-4. Click on Google Analytics Utilities > Google Analytics 4 > Expanded Data Sets > List.
-5. The expanded data sets for the selected properties will be listed in the “GA4 Expanded Data Sets” sheet.
+4. Click Google Analytics Utilities > Google Analytics 4 > Expanded Data Sets > List.
+5. Expanded data sets for the selected properties will be listed in the “GA4 Expanded Data Sets” sheet.
+
+
+#### Create
+
+
+
+1. Navigate to “GA4 Expanded Data Sets”.
+2. Enter the following for each expanded data set you want to create:
+    1. Property ID
+    2. Expanded data set name
+    3. Description (optional)
+    4. A comma separated list of dimension names
+    5. A comma separated list of metric names
+    6. A filter expression (optional)
+    7. Check the “Create” box
+3. Click Google Analytics Utilities > Google Analytics 4 > Expanded Data Sets > Modify.
+4. The script will attempt to create new expanded data sets. NOTE: The script will not validate if a given combination of dimensions and metrics can be used in an expanded data set.
+
+
+#### Update
+
+
+
+1. List your expanded data sets.
+2. Navigate to “GA4 Expanded Data Sets”.
+3. Modify the following for each expanded data set you want to update:
+    1. Display Name
+    2. Description
+    3. Check the “Update” box
+4. Click Google Analytics Utilities > Google Analytics 4 > Expanded Data Sets > Modify.
+5. The script will attempt to update the expanded data sets.
+
+
+#### Delete
+
+
+
+1. List your expanded data sets.
+2. Navigate to “GA4 Expanded Data Sets”.
+3. Check the “Delete” box for the expanded data sets you want to delete.
+4. Click Google Analytics Utilities > Google Analytics 4 > Expanded Data Sets > Modify.
+5. The script will attempt to delete the expanded data sets.
 
 
 ### GA4 Users
@@ -1050,8 +1131,4 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 3. (Optional) If necessary, edit, add, or remove any of the settings in the various columns.
 4. Check the “Create” box for each row you want to use to make a property.
 5. Click on Google Analytics Utilities > Google Analytics 4 > Easy Property Creation > Create Properties.
-6. The script will attempt to create a new property for each selected row and
-   will also create the various settings (i.e. data streams, audiences,
-   conversion events, etc.) in the columns. **Note: Due to limitations with the
-   API, Google Signals will not be enabled in the newly created properties even
-   if the template properties had Google Signals enabled.**
+6. The script will attempt to create a new property for each selected row and will also create the various settings (i.e. data streams, audiences, conversion events, etc.) in the columns. **Note: Due to limitations with the API, Google Signals will not be enabled in the newly created properties even if the template properties had Google Signals enabled.**

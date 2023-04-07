@@ -92,6 +92,21 @@ function modifyGA4SA360Links() {
 }
 
 /**
+ * Modifies GA4 Expanded Data Sets.
+ */
+function modifyGA4ExpandedDataSets() {
+  modifyGA4Entities(sheetsMeta.ga4.expandedDataSets.sheetName);
+}
+
+/**
+ * Modifies connected site tags.
+ */
+function modifyConnectedSiteTags() {
+  modifyGA4Entities(sheetsMeta.ga4.connectedSiteTags.sheetName);
+}
+
+
+/**
  * Loops through the rows on the sheet with data and checks either
  * skips, updates, removes, or creates an entity depending on what
  * was checked in a given sheet.
@@ -145,7 +160,15 @@ function modifyGA4Entities(sheetName) {
           responses.push(archiveGA4CustomDefinition(ga4Resource, resourceName));
           actionTaken = responseCheck(responses, 'archive');
         } else {
-          responses.push(deleteGA4Entity(ga4Resource, resourceName));
+          if (sheetName == sheetsMeta.ga4.connectedSiteTags.sheetName) {
+            resourceName = {
+              property: 'properties/' + entity[4],
+              tagId: entity[6].toString()
+            }
+            responses.push(deleteGA4Entity(ga4Resource, resourceName))
+          } else {
+            responses.push(deleteGA4Entity(ga4Resource, resourceName));
+          }
           actionTaken = responseCheck(responses, 'delete');
         }
         // Writes that the entity was deleted or archived to the sheet.
@@ -154,14 +177,19 @@ function modifyGA4Entities(sheetName) {
       // Creates the new entity.
       } else if (create) {
         const payload = buildCreatePayload(sheetName, entity);
-        const createResponse = createGA4Entity(ga4Resource, parent, payload)
-        responses.push(createResponse);
         if (ga4Resource == 'properties') {
           if (entity[13] != 'TWO_MONTHS' || entity[14] != false) {
             responses.push(
               updateDataRetentionSettings(entity[13], entity[14], 
                 createResponse.name + '/dataRetentionSettings'));
           }
+        } else if (ga4Resource == 'streams' && payload.webStreamData) {
+          responses.push(updateEnhancedMeasurementSettings(
+            buildEnhancedMeasurementSettingsPayload(entity),
+            `${entity[5]}/enhancedMeasurementSettings`));
+        } else {
+          const createResponse = createGA4Entity(ga4Resource, parent, payload)
+          responses.push(createResponse);
         }
         actionTaken = responseCheck(responses, 'create');
         writeActionTakenToSheet(sheetName, index, actionTaken);
@@ -169,12 +197,17 @@ function modifyGA4Entities(sheetName) {
       // Updates entities.
       } else if (update) {
         const payload = buildUpdatePayload(sheetName, entity);
-        responses.push(
-          updateGA4Entity(ga4Resource, resourceName, payload, index));
         if (ga4Resource == 'properties') {
           responses.push(
             updateDataRetentionSettings(entity[13], entity[14],
             resourceName + '/dataRetentionSettings'));
+        } else if (ga4Resource == 'streams' && payload.webStreamData) {
+          responses.push(updateEnhancedMeasurementSettings(
+            buildEnhancedMeasurementSettingsPayload(entity),
+            `${entity[5]}/enhancedMeasurementSettings`));
+        } else {
+          responses.push(
+            updateGA4Entity(ga4Resource, resourceName, payload, index));
         }
         actionTaken = responseCheck(responses, 'update');
         writeActionTakenToSheet(sheetName, index, actionTaken);
@@ -211,9 +244,7 @@ function buildCreatePayload(sheetName, entity) {
       // Add custom metric fields.
       const measurementUnit = entity[8];
       if (measurementUnit == 'CURRENCY') {
-        if (entity[10].length > 0) {
-          payload.restrictedMetricType = entity[10].split(', ');
-        }
+        payload.restrictedMetricType = entity[10].split(', ') || [];
       }
       payload.measurementUnit = measurementUnit;
     }
@@ -285,12 +316,27 @@ function buildCreatePayload(sheetName, entity) {
     payload.user = entity[4].trim();
     payload.roles = roles.split(', ');;
   } else if (sheetName == sheetsMeta.ga4.sa360Links.sheetName) {
-    AnalyticsAdmin.Properties.SearchAds360Links.create().
+    // Build SA360 payload.
     payload.advertiserId = entityDisplayNameOrId.trim();
     payload.adsPersonalizationEnabled = entity[7];
     payload.campaignDataSharingEnabled = entity[8];
     payload.costDataSharingEnabled = entity[9];
     payload.siteStatsSharingEnabled = entity[10];
+  } else if (sheetName == sheetsMeta.ga4.expandedDataSets.sheetName) {
+    // Build expanded data set payload.
+    payload.displayName = entityDisplayNameOrId;
+    payload.description = entity[6];
+    payload.dimensionNames = entity[7].split(',').map(dim => dim.trim());
+    payload.metricNames = entity[8].split(',').map(metric => metric.trim());
+    if (entity[9].length > 0) {
+      payload.dimensionFilterExpression = JSON.parse(entity[9]);
+    }
+  } else if (sheetName == sheetsMeta.ga4.connectedSiteTags.sheetName) {
+    payload.property = 'properties/' + entity[4];
+    payload.connectedSiteTag = {
+      displayName: entity[5],
+      tagId: entity[6]
+    };
   }
   return payload;
 }
@@ -319,9 +365,7 @@ function buildUpdatePayload(sheetName, entity) {
       // Add custom metric fields.
       const measurementUnit = entity[8];
       if (measurementUnit == 'CURRENCY') {
-        if (entity[10].length > 0) {
-          payload.restrictedMetricType = entity[10].split(', ');
-        }
+        payload.restrictedMetricType = entity[10].split(', ') || [];
       }
       payload.measurementUnit = measurementUnit;
     }
@@ -374,8 +418,31 @@ function buildUpdatePayload(sheetName, entity) {
     }
     payload.roles = roles.split(', ');
   } else if (sheetName == sheetsMeta.ga4.sa360Links.sheetName) {
+    // Update SA360 link.
     payload.adsPersonalizationEnabled = entity[7];
     payload.siteStatsSharingEnabled = entity[10];
+  } else if (sheetName == sheetsMeta.ga4.expandedDataSets.sheetName) {
+    // Update expanded data set.
+    payload.displayName = entityDisplayNameOrId;
+    payload.description = entity[6];
   }
   return payload;
+}
+
+/**
+ * 
+ */
+function buildEnhancedMeasurementSettingsPayload(sheetsRow) {
+  return {
+    'streamEnabled': sheetsRow[14] || false,
+    'scrollsEnabled': sheetsRow[15] || false,
+    'outboundClicksEnabled': sheetsRow[16] || false,
+    'siteSearchEnabled': sheetsRow[17] || false,
+    'videoEngagementEnabled': sheetsRow[18] || false,
+    'fileDownloadsEnabled': sheetsRow[19] || false,
+    'pageChangesEnabled': sheetsRow[20] || false,
+    'formInteractionsEnabled': sheetsRow[21] || false,
+    'searchQueryParameter': sheetsRow[22],
+    'uriQueryParameter': sheetsRow[23]
+  };
 }

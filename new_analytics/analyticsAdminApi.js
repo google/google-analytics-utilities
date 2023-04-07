@@ -42,7 +42,16 @@ const ga4Resource = {
  */
 function getGA4Resource(resourceKey, parent) {
   try {
-    let response = ga4Resource[resourceKey].get(parent);
+    let response = {};
+    if (resourceKey == 'enhancedMeasurementSettings') {
+      response = ga4Resource.streams.getEnhancedMeasurementSettings(parent);
+    } else if (resourceKey == 'attributionSettings') {
+      response = ga4Resource.properties.getAttributionSettings(parent);
+    } else if (resourceKey == 'dataRetentionSettings') {
+      response = ga4Resource.properties.getDataRetentionSettings(parent);
+    } else {
+      response = ga4Resource[resourceKey].get(parent);
+    }
     Utilities.sleep(ga4RequestDelay);
     return response;
   } catch(e) {
@@ -70,6 +79,8 @@ function listGA4Entities(resourceKey, parent) {
         resourceKey == 'propertyAccessBindings') { 
         items = 'userBindings';
         response = ga4Resource[resourceKey].list(parent, options);
+      } else if (resourceKey == 'connectedSiteTags') {
+        response = ga4Resource.properties.listConnectedSiteTags(parent); 
       } else {
         response = ga4Resource[resourceKey].list(parent, options);
       }
@@ -108,6 +119,8 @@ function createGA4Entity(resourceKey, name, payload) {
     if (resourceKey == 'properties') {
       payload.parent = name;
       response = ga4Resource[resourceKey].create(payload);
+    } else if (resourceKey == 'connectedSiteTags') {
+      response = ga4Resource.properties.createConnectedSiteTag(payload);
     } else {
       response = ga4Resource[resourceKey].create(payload, name);
     }
@@ -121,7 +134,12 @@ function createGA4Entity(resourceKey, name, payload) {
 
 function deleteGA4Entity(resourceKey, name) {
   try {
-    const response = ga4Resource[resourceKey].remove(name);
+    let response = {};
+    if (resourceKey == 'connectedSiteTags') {
+      response = ga4Resource.properties.deleteConnectedSiteTag(name);
+    } else {
+      response = ga4Resource[resourceKey].remove(name);
+    }
 		Utilities.sleep(ga4RequestDelay);
 		return response;
   } catch(e) {
@@ -130,7 +148,7 @@ function deleteGA4Entity(resourceKey, name) {
   }
 }
 
-function updateGA4Entity(resourceKey, name, payload, index) {
+function updateGA4Entity(resourceKey, name, payload) {
   try {
     let mask = '';
     let response = {};
@@ -145,12 +163,26 @@ function updateGA4Entity(resourceKey, name, payload, index) {
       for (field in payload) {
         mask += field + ','
       }
+    } else if (resourceKey == 'attributionSettings') {
+      mask = 'acquisitionConversionEventLookbackWindow,otherConversionEventLookbackWindow,reportingAttributionModel';
     } else {
       mask = '*';
     }
     if (resourceKey == 'accountAccessBindings' || 
       resourceKey == 'propertyAccessBindings') {
       response = ga4Resource[resourceKey].patch(payload, name);
+    } else if (resourceKey = 'dataRetentionSettings') {
+      response = ga4Resource.properties.updateDataRetentionSettings(
+        payload, name, {updateMask: mask}
+      );
+    } else if (resourceKey = 'attributionSettings') {
+      response = ga4Resource.properties.updateAttributionSettings(
+        payload, name, {updateMask: mask}
+      );
+    } else if (resourceKey = 'enhancedMeasurementSettings') {
+      response = ga4Resource.streams.updateEnhancedMeasurementSettings(
+        payload, name, {updateMask: mask}
+      );
     } else {
       response = ga4Resource[resourceKey].patch(
         payload, name, {updateMask: mask});
@@ -175,6 +207,22 @@ function updateDataRetentionSettings(
       eventDataRetention: evenDataRetention,
       resetUserDataOnNewActivity: resetUserDataOnNewActivity
     }, parent, {updateMask: '*'});
+		Utilities.sleep(ga4RequestDelay);
+		return response;
+  } catch(e) {
+    console.log(e);
+    return e;
+  }
+}
+
+/**
+ * 
+ */
+function updateEnhancedMeasurementSettings(settings, parent) {
+  try {
+    let response = '';
+    response = AnalyticsAdmin.Properties.DataStreams
+    .updateEnhancedMeasurementSettings(settings, parent, {updateMask: '*'});
 		Utilities.sleep(ga4RequestDelay);
 		return response;
   } catch(e) {

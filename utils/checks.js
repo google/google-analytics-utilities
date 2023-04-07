@@ -74,7 +74,11 @@ function responseCheck(responses, requestType) {
       output.push('Error ' + response.statusCode + ': ' + response.name);
     } else {
       if (requestType == 'create') {
-        output.push(response.name + ': ' + apiActionTaken.ga4.created);
+        if (response.name) {
+          output.push(response.name + ': ' + apiActionTaken.ga4.created);
+        } else {
+          output.push(apiActionTaken.ga4.created);
+        }     
       } else if (requestType == 'update') {
         if (response.measurementUnit == 'CURRENCY') {
           output.push(response.name + ': ' + apiActionTaken.ga4.updated + 
