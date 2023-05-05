@@ -44,9 +44,8 @@ function getFlattenedGA4AccountSummaries(summaries) {
  * 
  */
 function writeGA4AccountSummariesToSheet() {
-  let summaries = listGA4Entities('accountSummaries')
+  let summaries = listGA4Entities('accountSummaries');
   const flattenedSummaries = getFlattenedGA4AccountSummaries(summaries.accountSummaries);
-  setCheckboxesToFalse(sheetsMeta.ga4.accountSummaries);
-  clearMainContent(sheetsMeta.ga4.accountSummaries);
+  clearSheetContent(sheetsMeta.ga4.accountSummaries);
   writeToSheet(flattenedSummaries, sheetsMeta.ga4.accountSummaries.sheetName);
 }

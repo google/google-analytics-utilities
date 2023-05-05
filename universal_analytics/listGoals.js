@@ -38,35 +38,41 @@ function listExistingGoals(accountId, propertyId, viewId) {
         type
       ];
       if (type == 'URL_DESTINATION') {
+        let steps = '';
+        if (currentGoal.urlDestinationDetails.steps) {
+          steps = JSON.parse(currentGoal.urlDestinationDetails.steps);
+        }
         var destinationArray = [currentGoal.urlDestinationDetails.matchType,
+                                currentGoal.urlDestinationDetails.firstStepRequired,
+                                steps,
                                 currentGoal.urlDestinationDetails.url,
                                 currentGoal.urlDestinationDetails.caseSensitive,
                                 '','','','','','','','','','',''];
         tempArray = tempArray.concat(destinationArray);
       } else if (type == 'EVENT') {
-        var eventArray = ['', '', '', '',
+        var eventArray = ['', '', '', '', '', '',
                           '', '', '', '','',currentGoal.eventDetails.useEventValue, '', '', '', ''];
         for (var k = 0; k < currentGoal.eventDetails.eventConditions.length; k++) {
           if (currentGoal.eventDetails.eventConditions[k].type == 'CATEGORY') {
-            eventArray[3] = currentGoal.eventDetails.eventConditions[k].matchType;
-            eventArray[4] = currentGoal.eventDetails.eventConditions[k].expression;
-          } else if (currentGoal.eventDetails.eventConditions[k].type == 'ACTION') {
             eventArray[5] = currentGoal.eventDetails.eventConditions[k].matchType;
             eventArray[6] = currentGoal.eventDetails.eventConditions[k].expression;
-          } else if (currentGoal.eventDetails.eventConditions[k].type == 'LABEL') {
+          } else if (currentGoal.eventDetails.eventConditions[k].type == 'ACTION') {
             eventArray[7] = currentGoal.eventDetails.eventConditions[k].matchType;
             eventArray[8] = currentGoal.eventDetails.eventConditions[k].expression;
+          } else if (currentGoal.eventDetails.eventConditions[k].type == 'LABEL') {
+            eventArray[9] = currentGoal.eventDetails.eventConditions[k].matchType;
+            eventArray[10] = currentGoal.eventDetails.eventConditions[k].expression;
           }
         }
         tempArray = tempArray.concat(eventArray);
       } else if (type == 'VISIT_TIME_ON_SITE') {
-        var timeOnSite = ['','','','','','', '', '', '','',
+        var timeOnSite = ['','','','','','', '', '', '','', '', '',
                           currentGoal.visitTimeOnSiteDetails.comparisonType,
                           currentGoal.visitTimeOnSiteDetails.comparisonValue,
                           '',''];
         tempArray = tempArray.concat(timeOnSite);
       } else if (type == 'VISIT_NUM_PAGES') {
-        var numOfPages = ['','','','','','', '', '','','','','',
+        var numOfPages = ['','','','','','', '', '','','','','', '', '',
                           currentGoal.visitNumPagesDetails.comparisonType,
                           currentGoal.visitNumPagesDetails.comparisonValue];
         tempArray = tempArray.concat(numOfPages);
@@ -91,4 +97,5 @@ function writeGoalsToSheet() {
     goalData = goalData.concat(listExistingGoals(accountId, propertyId, viewId));
   });
   writeToSheet(goalData, sheetsMeta.ua.goals.sheetName);
+  resizeRowHeights(sheetsMeta.ua.goals.sheetName, 21);
 }

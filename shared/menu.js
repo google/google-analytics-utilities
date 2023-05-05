@@ -58,7 +58,7 @@ function onOpen(e) {
         .addItem('Update Opt Out Statuses', 'updateSelectedOptOutStatuses')
       ).addSubMenu(
         ui.createMenu('Google Ads Links')
-        .addItem('List Google Ads Links', 'writeUAAdsLinksToSheet')
+        .addItem('List', 'writeUAAdsLinksToSheet')
       ).addSubMenu(
         ui.createMenu('Connected Site Tags')
         .addItem('List', 'writeUAConnectedSiteTagDataToSheet')
@@ -67,6 +67,7 @@ function onOpen(e) {
     .addSubMenu(
       ui.createMenu('Google Analytics 4')
       .addItem('List Account Summaries', 'writeGA4AccountSummariesToSheet')
+      .addItem('List Data Stream Selection', 'writeDataStreamSelectionToSheet')
       .addSubMenu(
         ui.createMenu('Properties')
         .addItem('List', 'writeGA4PropertyDetailsToSheet')
@@ -118,6 +119,14 @@ function onOpen(e) {
         ui.createMenu('Expanded Data Sets')
         .addItem('List', 'writeGA4ExpandedDataSetsToSheet')
         .addItem('Modify', 'modifyGA4ExpandedDataSets'))
+      .addSubMenu(
+        ui.createMenu('Channel Groups')
+        .addItem('List', 'writeGA4ChannelGroupsToSheet')
+        .addItem('Modify', 'modifyChannelGroups'))
+      .addSubMenu(
+        ui.createMenu('Measurement Protocol Secrets')
+        .addItem('List', 'writeGA4MeasurementProtocolSecretsToSheet')
+        .addItem('Modify', 'modifyMeasurementProtocolSecrets'))
       .addSubMenu(
         ui.createMenu('Health Report')
         .addItem('Create Report', 'createHealthReport'))

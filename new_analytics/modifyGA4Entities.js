@@ -105,6 +105,19 @@ function modifyConnectedSiteTags() {
   modifyGA4Entities(sheetsMeta.ga4.connectedSiteTags.sheetName);
 }
 
+/**
+ * Modifies channel groups.
+ */
+function modifyChannelGroups() {
+  modifyGA4Entities(sheetsMeta.ga4.channelGroups.sheetName);
+}
+
+/**
+ * Modifies channel groups.
+ */
+function modifyMeasurementProtocolSecrets() {
+  modifyGA4Entities(sheetsMeta.ga4.measurementProtocolSecrets.sheetName);
+}
 
 /**
  * Loops through the rows on the sheet with data and checks either
@@ -131,6 +144,10 @@ function modifyGA4Entities(sheetName) {
       if (sheetName == sheetsMeta.ga4.properties.sheetName) {
         parent = 'accounts/' + entity[1]
         resourceName = 'properties/' + entity[3];
+      } else if (
+      sheetName == sheetsMeta.ga4.measurementProtocolSecrets.sheetName) {
+        parent = `properties/${entity[3]}/dataStreams/${entity[5]}`;
+        resourceName = entity[7];
       } else {
         parent = 'properties/' + entity[3];
         resourceName = entity[5];
@@ -177,6 +194,8 @@ function modifyGA4Entities(sheetName) {
       // Creates the new entity.
       } else if (create) {
         const payload = buildCreatePayload(sheetName, entity);
+        const createResponse = createGA4Entity(ga4Resource, parent, payload);
+        responses.push(createResponse);
         if (ga4Resource == 'properties') {
           if (entity[13] != 'TWO_MONTHS' || entity[14] != false) {
             responses.push(
@@ -187,9 +206,6 @@ function modifyGA4Entities(sheetName) {
           responses.push(updateEnhancedMeasurementSettings(
             buildEnhancedMeasurementSettingsPayload(entity),
             `${entity[5]}/enhancedMeasurementSettings`));
-        } else {
-          const createResponse = createGA4Entity(ga4Resource, parent, payload)
-          responses.push(createResponse);
         }
         actionTaken = responseCheck(responses, 'create');
         writeActionTakenToSheet(sheetName, index, actionTaken);
@@ -197,6 +213,8 @@ function modifyGA4Entities(sheetName) {
       // Updates entities.
       } else if (update) {
         const payload = buildUpdatePayload(sheetName, entity);
+        responses.push(
+          updateGA4Entity(ga4Resource, resourceName, payload, index));
         if (ga4Resource == 'properties') {
           responses.push(
             updateDataRetentionSettings(entity[13], entity[14],
@@ -205,9 +223,6 @@ function modifyGA4Entities(sheetName) {
           responses.push(updateEnhancedMeasurementSettings(
             buildEnhancedMeasurementSettingsPayload(entity),
             `${entity[5]}/enhancedMeasurementSettings`));
-        } else {
-          responses.push(
-            updateGA4Entity(ga4Resource, resourceName, payload, index));
         }
         actionTaken = responseCheck(responses, 'update');
         writeActionTakenToSheet(sheetName, index, actionTaken);
@@ -337,6 +352,12 @@ function buildCreatePayload(sheetName, entity) {
       displayName: entity[5],
       tagId: entity[6]
     };
+  } else if (sheetName == sheetsMeta.ga4.channelGroups.sheetName) {
+    payload.displayName = entityDisplayNameOrId;
+    payload.description = entity[6];
+    payload.groupingRule = JSON.parse(entity[8]);
+  } else if (sheetName = sheetsMeta.ga4.measurementProtocolSecrets.sheetName) {
+    payload.displayName = entity[6];
   }
   return payload;
 }
@@ -425,6 +446,14 @@ function buildUpdatePayload(sheetName, entity) {
     // Update expanded data set.
     payload.displayName = entityDisplayNameOrId;
     payload.description = entity[6];
+  } else if (sheetName == sheetsMeta.ga4.channelGroups.sheetName) {
+    if (!entity[7]) {
+      payload.displayName = entityDisplayNameOrId;
+      payload.description = entity[6];
+      payload.groupingRule = JSON.parse(entity[8]);
+    }
+  } else if (sheetName = sheetsMeta.ga4.measurementProtocolSecrets.sheetName) {
+    payload.displayName = entity[6];
   }
   return payload;
 }

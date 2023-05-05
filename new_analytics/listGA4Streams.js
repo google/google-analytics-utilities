@@ -43,7 +43,7 @@ function listSelectedGA4Streams(properties) {
           '', '', '', '',
           stream.createTime,
           stream.updateTime,
-          '');
+          '', '', '', '', '', '', '', '', '' ,'', '');
         if (stream.webStreamData != undefined) {
           tempArray[7] = stream.webStreamData.measurementId || '';
           tempArray[10] = stream.webStreamData.firebaseAppId || '';

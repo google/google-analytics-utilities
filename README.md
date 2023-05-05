@@ -6,6 +6,16 @@ This repository contains an app script that can be used in combination with a Go
 
 The script makes use of the following APIs:
 
+* Google Analytics Management API 
+* Google Analytics Reporting API version 4
+* Google Analytics Admin API
+* Google Analytics Data API
+* Google Drive API
+
+If you find this tool useful, please consider leaving feedback by filling out this quick, anonymous [survey](https://docs.google.com/forms/d/e/1FAIpQLScHrZbNU2RZGMtcWTVVEsxe5ZzARFvjqFQziixNPUPCsNcUUQ/viewform).
+
+The script currently performs the following functions:
+
 | Google Analytics Version | Resource                                                             | Capabilities                  |
 |--------------------------|----------------------------------------------------------------------|-------------------------------|
 | GA4                      | [Account Summaries](#account-summaries-1)                            | List                          |
@@ -24,6 +34,8 @@ The script makes use of the following APIs:
 | GA4                      | [Settings Report](#settings-report)                                  | Create                        |
 | GA4                      | [Expanded Data Sets](#expanded-data-sets)                            | List, Create, Delete, Update  |
 | GA4                      | [Easy Property Creation](#easy-property-creation)                    | Create                        |
+| GA4                      | [Channel Groups](#channel-groups)                                    | List, Create, Delete, Update  |
+| GA4                      | [Measurement Protocol Secrets](#measurement-protocol-secrets)        | List, Create, Delete, Update  |
 | Universal Analytics      | [Account Summaries](#account-summaries)                              | List                          |
 | Universal Analytics      | [View Details](#view-details)                                        | List                          |
 | Universal Analytics      | [Events](#events)                                                    | List                          |
@@ -36,18 +48,6 @@ The script makes use of the following APIs:
 | Universal Analytics      | [Google Ads Links](#google-ads-links)                                | List                          |
 | Universal Analytics      | [GA4 Auto Configuration Opt Out](#ua-ga4-auto-configuration-opt-out) | List, Set opt out status      |
 | Universal Analytics      | [Connected Site Tags](#connected-site-tags)                          | List, Create, Delete          |
-
-
-* Google Analytics Management API 
-* Google Analytics Reporting API version 4
-* Google Analytics Admin API
-* Google Analytics Data API
-* Google Drive API
-
-If you find this tool useful, please consider leaving feedback by filling out this quick, anonymous [survey](https://docs.google.com/forms/d/e/1FAIpQLScHrZbNU2RZGMtcWTVVEsxe5ZzARFvjqFQziixNPUPCsNcUUQ/viewform).
-
-The script currently performs the following functions:
-
 
 These tasks can be completed by [joining the Google Group](https://groups.google.com/g/google-analytics-utilities-users), [copying the template spreadsheet](https://docs.google.com/spreadsheets/d/1kJqwYNed8RTuAgjy0aRUooD__MIPqzUeiDF5LZ7v1aI/), and clicking on various options under the Google Analytics Utilities menu.
 
@@ -1132,3 +1132,112 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 4. Check the “Create” box for each row you want to use to make a property.
 5. Click on Google Analytics Utilities > Google Analytics 4 > Easy Property Creation > Create Properties.
 6. The script will attempt to create a new property for each selected row and will also create the various settings (i.e. data streams, audiences, conversion events, etc.) in the columns. **Note: Due to limitations with the API, Google Signals will not be enabled in the newly created properties even if the template properties had Google Signals enabled.**
+
+
+### Channel Groups
+
+
+#### List
+
+
+
+1. List GA4 account summaries.
+2. Select the properties from which you want to retrieve channel groups.
+3. Navigate to the “GA4 Channel Groups” sheet.
+4. Click Google Analytics Utilities > Google Analytics 4 > Channel Groups > List.
+5. Channel Groups for the selected properties will be listed in the “GA4 Channel Groups” sheet.
+
+
+#### Create
+
+
+
+1. Navigate to “GA4 Channel Groups”.
+2. Enter the following for each channel group you want to create:
+    1. Property ID
+    2. Channel group name
+    3. Description (optional)
+    4. Grouping rule as defined [here](https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1alpha/properties.channelGroups#GroupingRule)
+    5. Check the “Create” box
+3. Click Google Analytics Utilities > Google Analytics 4 > Channel Groups > Modify.
+4. The script will attempt to create new channel groups.
+
+#### Update
+
+
+
+1. List your channel groups.
+2. Navigate to “GA4 Channel Groups”.
+3. Modify the following for each channel group you want to update:
+    1. Channel Group Name
+    2. Description
+    3. Grouping rule
+    4. Check the “Update” box
+4. Click Google Analytics Utilities > Google Analytics 4 > Channel Groups > Modify.
+5. The script will attempt to update the channel groups.
+
+
+#### Delete
+
+
+
+1. List your channel groups.
+2. Navigate to “GA4 Channel Groups”.
+3. Check the “Delete” box for the channel groups you want to delete.
+4. Click Google Analytics Utilities > Google Analytics 4 > Channel Groups > Modify.
+5. The script will attempt to delete the channel groups.
+
+
+
+### Measurement Protocol Secrets
+
+
+#### List
+
+
+
+1. List GA4 account summaries.
+2. Select the properties for which you want to list their data streams.
+3. Navigatet to "GA4 Data Stream Selection".
+4. Click Google Analytics Utilities > List Data Stream Selection.
+5. Select the data streams for which you want to list their measurement protocol secrets.
+6. Click Google Analytics Utilities > Google Analytics 4 > Measurement Protocol Secrets > List.
+7. Measurement Protocol Secrets for the selected data streams will be listed in the “GA4 Measurement Protocol Secrets” sheet.
+
+
+#### Create
+
+
+
+1. Navigate to “GA4 Measurement Protocol Secrets”.
+2. Enter the following for each channel group you want to create:
+    1. Property ID
+    2. Data Stream ID
+    3. Measurement Protocol Secret Name
+    4. Check the “Create” box
+3. Click Google Analytics Utilities > Google Analytics 4 > Measurement Protocol Secrets > Modify.
+4. The script will attempt to create new measurement protocol secrets.
+
+#### Update
+
+
+
+1. List your measurement protocol secrets.
+2. Navigate to “GA4 Measurement Protocol Secrets”.
+3. Modify the following for each measurement protocol secret you want to update:
+    1. Measurement Protocol Secret Name
+    2. Check the “Update” box
+4. Click Google Analytics Utilities > Google Analytics 4 > Measurement Protocol Secrets > Modify.
+5. The script will attempt to update the measurement protocol secrets.
+
+
+#### Delete
+
+
+
+1. List your measurement protocol secrets.
+2. Navigate to “GA4 Measurement Protocol Secrets”.
+3. Check the “Delete” box for the measurement protocol secrets you want to delete.
+4. Click Google Analytics Utilities > Google Analytics 4 > Measurement Protocol Secrets > Modify.
+5. The script will attempt to delete the measurement protocol secrets.
+

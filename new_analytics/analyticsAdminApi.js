@@ -31,7 +31,9 @@ const ga4Resource = {
   propertyAccessBindings: AnalyticsAdmin.Properties.AccessBindings,
   searchAds360Links: AnalyticsAdmin.Properties.SearchAds360Links,
   bigqueryLinks: AnalyticsAdmin.Properties.BigQueryLinks,
-  expandedDataSets: AnalyticsAdmin.Properties.ExpandedDataSets
+  expandedDataSets: AnalyticsAdmin.Properties.ExpandedDataSets,
+  channelGroups: AnalyticsAdmin.Properties.ChannelGroups,
+  measurementProtocolSecrets: AnalyticsAdmin.Properties.DataStreams.MeasurementProtocolSecrets
 };
 
 /**
