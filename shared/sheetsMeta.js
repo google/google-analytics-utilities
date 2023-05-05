@@ -102,13 +102,13 @@ const sheetsMeta = {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 23
+        numColumns: 25
       },
       write: {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 22
+        numColumns: 24
       }
     },
     settings: {
@@ -564,6 +564,51 @@ const sheetsMeta = {
         column: 1,
         numRows: 1,
         numColumns: 11
+      }
+    },
+    channelGroups: {
+      sheetName: 'GA4 Channel Groups',
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 9
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 13
+      }
+    },
+    dataStreamSelection: {
+      sheetName: 'GA4 Data Stream Selection',
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 6
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 7
+      }
+    },
+    measurementProtocolSecrets: {
+      sheetName: 'GA4 Measurement Protocol Secrets',
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 9
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 13
       }
     }
   }

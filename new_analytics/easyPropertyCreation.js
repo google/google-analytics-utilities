@@ -287,9 +287,6 @@ function createPropertiesFromTemplates() {
           } else {
             // Create settings.
             const values = settings[setting];
-            console.log(values);
-            console.log(setting);
-            console.log(typeof values == 'boolean' && setting == 'audiences');
             if (values.length > 0 && setting != 'audiences') {
               values.forEach(value => {
                 if (value.webStreamData) {

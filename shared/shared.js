@@ -392,7 +392,7 @@ function clearSheetContent(sheetsMetaField) {
   const sheet = SpreadsheetApp.getActive().getSheetByName(
     sheetsMetaField.sheetName);
   sheet.getRange(
-    2, 1, sheet.getLastRow() - 1, sheet.getLastColumn()
+    2, 1, sheet.getLastRow(), sheet.getLastColumn()
   ).clearContent();
 }
 
@@ -453,4 +453,42 @@ function generateGA4DataReportRequest(dimensions, metrics, startDate, endDate, d
 function resizeRowHeights(sheetName, rowHeight) {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
   sheet.setRowHeightsForced(2, sheet.getLastRow() - 1, rowHeight);
+}
+
+/**
+ * List properties, accounts, and data streams in an array to be used for
+ * selection purposes.
+ */
+function writeDataStreamSelectionToSheet() {
+  const streamArray = [];
+  const selectedProperties = getSelectedGa4Properties();
+  for (let i = 0; i < selectedProperties.length; i++) {
+    const currentRow = selectedProperties[i];
+    const propertyName = `properties/${currentRow[3]}`;
+    const dataStreams = listGA4Entities('streams', propertyName).dataStreams;
+    if (dataStreams) {
+      for (let j = 0; j < dataStreams.length; j++) {
+        const currentStream = dataStreams[j];
+        streamArray.push([
+          currentRow[0],
+          currentRow[1],
+          currentRow[2],
+          currentRow[3],
+          currentStream.displayName,
+          currentStream.name.split('dataStreams/')[1]]
+        );
+      }
+    }
+  }
+  writeToSheet(streamArray, sheetsMeta.ga4.dataStreamSelection.sheetName);
+}
+/**
+ * Get selected data streams from the data stream selection sheet based.
+ * @return {!Array<!Array>} A two dimensional array of the selected
+ * stream retrieved from the sheet.
+ */
+function getSelectedGa4DataStreams() {
+  const streams = getDataFromSheet(
+    sheetsMeta.ga4.dataStreamSelection.sheetName);
+  return streams.filter(row => row[4]);
 }

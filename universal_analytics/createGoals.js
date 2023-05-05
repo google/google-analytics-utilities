@@ -66,47 +66,47 @@ function createGoalRequest(requestDetails) {
   if (type == 'URL_DESTINATION') {
     request.resource.urlDestinationDetails = {
       'matchType': requestDetails[7],
-      'url': requestDetails[8],
-      'caseSensitive': requestDetails[9]
+      'url': requestDetails[10],
+      'caseSensitive': requestDetails[11]
     }
     return request;
   } else if (type == 'EVENT') {
     request.resource.eventDetails = {
       eventConditions: [],
-      useEventValue: requestDetails[16] || true
-    }
-    if (requestDetails[10].length > 0 && requestDetails[11].length > 0) {
-      request.resource.eventDetails.eventConditions.push({
-        type: 'CATEGORY',
-        matchType: requestDetails[10],
-        expression: requestDetails[11]
-      });
+      useEventValue: requestDetails[18] || true
     }
     if (requestDetails[12].length > 0 && requestDetails[13].length > 0) {
       request.resource.eventDetails.eventConditions.push({
-        type: 'ACTION',
+        type: 'CATEGORY',
         matchType: requestDetails[12],
         expression: requestDetails[13]
       });
     }
     if (requestDetails[14].length > 0 && requestDetails[15].length > 0) {
       request.resource.eventDetails.eventConditions.push({
-        type: 'LABEL',
+        type: 'ACTION',
         matchType: requestDetails[14],
         expression: requestDetails[15]
+      });
+    }
+    if (requestDetails[16].length > 0 && requestDetails[17].length > 0) {
+      request.resource.eventDetails.eventConditions.push({
+        type: 'LABEL',
+        matchType: requestDetails[16],
+        expression: requestDetails[17]
       });
     }
     return request;
   } else if (type == 'VISIT_TIME_ON_SITE') {
     request.resource.visitTimeOnSiteDetails = {
-      comparisonType: requestDetails[17],
-      comparisonValue: requestDetails[18]
+      comparisonType: requestDetails[19],
+      comparisonValue: requestDetails[20]
     }
     return request;
   } else if (type == 'VISIT_NUM_PAGES') {
     request.resource.visitNumPagesDetails = {
-      comparisonType: requestDetails[19],
-      comparisonValue: requestDetails[20]
+      comparisonType: requestDetails[21],
+      comparisonValue: requestDetails[22]
     }
     return request;
   }
