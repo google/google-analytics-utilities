@@ -120,6 +120,20 @@ function modifyMeasurementProtocolSecrets() {
 }
 
 /**
+ * Modifies AdSense links.
+ */
+function modifyAdSenseLinks() {
+  modifyGA4Entities(sheetsMeta.ga4.adSenseLinks.sheetName);
+}
+
+/**
+ * Modifies event create rules.
+ */
+function modifyEventCreateRules() {
+  modifyGA4Entities(sheetsMeta.ga4.eventCreateRules.sheetName);
+}
+
+/**
  * Loops through the rows on the sheet with data and checks either
  * skips, updates, removes, or creates an entity depending on what
  * was checked in a given sheet.
@@ -146,6 +160,9 @@ function modifyGA4Entities(sheetName) {
         resourceName = 'properties/' + entity[3];
       } else if (
       sheetName == sheetsMeta.ga4.measurementProtocolSecrets.sheetName) {
+        parent = `properties/${entity[3]}/dataStreams/${entity[5]}`;
+        resourceName = entity[7];
+      } else if (sheetName == sheetsMeta.ga4.adSenseLinks.sheetName) {
         parent = `properties/${entity[3]}/dataStreams/${entity[5]}`;
         resourceName = entity[7];
       } else {
@@ -319,7 +336,11 @@ function buildCreatePayload(sheetName, entity) {
     if (entity[11] != '') {
       payload.exclusionDurationMode = entity[11];
     }
-    payload.filterClauses = [JSON.parse(entity[12])];
+    if (entity[12].length > 0) {
+      payload.filterClauses = [JSON.parse(entity[12])];
+    } else {
+      payload.filterClauses = [];
+    }
   } else if (sheetName == sheetsMeta.ga4.accessBindings.sheetName) {
     // Build access binding payload.
     delete payload.displayName;
@@ -358,6 +379,13 @@ function buildCreatePayload(sheetName, entity) {
     payload.groupingRule = JSON.parse(entity[8]);
   } else if (sheetName = sheetsMeta.ga4.measurementProtocolSecrets.sheetName) {
     payload.displayName = entity[6];
+  } else if (sheetName == sheetsMeta.ga4.adSenseLinks.sheetName) {
+    payload.adClientCode = entityDisplayNameOrId;
+  } else if (sheetName == sheetsMeta.ga4.eventCreateRules.sheetName) {
+    payload.destinationEvent = entity[6];
+    payload.sourceCopyParameters = entity[8];
+    payload.eventConditions = JSON.parse(entity[9]);
+    payload.parameterMutations = JSON.parse(entity[10]);
   }
   return payload;
 }
@@ -454,6 +482,11 @@ function buildUpdatePayload(sheetName, entity) {
     }
   } else if (sheetName = sheetsMeta.ga4.measurementProtocolSecrets.sheetName) {
     payload.displayName = entity[6];
+  } else if (sheetName == sheetsMeta.ga4.eventCreateRules.sheetName) {
+    payload.destinationEvent = entity[6];
+    payload.sourceCopyParameters = entity[8];
+    payload.eventConditions = JSON.parse(entity[9]);
+    payload.parameterMutations = JSON.parse(entity[10]);
   }
   return payload;
 }

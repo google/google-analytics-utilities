@@ -35,6 +35,8 @@ function createHealthReport() {
     writeGA4FirebaseLinksToSheet();
     writeGA4SA360LinksToSheet();
     writeGA4BigQueryLinksToSheet();
+    writeGA4AdSenseLinksToSheet();
+    writeGA4ChannelGroupsToSheet();
   }
 
   const healthReportSettings = formatHealthReportSettings();

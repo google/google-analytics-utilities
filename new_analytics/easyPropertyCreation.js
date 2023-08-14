@@ -18,7 +18,11 @@
  * 
  */
 function isEmptyObject(obj) {
-  return Object.keys(obj).length === 0;
+  if (obj) {
+    return Object.keys(obj).length === 0;
+  } else {
+    true;
+  }
 }
 
 /**
@@ -50,6 +54,11 @@ function listAllFeatureSettings(properties) {
               'enhancedMeasurementSettings',
               `${stream.name}/enhancedMeasurementSettings`);
           }
+          stream.measurementProtocolSecrets = listGA4Entities(
+            'measurementProtocolSecrets', stream.name
+          ).measurementProtocolSecrets;
+          stream.eventCreateRules = listGA4Entities(
+            'eventCreateRules', stream.name).eventCreateRules;
         });
       }
       let audiencesExist = false;
@@ -100,7 +109,15 @@ function listAllFeatureSettings(properties) {
         JSON.stringify(cleanOutput('firebaseLinks',
           listGA4Entities(
             'firebaseLinks', 
-            propertyResourceName).firebaseLinks), null, 2) || '[]'
+            propertyResourceName).firebaseLinks), null, 2) || '[]',
+        JSON.stringify(cleanOutput('adSenseLinks',
+          listGA4Entities(
+            'adSenseLinks', 
+            propertyResourceName).firebaseLinks), null, 2) || '[]',
+        JSON.stringify(cleanOutput('channelGroups',
+          listGA4Entities(
+            'channelGroups', 
+            propertyResourceName).channelGroups), null, 2) || '[]'
       ]);
     });
   }
@@ -111,24 +128,24 @@ function listAllFeatureSettings(properties) {
  * Removes unnecessary fields from the various resources.
  */
 function cleanOutput(resourceType, value) {
-  if (resourceType == 'properties') {
-    delete value.updateTime;
-    delete value.createTime;
-    delete value.displayName;
-    delete value.account;
-    delete value.parent;
-    delete value.serviceLevel;
-    delete value.name;
-    delete value.propertyType;
-  } else if (resourceType == 'data retention') {
-    delete value.name;
-    if (/twenty|thirty|fifty/.test(value.eventDataRetention)) {
-      value.evenDataRetention = 'FOURTEEN_MONTHS';
-    }
-  } else if (resourceType == 'attribution') {
-    delete value.name;
-  } else if (resourceType == 'audiences') {
-    if (value != undefined) {
+  if (value) {
+    if (resourceType == 'properties') {
+      delete value.updateTime;
+      delete value.createTime;
+      delete value.displayName;
+      delete value.account;
+      delete value.parent;
+      delete value.serviceLevel;
+      delete value.name;
+      delete value.propertyType;
+    } else if (resourceType == 'data retention') {
+      delete value.name;
+      if (/twenty|thirty|fifty/.test(value.eventDataRetention)) {
+        value.evenDataRetention = 'FOURTEEN_MONTHS';
+      }
+    } else if (resourceType == 'attribution') {
+      delete value.name;
+    } else if (resourceType == 'audiences') {
       const defaultAudienceNames = ['All Users', 'Purchasers'];
       defaultAudienceNames.forEach(defaultName => {
         const index = value.findIndex(aud => aud.displayName == defaultName);
@@ -141,37 +158,32 @@ function cleanOutput(resourceType, value) {
         if (audience.description == undefined) {
           audience.description = audience.displayName;
         }
-        if (isEmptyObject(audience.eventTrigger)) {
+        if (!audience.eventTrigger) {
           delete audience.eventTrigger;
         }
       });
-    }
-  } else if (resourceType == 'streams') {
-    if (value != undefined) {
+    } else if (resourceType == 'streams') {
       value.forEach(stream => {
         delete stream.name;
         delete stream.updateTime;
         delete stream.createTime;
+        delete stream.eventCreateRules.name;
+        delete stream.measurementProtocolSecrets.name;
+        delete stream.measurementProtocolSecrets.secretValue;
         if (stream.webStreamData) {
           delete stream.webStreamData.measurementId;
           delete stream.webStreamData.enhancedMeasurementSettings.name;
         }
       });
-    }
-  } else if (resourceType == 'customDimensions') {
-    if (value != undefined) {
+    } else if (resourceType == 'customDimensions') {
       value.forEach(dimension => {
         delete dimension.name;
       });
-    }
-  } else if (resourceType == 'customMetrics') {
-    if (value != undefined) {
+    } else if (resourceType == 'customMetrics') {
       value.forEach(metric => {
         delete metric.name;
       });
-    }
-  } else if (resourceType == 'conversionEvents') {
-    if (value != undefined) {
+    } else if (resourceType == 'conversionEvents') {
       const defaultConversions = [
         'app_store_subscription_convert',
         'app_store_subscription_renew',
@@ -194,9 +206,7 @@ function cleanOutput(resourceType, value) {
           delete conversion.deletable;
         });
       }
-    }
-  } else if (resourceType == 'googleAdsLinks') {
-    if (value != undefined) {
+    } else if (resourceType == 'googleAdsLinks') {
       value.forEach(link => {
         delete link.name;
         delete link.canManageClients;
@@ -204,30 +214,30 @@ function cleanOutput(resourceType, value) {
         delete link.updateTime;
         delete link.creatorEmailAddress;
       });
-    }
-  } else if (resourceType == 'displayVideo360AdvertiserLinks') {
-    if (value != undefined) {
+    } else if (resourceType == 'displayVideo360AdvertiserLinks') {
       value.forEach(link => {
         delete link.name;
         delete link.advertiserDisplayName;
       });
-    }
-  } else if (resourceType == 'searchAds360Links') {
-    if (value != undefined) {
+    } else if (resourceType == 'searchAds360Links') {
       value.forEach(link => {
         delete link.name;
         delete link.advertiserDisplayName;
       });
-    }
-  } else if (resourceType == 'firebaseLinks') {
-    if (value != undefined) {
+    } else if (resourceType == 'firebaseLinks') {
       value.forEach(link => {
         delete link.name;
         delete link.createTime;
       });
+    } else if (resourceType == 'channelGroups') {
+      value = value.filter(group => !group.systemDefined);
+      value.forEach(group => {
+        delete group.name;
+        delete group.systemDefined;
+      });
     }
+    return value;
   }
-  return value;
 }
 
 /**
@@ -255,7 +265,9 @@ function createPropertiesFromTemplates() {
           googleAdsLinks: JSON.parse(row[14] || '[]'),
           displayVideo360AdvertiserLinks: JSON.parse(row[15] || '[]'),
           searchAds360Links: JSON.parse(row[16] || '[]'),
-          firebaseLinks: JSON.parse(row[17] || '[]')
+          firebaseLinks: JSON.parse(row[17] || '[]'),
+          adSenseLinks: JSON.parse(row[18] || '[]'),
+          channelGroups: JSON.parse(row[19] || '[]'),
         };
 
         let newProperty = null;
@@ -289,34 +301,64 @@ function createPropertiesFromTemplates() {
             const values = settings[setting];
             if (values.length > 0 && setting != 'audiences') {
               values.forEach(value => {
-                if (value.webStreamData) {
-                  const ems = value.webStreamData.enhancedMeasurementSettings;
-                  delete value.webStreamData.enhancedMeasurementSettings;
-                  const newStream = createGA4Entity(
-                    setting, newProperty.name, value);
-                  responses.push(newStream);
-                  const newEnhancedMeasurementSettings = updateGA4Entity(
-                    'enhancedMeasurementSettings',
-                    `${newStream.name}/enhancedMeasurementSettings`,
-                    JSON.parse(JSON.stringify(ems))
-                  );
-                  responses.push(newEnhancedMeasurementSettings);
+                if (value.webStreamData || 
+                value.androidAppStreamData || 
+                value.iosAppStreamData) {
+                  const mps = value.measurementProtocolSecrets;
+                  delete value.measurementProtocolSecrets;
+                  const ecr = value.eventCreateRules;
+                  delete value.eventCreateRules;
+                  let newStream = {};
+                  if (value.webStreamData) {
+                    const ems = value.webStreamData.enhancedMeasurementSettings;
+                    delete value.webStreamData.enhancedMeasurementSettings;
+                    newStream = createGA4Entity(
+                      setting, newProperty.name, value);
+                    responses.push(newStream);
+                    const newEnhancedMeasurementSettings = updateGA4Entity(
+                      'enhancedMeasurementSettings',
+                      `${newStream.name}/enhancedMeasurementSettings`,
+                      JSON.parse(JSON.stringify(ems))
+                    );
+                    responses.push(newEnhancedMeasurementSettings);
+                  }
+                  if (value.androidAppStreamData || value.iosAppStreamData) {
+                    newStream = createGA4Entity(
+                      setting, newProperty.name, value);
+                  }
+                  if (mps) {
+                    mps.forEach(secret => {
+                      const newSecret = createGA4Entity(
+                      'measurementProtocolSecrets', newStream.name, secret);
+                      responses.push(newSecret);
+                    });
+                  }
+                  if (ecr) {
+                    ecr.forEach(rule => {
+                      const newEventCreateRule = createGA4Entity(
+                        'eventCreateRules', newStream.name, rule);
+                      responses.push(newEventCreateRule);
+                    });
+                  }
                 } else {
-                   const response = createGA4Entity(
+                  const response = createGA4Entity(
                     setting, newProperty.name, value);
                   responses.push(response);
                 }
               });
-            } else if (typeof values == 'boolean' && setting == 'audiences') {
-              const audiences = listGA4Entities(
-                setting, `properties/${originalPropertyId}`)[setting];
-              const templateValues = cleanOutput('audiences', audiences);
-              templateValues.forEach(resource => {
-                const response = createGA4Entity(
-                  setting, newProperty.name, 
-                  JSON.parse(JSON.stringify(resource)));
-                responses.push(response);
-              });
+            } else if (setting == 'audiences') {
+              const copyAudiences = values;
+              if (copyAudiences) {
+                const audiences = listGA4Entities(
+                  setting, `properties/${originalPropertyId}`)[setting];
+                const templateValues = cleanOutput('audiences', audiences);
+                templateValues.forEach(resource => {
+                  const response = createGA4Entity(
+                    setting, newProperty.name, 
+                    JSON.parse(JSON.stringify(resource)));
+                  responses.push(response);
+                });
+              }
             }
           }
         }
@@ -338,6 +380,7 @@ function createPropertiesFromTemplates() {
     });
   }
 }
+
 
 /**
  * Writes all of property deployment templates to a spreadsheet.

@@ -40,7 +40,14 @@ function listExistingGoals(accountId, propertyId, viewId) {
       if (type == 'URL_DESTINATION') {
         let steps = '';
         if (currentGoal.urlDestinationDetails.steps) {
-          steps = JSON.parse(currentGoal.urlDestinationDetails.steps);
+        steps = JSON.stringify(currentGoal.urlDestinationDetails.steps);
+        /*
+          steps = currentGoal.urlDestinationDetails.steps.reduce((arr, step) => 
+          {
+            arr.push(JSON.parse(step));
+            return arr;
+          }, []);
+        */
         }
         var destinationArray = [currentGoal.urlDestinationDetails.matchType,
                                 currentGoal.urlDestinationDetails.firstStepRequired,

@@ -66,8 +66,36 @@ function onOpen(e) {
       ))
     .addSubMenu(
       ui.createMenu('Google Analytics 4')
+      // Selectors
       .addItem('List Account Summaries', 'writeGA4AccountSummariesToSheet')
       .addItem('List Data Stream Selection', 'writeDataStreamSelectionToSheet')
+      // Links Submenu
+      .addSubMenu(
+        ui.createMenu('Links')
+          .addSubMenu(
+          ui.createMenu('Google Ads')
+          .addItem('List', 'writeGA4AdsLinksToSheet')
+          .addItem('Modify', 'modifyGA4AdsLinks'))
+        .addSubMenu(
+          ui.createMenu('Firebase')
+          .addItem('List', 'writeGA4FirebaseLinksToSheet')
+          .addItem('Modify', 'modifyGA4FirebaseLinks'))
+        .addSubMenu(
+          ui.createMenu('DV360')
+          .addItem('List', 'writeGA4DV360LinksToSheet')
+          .addItem('Modify', 'modifyGA4DV360Links'))
+        .addSubMenu(
+          ui.createMenu('SA360')
+          .addItem('List', 'writeGA4SA360LinksToSheet')
+          .addItem('Modify', 'modifyGA4SA360Links'))
+          .addSubMenu(
+          ui.createMenu('BigQuery')
+          .addItem('List', 'writeGA4BigQueryLinksToSheet'))
+        .addSubMenu(
+          ui.createMenu('AdSense')
+          .addItem('List', 'writeGA4AdSenseLinksToSheet')
+          .addItem('Modify', 'modifyAdSenseLinks'))
+      )
       .addSubMenu(
         ui.createMenu('Properties')
         .addItem('List', 'writeGA4PropertyDetailsToSheet')
@@ -89,18 +117,6 @@ function onOpen(e) {
         .addItem('List', 'writeGA4ConversionEventsToSheet')
         .addItem('Modify', 'modifyGA4ConversionEvents'))
       .addSubMenu(
-        ui.createMenu('Google Ads Links')
-        .addItem('List', 'writeGA4AdsLinksToSheet')
-        .addItem('Modify', 'modifyGA4AdsLinks'))
-      .addSubMenu(
-        ui.createMenu('Firebase Links')
-        .addItem('List', 'writeGA4FirebaseLinksToSheet')
-        .addItem('Modify', 'modifyGA4FirebaseLinks'))
-      .addSubMenu(
-        ui.createMenu('DV360 Links')
-        .addItem('List', 'writeGA4DV360LinksToSheet')
-        .addItem('Modify', 'modifyGA4DV360Links'))
-      .addSubMenu(
         ui.createMenu('Audiences')
         .addItem('List', 'writeGA4AudiencesToSheet')
         .addItem('Modify', 'modifyGA4Audiences'))
@@ -108,13 +124,6 @@ function onOpen(e) {
         ui.createMenu('Users')
         .addItem('List', 'writeGA4AccessBindingsToSheet')
         .addItem('Modify', 'modifyGA4AccessBindings'))
-      .addSubMenu(
-        ui.createMenu('SA360 Links')
-        .addItem('List', 'writeGA4SA360LinksToSheet')
-        .addItem('Modify', 'modifyGA4SA360Links'))
-        .addSubMenu(
-        ui.createMenu('BigQuery')
-        .addItem('List', 'writeGA4BigQueryLinksToSheet'))
       .addSubMenu(
         ui.createMenu('Expanded Data Sets')
         .addItem('List', 'writeGA4ExpandedDataSetsToSheet')
@@ -128,14 +137,29 @@ function onOpen(e) {
         .addItem('List', 'writeGA4MeasurementProtocolSecretsToSheet')
         .addItem('Modify', 'modifyMeasurementProtocolSecrets'))
       .addSubMenu(
-        ui.createMenu('Health Report')
-        .addItem('Create Report', 'createHealthReport'))
+        ui.createMenu('Event Create Rules')
+        .addItem('List', 'writeGA4EventCreateRulesToSheet')
+        .addItem('Modify', 'modifyEventCreateRules'))
+      .addSeparator()
       .addSubMenu(
-        ui.createMenu('Easy Property Creation')
-        .addItem('List Templates', 'writePropertyTemplatesToSheet')
-        .addItem('Create Properties', 'createPropertiesFromTemplates')
-        .addItem(
-          'Resize Row Heights', 'resizeEasyPropertyCreationSheetRowHeights'))
+        ui.createMenu('Advanced')
+        .addSubMenu(
+          ui.createMenu('Easy Property Creation')
+          .addItem('List Templates', 'writePropertyTemplatesToSheet')
+          .addItem('Create Properties', 'createPropertiesFromTemplates')
+          .addItem(
+            'Resize Row Heights', 'resizeEasyPropertyCreationSheetRowHeights'))
+        .addSubMenu(
+          ui.createMenu('Health Report')
+          .addItem('Create Report', 'createHealthReport'))
+       .addSubMenu(
+        ui.createMenu('Audience Lists')
+        .addItem('List Existing Audiences', 'writeGA4AudiencesToAudiencesListsSheet')
+        .addItem('List Audience Lists', 'writeAudienceListsToSheet')
+        .addItem('Create Audience Lists', 'createAudienceLists')
+        .addItem('Check Audience List States', 'checkAudienceListsState')
+        .addItem('Export Audience Lists', 'exportAudienceListsData'))
+      )
     )
     .addSeparator()
     .addSubMenu(

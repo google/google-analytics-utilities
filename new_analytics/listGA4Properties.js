@@ -30,46 +30,49 @@ function listSelectedGA4Properties(selectedProperties) {
       alreadyListedAccounts.push(property[1]);
       const parent = {filter: 'ancestor:accounts/' + property[1], pageSize: 200};
       const properties = listGA4Entities('properties', parent).properties;
-      data = data.concat(properties.reduce((arr, prop) => {
-        if (selectedProperties.filter(property => property[3] == prop.name.split('/')[1]).length > 0) {
-          const attributionSettings = AnalyticsAdmin.Properties.getAttributionSettings(prop.name + '/attributionSettings');
-          const dataRetentionSettings = AnalyticsAdmin.Properties.getGoogleSignalsSettings(prop.name + '/dataRetentionSettings');
-          const googleSignalsSettings = AnalyticsAdmin.Properties.getDataRetentionSettings(prop.name + '/googleSignalsSettings');
-          let eventCount = 0;
-          let eventRows = null;
-          try {
-            eventRows = AnalyticsData.Properties.runReport(request, prop.name).rows;
-          } catch(e) {
-            eventCount = 'No Access';
+      if (properties) {
+        data = data.concat(properties.reduce((arr, prop) => {
+          if (selectedProperties.filter(property => property[3] == prop.name.split('/')[1]).length > 0) {
+            const attributionSettings = AnalyticsAdmin.Properties.getAttributionSettings(prop.name + '/attributionSettings');
+            const dataRetentionSettings = AnalyticsAdmin.Properties.getGoogleSignalsSettings(prop.name + '/dataRetentionSettings');
+            const googleSignalsSettings = AnalyticsAdmin.Properties.getDataRetentionSettings(prop.name + '/googleSignalsSettings');
+            let eventCount = 0;
+            let eventRows = null;
+            try {
+              eventRows = AnalyticsData.Properties.runReport(
+                request, prop.name).rows;
+            } catch(e) {
+              eventCount = 'No Access';
+            }
+            if (eventRows) {
+              eventCount = eventRows[0].metricValues[0].value;
+            }
+            const subArray = [
+              property[0],
+              property[1],
+              prop.displayName,
+              prop.name.split('/')[1],
+              prop.propertyType,
+              prop.createTime,
+              prop.updateTime,
+              prop.industryCategory,
+              prop.timeZone,
+              prop.currencyCode,
+              prop.serviceLevel,
+              eventCount,
+              googleSignalsSettings.state,
+              dataRetentionSettings.eventDataRetention,
+              dataRetentionSettings.resetUserDataOnNewActivity || false,
+              attributionSettings.acquisitionConversionEventLookbackWindow,
+              attributionSettings.otherConversionEventLookbackWindow,
+              attributionSettings.reportingAttributionModel
+            ]
+            arr.push(subArray);
+            return arr;
           }
-          if (eventRows) {
-            eventCount = eventRows[0].metricValues[0].value;
-          }
-          const subArray = [
-            property[0],
-            property[1],
-            prop.displayName,
-            prop.name.split('/')[1],
-            prop.propertyType,
-            prop.createTime,
-            prop.updateTime,
-            prop.industryCategory,
-            prop.timeZone,
-            prop.currencyCode,
-            prop.serviceLevel,
-            eventCount,
-            googleSignalsSettings.state,
-            dataRetentionSettings.eventDataRetention,
-            dataRetentionSettings.resetUserDataOnNewActivity || false,
-            attributionSettings.acquisitionConversionEventLookbackWindow,
-            attributionSettings.otherConversionEventLookbackWindow,
-            attributionSettings.reportingAttributionModel
-          ]
-          arr.push(subArray);
           return arr;
-        }
-        return arr;
-      }, []));
+        }, []));
+      }
     }
   });
   return data;
