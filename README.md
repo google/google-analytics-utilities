@@ -4,14 +4,6 @@ This is not an officially supported Google product.
 
 This repository contains an app script that can be used in combination with a Google Spreadsheet to save various information in bulk or individually about Universal Google Analytics accounts, properties, or views to a spreadsheet. Additional information about Google Analytics 4 properties can be saved. 
 
-The script makes use of the following APIs:
-
-* Google Analytics Management API 
-* Google Analytics Reporting API version 4
-* Google Analytics Admin API
-* Google Analytics Data API
-* Google Drive API
-
 If you find this tool useful, please consider leaving feedback by filling out this quick, anonymous [survey](https://docs.google.com/forms/d/e/1FAIpQLScHrZbNU2RZGMtcWTVVEsxe5ZzARFvjqFQziixNPUPCsNcUUQ/viewform).
 
 The script currently performs the following functions:
@@ -36,6 +28,9 @@ The script currently performs the following functions:
 | GA4                      | [Easy Property Creation](#easy-property-creation)                    | Create                        |
 | GA4                      | [Channel Groups](#channel-groups)                                    | List, Create, Delete, Update  |
 | GA4                      | [Measurement Protocol Secrets](#measurement-protocol-secrets)        | List, Create, Delete, Update  |
+| GA4                      | [AdSense Links](#adsense-links)                                      | List, Create, Delete          |
+| GA4                      | [Event Create Rules](#event-create-rules)                            | List, Create, Delete, Update  |
+| GA4                      | [Audience Lists](#audience-lists)                                    | List, Create, Check, Export   |
 | Universal Analytics      | [Account Summaries](#account-summaries)                              | List                          |
 | Universal Analytics      | [View Details](#view-details)                                        | List                          |
 | Universal Analytics      | [Events](#events)                                                    | List                          |
@@ -67,6 +62,21 @@ It is strongly recommended that you use the template spreadsheet to use the Goog
 
 The spreadsheet is now ready to use the Google Analytics Utilities script. The first time you run a function from the menu, you will need to authorize the permissions for the script and then run the function a second time. You may see a warning that the script is unauthorized. You should be able to proceed anyway. The script does not collect any information.
 
+### APIs and Access Permissions
+
+The script makes use of the following APIs/advanced app script services:
+
+* Google Analytics Management API
+* Google Analytics Reporting API version 4
+* Google Analytics Admin API
+* Google Analytics Data API
+* Google Drive API
+* BigQuery API
+* Connect to 
+
+### Limited Scope Template
+
+If you are concerned about the access permissions required for the script, then please use [this sheet instead](https://docs.google.com/spreadsheets/d/1NUUS0LLz2dlPB2-hLS5hgbLad9akwM4bqaeZGZy2RCQ/copy). This sheet lacks some of the more advanced features, but it has more restricted scopes.
 
 ## Show and Hide Sheets
 
@@ -350,7 +360,7 @@ Note: TIME event types must have a minimum value of at least 0 and cannot be lef
 
 
 
-1. Naviga to “UA Connected Site Tags”.
+1. Navigate to “UA Connected Site Tags”.
 2. Enter the following information for each connected site tag you want to create:
     1. Internal UA property ID.
     2. Connected site tag name.
@@ -719,7 +729,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 1. List GA4 account summaries.
 2. Select the properties from which you want to retrieve Google Ads links.
 3. Navigate to the “GA4 Google Ads Links” sheet.
-4. Click on Google Analytics Utilities > Google Analytics 4 > Google Ads Links > List.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Links > Google Ads > List.
 5. The Google Ads links for the selected properties will be listed in the “GA4 Google Ads Links” sheet.
 
 
@@ -734,7 +744,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
     3. True or false for “Ads Personalization Enabled”
     4. Check the box for “Create”
     5. Repeat these steps in a new row for each Google Ads link you want to create
-3. Click on Google Analytics Utilities > Google Analytics 4 > Google Ads Links > Modify.
+3. Click on Google Analytics Utilities > Google Analytics 4 > Links > Google Ads > Modify.
 4. The script will attempt to create a new Google Ads link based on the information in each row.
 
 
@@ -744,7 +754,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 
 1. After listing your GA4 Google Ads links, navigate to the “GA4 Google Ads Links” sheet.
 2. Check the “Delete” box for each Google Ads link you want to delete.
-3. Click on Google Analytics Utilities > Google Analytics 4 > Google Ads Links > Modify.
+3. Click on Google Analytics Utilities > Google Analytics 4 > Links > Google Ads > Modify.
 4. The script will attempt to delete the selected Google Ads links.
 
 
@@ -755,7 +765,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 1. After listing your GA4 Google Ads links, navigate to the “GA4 Google Ads Links” sheet.
 2. Enter true or false for “Ads Personalization Enabled”
 3. Check the “Update” box for each Google Ads link you want to update.
-4. Click on Google Analytics Utilities > Google Analytics 4 > Google Ads Links > Modify.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Links > Google Ads > Modify.
 5. The script will attempt to update the selected Google Ads links.
 
 
@@ -769,7 +779,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 1. List GA4 account summaries.
 2. Select the properties from which you want to retrieve DV360 links.
 3. Navigate to the “GA4 DV360 Links” sheet.
-4. Click on Google Analytics Utilities > Google Analytics 4 > DV360 Links > List.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Links > DV360 > List.
 5. The DV360 links for the selected properties will be listed in the “GA4 DV360 Links” sheet.
 
 
@@ -786,7 +796,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
     5. True or false for “Cost Data Sharing Enabled”
     6. Check the box for “Create”
     7. Repeat these steps in a new row for each DV360 link you want to create
-3. Click on Google Analytics Utilities > Google Analytics 4 > DV360 Links > Modify.
+3. Click on Google Analytics Utilities > Google Analytics 4 > Links > DV360 > Modify.
 4. The script will attempt to create a new DV360 link based on the information in each row.
 
 
@@ -796,7 +806,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 
 1. After listing your GA4 DV360 links, navigate to the “GA4 DV360 Links” sheet.
 2. Check the “Delete” box for each DV360 link you want to delete.
-3. Click on Google Analytics Utilities > Google Analytics 4 > DV360 Links > Modify.
+3. Click on Google Analytics Utilities > Google Analytics 4 > Links > DV360 > Modify.
 4. The script will attempt to delete the selected DV360 links.
 
 
@@ -807,7 +817,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 1. After listing your GA4 DV360 links, navigate to the “GA4 DV360 Links” sheet.
 2. Enter true or false for “Ads Personalization Enabled”
 3. Check the “Update” box for each DV360 link you want to update.
-4. Click on Google Analytics Utilities > Google Analytics 4 > DV360 Links > Modify.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Links > DV360 > Modify.
 5. The script will attempt to update the selected DV360 links.
 
 
@@ -877,7 +887,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 1. List GA4 account summaries.
 2. Select the properties from which you want to retrieve SA360 links.
 3. Navigate to the “GA4 SA360 Links” sheet.
-4. Click on Google Analytics Utilities > Google Analytics 4 > SA360 Links > List.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Links > SA360 > List.
 5. The SA360 links for the selected properties will be listed in the “GA4 SA360 Links” sheet.
 
 
@@ -895,7 +905,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
     6. True or false for “Site States Sharing Enabled”
     7. Check the box for “Create”
     8. Repeat these steps in a new row for each SA360 link you want to create
-3. Click on Google Analytics Utilities > Google Analytics 4 > SA360 Links > Modify.
+3. Click on Google Analytics Utilities > Google Analytics 4 > Links > SA360 > Modify.
 4. The script will attempt to create a new SA360 link based on the information in each row.
 
 
@@ -905,7 +915,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 
 1. After listing your GA4 SA360 links, navigate to the “GA4 SA360 Links” sheet.
 2. Check the “Delete” box for each SA360 link you want to delete.
-3. Click on Google Analytics Utilities > Google Analytics 4 > SA360 Links > Modify.
+3. Click on Google Analytics Utilities > Google Analytics 4 > Links > SA360 > Modify.
 4. The script will attempt to delete the selected SA360 links.
 
 
@@ -918,7 +928,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
     1. Enter true or false for “Ads Personalization Enabled”
     2. Enter true or false for “Site States Sharing Enabled”
 3. Check the “Update” box for each SA360 link you want to update.
-4. Click on Google Analytics Utilities > Google Analytics 4 > SA360 Links > Modify.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Links > SA360 > Modify.
 5. The script will attempt to update the selected SA360 links.
 
 
@@ -932,7 +942,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 1. List GA4 account summaries.
 2. Select the properties from which you want to retrieve BigQuery links.
 3. Navigate to the “GA4 BigQuery Links” sheet.
-4. Click on Google Analytics Utilities > Google Analytics 4 > BigQuery Links > List.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Links > BigQuery > List.
 5. The BigQuery links for the selected properties will be listed in the “GA4 BigQuery Links” sheet.
 
 
@@ -1101,7 +1111,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
     1. Column A: Contains the property ID for a given GA4 property and is included to make it easier to create formulas in other columns.
     2. Column B: Contains the template slide placeholder and is used to identify the template slide.
     3. Columns C+: The headers for these columns should contain the placeholder text that will be swapped with a real value when the report is complete.  Every row after the header should have a value for that specific property. These values can be derived from the other GA Utilities sheets or entered as plain text. The placeholder name rules are the same as previously stated: percent formats the number value as a percent on the slide, list creates a bulleted list, image/graphic/logo uses a provided URL as an image, and any other name just replaces the value on the slide as is.
-7. Once all values have been entered, click GA Utilities > Health Report > Create Report
+7. Once all values have been entered, click GA Utilities > Advanced > Health Report > Create Report
 8. Once the health report has been created, a link to the report and the date of its creation will be appended to columns F and G in the “GA4 Report Settings” sheet. The date of creation will default to MM-DD-YYYY format, but that can be reformatted if you so wish.
 9. Review the new report and make any necessary adjustments. There may be some placeholders that aren’t removed if said placeholder was not included in the sheet but was present in the template. This is expected and you should delete the placeholder manually. You may also need to adjust image sizes, which is expected.
 
@@ -1116,7 +1126,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 1. List GA4 account summaries.
 2. Select the properties you want to use as templates.
 3. Navigate to the “GA4 Easy Property Creation” sheet.
-4. Click on Google Analytics Utilities > Google Analytics 4 > Easy Property Creation > List Templates.
+4. Click on Google Analytics Utilities > Google Analytics 4 > Advanced > Easy Property Creation > List Templates.
 5. The selected properties and many of their associated settings will be listed in the “GA4 Easy Property Creation” sheet.
 
 
@@ -1130,7 +1140,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
     2. New Property Name
 3. (Optional) If necessary, edit, add, or remove any of the settings in the various columns.
 4. Check the “Create” box for each row you want to use to make a property.
-5. Click on Google Analytics Utilities > Google Analytics 4 > Easy Property Creation > Create Properties.
+5. Click on Google Analytics Utilities > Google Analytics 4 > Advanced > Easy Property Creation > Create Properties.
 6. The script will attempt to create a new property for each selected row and will also create the various settings (i.e. data streams, audiences, conversion events, etc.) in the columns. **Note: Due to limitations with the API, Google Signals will not be enabled in the newly created properties even if the template properties had Google Signals enabled.**
 
 
@@ -1198,7 +1208,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 
 1. List GA4 account summaries.
 2. Select the properties for which you want to list their data streams.
-3. Navigatet to "GA4 Data Stream Selection".
+3. Navigate to "GA4 Data Stream Selection".
 4. Click Google Analytics Utilities > List Data Stream Selection.
 5. Select the data streams for which you want to list their measurement protocol secrets.
 6. Click Google Analytics Utilities > Google Analytics 4 > Measurement Protocol Secrets > List.
@@ -1210,7 +1220,7 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 
 
 1. Navigate to “GA4 Measurement Protocol Secrets”.
-2. Enter the following for each channel group you want to create:
+2. Enter the following for each measurement protocol secret you want to create:
     1. Property ID
     2. Data Stream ID
     3. Measurement Protocol Secret Name
@@ -1241,3 +1251,158 @@ If you archive, delete, create, or update a GA4 setting, then a corresponding ac
 4. Click Google Analytics Utilities > Google Analytics 4 > Measurement Protocol Secrets > Modify.
 5. The script will attempt to delete the measurement protocol secrets.
 
+
+### AdSense Links
+
+
+#### List
+
+
+
+1. List GA4 account summaries.
+2. Select the properties from which you want to retrieve AdSense Links.
+3. Navigate to the “GA4 AdSense Links” sheet.
+4. Click Google Analytics Utilities > Google Analytics 4 > Links > AdSense > List.
+5. AdSense links for the selected properties will be listed in the “GA4 AdSense Links” sheet.
+
+
+#### Create
+
+
+
+1. Navigate to “GA4 AdSense Links”.
+2. Enter the following for each AdSense link you want to create:
+    1. Property ID
+    2. Ad Client ID
+    5. Check the “Create” box
+3. Click Google Analytics Utilities > Google Analytics 4 > Links > AdSense > Modify.
+4. The script will attempt to create new AdSense links.
+
+
+#### Delete
+
+
+
+1. List your AdSense links.
+2. Navigate to “GA4 AdSense Links”.
+3. Check the “Delete” box for the AdSense links you want to delete.
+4. Click Google Analytics Utilities > Google Analytics 4 > Links > AdSense > Modify.
+5. The script will attempt to delete the AdSense links.
+
+
+### Event Create Rules
+
+
+#### List
+
+
+
+1. List GA4 account summaries.
+2. Select the properties for which you want to list their data streams.
+3. Navigate to "GA4 Data Stream Selection".
+4. Click Google Analytics Utilities > List Data Stream Selection.
+5. Select the data streams for which you want to list their event create rules.
+6. Click Google Analytics Utilities > Google Analytics 4 > Event Create Rules > List.
+7. Event Create Rules for the selected data streams will be listed in the “GA4 Event Create Rules” sheet.
+
+
+#### Create
+
+
+
+1. Navigate to “GA4 Event Create Rules”.
+2. Enter the following for each event create rule you want to create:
+    1. Property ID
+    2. Data Stream ID
+    3. Destination Event Name
+    4. (Optional) Copy Source Parameters
+    5. (Optional) Event Conditions
+    6. (Optional) Parameter Mutations
+    7. Check the “Create” box
+3. Click Google Analytics Utilities > Google Analytics 4 > Event Create Rules > Modify.
+4. The script will attempt to create new event create rules.
+
+#### Update
+
+
+
+1. List your event create rules.
+2. Navigate to “GA4 Event Create Rules”.
+3. Modify the following for each event create rule you want to update:
+    1. Destination Event Name
+    2. (Optional) Copy Source Parameters
+    3. (Optional) Event Conditions
+    4. (Optional) Parameter Mutations
+    2. Check the “Update” box
+4. Click Google Analytics Utilities > Google Analytics 4 > Event Create Rules > Modify.
+5. The script will attempt to update the event create rules.
+
+
+#### Delete
+
+
+
+1. List your event create rules.
+2. Navigate to “GA4 Event Create Rules”.
+3. Check the “Delete” box for the event create rules you want to delete.
+4. Click Google Analytics Utilities > Google Analytics 4 > Event Create Rules > Modify.
+5. The script will attempt to delete the event create rules.
+
+
+### Audience Lists
+
+
+#### List
+
+
+
+1. List GA4 account summaries.
+2. Select the properties for which you want to list audience lists.
+3. Navigate to the "GA4 Audience Lists" sheet.
+4. Click Google Analytics Utilities > Advanced > Audience Lists > List Audience Lists.
+5. The Audience Lists for the selected properties will be listed in the “GA4 Audience Lists” sheet.
+
+
+#### Create
+
+
+
+1. Navigate to “GA4 Audience Lists”.
+2. Enter the following for each event create rule you want to create. It is suggesteed that you click Google Analytics Utilities > Google Analytics 4 > Advanced > Audience Lists > List Existing Audiences to list the following information automatically in your sheet:
+    1. Property ID
+    2. Audience Resource Name
+    3. A comma separated list of dimensions (E.g. deviceId, userId)
+    4. Check the “Create” box
+3. Click Google Analytics Utilities > Advanced > Audience Lists > Create Audience Lists.
+4. The script will attempt to create audience lists.
+
+#### Check State
+
+To check the state of your audience lists, you can either list the audience lists in a property or retrieve the state for a single audience list by going through the following steps.
+
+1. Navigate to “GA4 Audience Lists”.
+2. Enter the following for each audience list you want to check:
+    1. Audience List Resource Name
+    2. Check the “Check State” box
+3. Click Google Analytics Utilities > Google Analytics 4 > Advanced > Audience Lists > Check Audience List States.
+5. The script will attempt to check the state for the selected audience lists.
+
+
+#### Export
+
+Currently, the Google Anaytics Utilities can export audience list dimensions either to a new spreadsheet, and existing spreadsheet, or an existing empty BigQuery table. It is not recommended that you try to export more than 100 - 150 thousand users total at one time across all of your audience lists selected for export. If you choose more than this, the scritp may throw an error and fail to properly export the users in one or more audience lists.
+
+1. Navigate to “GA4 Audience Lists”.
+2. List your audience lists by clicking on Google Analytics Utilities > Advanced > Audience Lists > List Audience Lists.
+3. For a given audience, make sure the following is entered:
+    1. Audience List Resource Name
+    2. Output Location is set to either "Spreadsheet" or "BigQuery"
+    3. If the output location is "Spreadsheet":
+        1. If you want to export to a new spreadsheet, check the new spreadsheet box
+        2. If you want to export to an existing spreadsheet, leave the new spreadsheet box unchecked and enter the URL for the new spreadsheet.
+    4. If the output location is "BigQuery":
+        1. Enter the existing project and dataset names.
+        2. Enter the name for new table that will be created by the script and poplulated with the audience export data. The table should not already exist in BigQuery.
+    5. Check the "Export" box
+4. Click Google Analytics Utilities > Google Analytics 4 > Advanced > Audience Lists > Export Audience Lists.
+5. The script will attempt to export the audience lists users to a the chosen export locations. As indicated above, if the audience lists are too large, the export may fail.

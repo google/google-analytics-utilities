@@ -19,24 +19,26 @@
  */
 function getFlattenedGA4AccountSummaries(summaries) {
   const flatSummaries = [];
-  summaries.forEach(account => {
-    const accountDisplayName = account.displayName;
-    const accountId = account.account.split('/')[1];
-    if (account.propertySummaries != undefined) {
-      account.propertySummaries.forEach(property => {
-        const propertyDisplayName = property.displayName;
-        const propertyId = property.property.split('/')[1];
-        flatSummaries.push([
-          accountDisplayName,
-          accountId,
-          propertyDisplayName,
-          propertyId
-        ]);
-      });
-    } else {
-      flatSummaries.push([accountDisplayName, accountId, '', '']);
-    }
-  });
+  if (summaries != undefined) {
+    summaries.forEach(account => {
+      const accountDisplayName = account.displayName;
+      const accountId = account.account.split('/')[1];
+      if (account.propertySummaries != undefined) {
+        account.propertySummaries.forEach(property => {
+          const propertyDisplayName = property.displayName;
+          const propertyId = property.property.split('/')[1];
+          flatSummaries.push([
+            accountDisplayName,
+            accountId,
+            propertyDisplayName,
+            propertyId
+          ]);
+        });
+      } else {
+        flatSummaries.push([accountDisplayName, accountId, '', '']);
+      }
+    });
+  }
   return flatSummaries;
 }
 

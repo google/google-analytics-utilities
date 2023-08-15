@@ -94,5 +94,5 @@ function responseCheck(responses, requestType) {
       }
     }
   });
-  return output.join('; ');
+  return output.join('\n');
 }

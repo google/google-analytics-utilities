@@ -31,8 +31,13 @@ function listSelectedGA4Audiences(properties) {
     if (audiences != undefined) {
       for (let i = 0; i < audiences.length; i++) {
         let filterClauses = audiences[i].filterClauses;
+        let eventTrigger = {};
+        if (audiences[i].eventTrigger) {
+          eventTrigger.eventName = audiences[i].eventTrigger.eventName;
+          eventTrigger.logCondition = audiences[i].eventTrigger.logCondition;
+        }
         if (filterClauses != undefined) {
-          filterClauses = filterClauses.toString();
+          filterClauses = JSON.stringify(filterClauses);
         }
         formattedAudiences.push([
           property[0],
@@ -44,8 +49,8 @@ function listSelectedGA4Audiences(properties) {
           audiences[i].description,
           audiences[i].membershipDurationDays,
           audiences[i].adsPersonalizationEnabled,
-          audiences[i].eventTrigger.eventName,
-          audiences[i].eventTrigger.logCondition,
+          eventTrigger.eventName || '',
+          eventTrigger.logCondition || '',
           audiences[i].exclusionDurationMode,
           filterClauses
         ]);
@@ -63,4 +68,5 @@ function writeGA4AudiencesToSheet() {
   const audiences = listSelectedGA4Audiences(selectedProperties);
   clearSheetContent(sheetsMeta.ga4.audiences);
   writeToSheet(audiences, sheetsMeta.ga4.audiences.sheetName);
+  resizeRowHeights(sheetsMeta.ga4.audiences.sheetName, 21);
 }

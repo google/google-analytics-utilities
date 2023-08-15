@@ -33,7 +33,9 @@ const ga4Resource = {
   bigqueryLinks: AnalyticsAdmin.Properties.BigQueryLinks,
   expandedDataSets: AnalyticsAdmin.Properties.ExpandedDataSets,
   channelGroups: AnalyticsAdmin.Properties.ChannelGroups,
-  measurementProtocolSecrets: AnalyticsAdmin.Properties.DataStreams.MeasurementProtocolSecrets
+  measurementProtocolSecrets: AnalyticsAdmin.Properties.DataStreams.MeasurementProtocolSecrets,
+  adSenseLinks: AnalyticsAdmin.Properties.AdSenseLinks,
+  eventCreateRules: AnalyticsAdmin.Properties.DataStreams.EventCreateRules,
 };
 
 /**
@@ -71,17 +73,18 @@ function getGA4Resource(resourceKey, parent) {
 function listGA4Entities(resourceKey, parent) {
   try {
     let items = resourceKey;
-    const options = {pageSize: 200};
+    const options = {pageSize: 2};
     let response = {};
     if (parent != undefined) {
+      parent.pageSize = 2;
       if (resourceKey == 'properties') {
-        parent.pageSize = 200;
         response = ga4Resource[resourceKey].list(parent);
       } else if (resourceKey == 'accountAccessBindings' || 
         resourceKey == 'propertyAccessBindings') { 
         items = 'userBindings';
         response = ga4Resource[resourceKey].list(parent, options);
       } else if (resourceKey == 'connectedSiteTags') {
+        delete parent.pageSize;
         response = ga4Resource.properties.listConnectedSiteTags(parent); 
       } else {
         response = ga4Resource[resourceKey].list(parent, options);
@@ -92,9 +95,28 @@ function listGA4Entities(resourceKey, parent) {
     options.pageToken = response.nextPageToken;
     Utilities.sleep(ga4RequestDelay);
     while (options.pageToken != undefined) {
-      const nextPage = ga4Resource[resourceKey].list(options);
-      response[items] = response[items].concat(nextPage[items]);
-      options.pageToken = nextPage.nextPageToken;
+      let nextPageResponse = {};
+      if (parent) {
+        if (resourceKey == 'properties') {
+          parent.pageSize = 2;
+          parent.pageToken = options.pageToken;
+          nextPageResponse = ga4Resource[resourceKey].list(parent);
+        } else if (resourceKey == 'accountAccessBindings' || 
+          resourceKey == 'propertyAccessBindings') { 
+          items = 'userBindings';
+          nextPageResponse = ga4Resource[resourceKey].list(parent, options);
+        } else if (resourceKey == 'connectedSiteTags') {
+          delete parent.pageSize;
+          nextPageResponse = ga4Resource
+            .properties.listConnectedSiteTags(parent); 
+        } else {
+          nextPageResponse = ga4Resource[resourceKey].list(parent, options);
+        }
+      } else {
+        nextPageResponse = ga4Resource[resourceKey].list(options);
+      }
+      response[items] = response[items].concat(nextPageResponse[items]);
+      options.pageToken = nextPageResponse.nextPageToken;
       Utilities.sleep(ga4RequestDelay);
     }
     return response;
@@ -199,7 +221,11 @@ function updateGA4Entity(resourceKey, name, payload) {
 
 /**
  * Updates the data retention settings for a property.
- * @returns {!Object} Either the updated data retention setting or an error
+ * @param {string} evenDataRetention The length of time data should be retained.
+ * @param {boolean} resetUserDataOnNewActivity Whether or not user data should
+ * be reset on new activity.
+ * @param {string} parent The parent data stream path.
+ * @returns {!Object} Either the updated data retention setting or an error.
  */
 function updateDataRetentionSettings(
   evenDataRetention, resetUserDataOnNewActivity, parent) {
@@ -218,7 +244,10 @@ function updateDataRetentionSettings(
 }
 
 /**
- * 
+ * Updates the enhanced measurement settings for a datastream.
+ * @param {!Object} settings The new setting values.
+ * @param {string} parent The parent data stream path.
+ * @returns {!Object} Either the updated enhanced measument settings or an error.
  */
 function updateEnhancedMeasurementSettings(settings, parent) {
   try {

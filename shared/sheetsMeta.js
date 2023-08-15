@@ -542,13 +542,13 @@ const sheetsMeta = {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 23
+        numColumns: 25
       },
       write: {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 18
+        numColumns: 20
       }
     },
     connectedSiteTags: {
@@ -609,6 +609,51 @@ const sheetsMeta = {
         column: 1,
         numRows: 1,
         numColumns: 13
+      }
+    },
+    adSenseLinks: {
+      sheetName: 'GA4 AdSense Links',
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 6
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 10
+      }
+    },
+    eventCreateRules: {
+      sheetName: 'GA4 Event Create Rules',
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 10
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 14
+      }
+    },
+    audienceLists: {
+      sheetName: 'GA4 Audience Lists',
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 11
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 21
       }
     }
   }
