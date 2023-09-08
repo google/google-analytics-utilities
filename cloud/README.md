@@ -19,11 +19,11 @@ The following steps describe how to set up the linker utility.
 
 #### Service Account and Credentials
 
-1. Create a service account in Google Cloud by navigating to (IAM & Admin > Service Accounts)[https://console.cloud.google.com/iam-admin/serviceaccounts]
+1. Create a service account in Google Cloud by navigating to [IAM & Admin > Service Accounts](https://console.cloud.google.com/iam-admin/serviceaccounts)
 2. Give the service account a name and grant it the following access:
- - Storage Admin
- - Eventarc Event Receiver
- - Cloud Run Invoker
+   - Storage Admin
+   - Eventarc Event Receiver
+   - Cloud Run Invoker
 3. Save the service account.
 4. Navigate to [APIs & Services > OAuth consent screen](https://console.cloud.google.com/apis/credentials/consent).
 5. Create an internal OAuth consent screen.
