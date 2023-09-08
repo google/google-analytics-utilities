@@ -1,0 +1,7 @@
+functions-framework==3.*
+google-auth-oauthlib
+google-analytics-admin
+pandas
+google-cloud-storage
+fsspec
+gcsfs
