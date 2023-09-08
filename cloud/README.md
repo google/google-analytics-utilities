@@ -99,5 +99,5 @@ The request type column accepts the following values:
 
 The ads\_customer\_id values should not contain dashes.
 
-The ads\_personalization\_enabled, dv360\_campaign\_data\_sharing\_enabled, and dv360\_cost\_data\_sharing\_enabled columns shouls only be set to true or false.
+The ads\_personalization\_enabled, dv360\_campaign\_data\_sharing\_enabled, and dv360\_cost\_data\_sharing\_enabled columns should only be set to true or false.
 
