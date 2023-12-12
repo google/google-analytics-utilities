@@ -75,17 +75,17 @@ function responseCheck(responses, requestType) {
     } else {
       if (requestType == 'create') {
         if (response.name) {
-          output.push(response.name + ': ' + apiActionTaken.ga4.created);
+          output.push(apiActionTaken.ga4.created + ': ' + response.name);
         } else {
           output.push(apiActionTaken.ga4.created);
         }     
       } else if (requestType == 'update') {
         if (response.measurementUnit == 'CURRENCY') {
-          output.push(response.name + ': ' + apiActionTaken.ga4.updated + 
+          output.push(apiActionTaken.ga4.updated + ': ' + response.name + 
           ' - NOTE: CURRENCY cannot be changed to a different measurement unit.'
           );
         } else {
-          output.push(response.name + ': ' + apiActionTaken.ga4.updated);
+          output.push(apiActionTaken.ga4.updated + ': ' + response.name);
         }
       } else if (requestType == 'archive') {
         output.push(apiActionTaken.ga4.archived);

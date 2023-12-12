@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ function listSelectedGA4Properties(selectedProperties) {
   let data = [];
   const request = generateGA4DataReportRequest([], ['eventCount'], '7daysAgo', 'today', {});
   const alreadyListedAccounts = [];
+  let subpropertyFilters = [];
   selectedProperties.forEach(property => {
     if (alreadyListedAccounts.indexOf(property[1]) == -1) {
       alreadyListedAccounts.push(property[1]);
@@ -33,11 +34,17 @@ function listSelectedGA4Properties(selectedProperties) {
       if (properties) {
         data = data.concat(properties.reduce((arr, prop) => {
           if (selectedProperties.filter(property => property[3] == prop.name.split('/')[1]).length > 0) {
-            const attributionSettings = AnalyticsAdmin.Properties.getAttributionSettings(prop.name + '/attributionSettings');
-            const dataRetentionSettings = AnalyticsAdmin.Properties.getGoogleSignalsSettings(prop.name + '/dataRetentionSettings');
-            const googleSignalsSettings = AnalyticsAdmin.Properties.getDataRetentionSettings(prop.name + '/googleSignalsSettings');
+            const attributionSettings = getGA4Resource(
+              'attributionSettings', prop.name + '/attributionSettings');
+            const dataRetentionSettings = getGA4Resource(
+              'dataRetentionSettings', prop.name + '/dataRetentionSettings');
+            const googleSignalsSettings = getGA4Resource(
+              'googleSignalsSettings', prop.name + '/googleSignalsSettings');
             let eventCount = 0;
             let eventRows = null;
+            let sourceProperties = '';
+            let subpropertyFilter = '';
+            let subpropertyParent = '';
             try {
               eventRows = AnalyticsData.Properties.runReport(
                 request, prop.name).rows;
@@ -47,12 +54,34 @@ function listSelectedGA4Properties(selectedProperties) {
             if (eventRows) {
               eventCount = eventRows[0].metricValues[0].value;
             }
+            if (prop.propertyType == 'PROPERTY_TYPE_ROLLUP') {
+              sourceProperties = listGA4Entities(
+                'rollupPropertySourceLinks', prop.name).rollupPropertySourceLinks;
+              sourceProperties = sourceProperties.reduce((linkArray, link) => {
+                linkArray.push(link.sourceProperty);
+                return linkArray;
+              }, []).join(',');
+            } else if (prop.propertyType == 'PROPERTY_TYPE_SUBPROPERTY') {
+              if (prop.parent != subpropertyParent) {
+                subpropertyParent = prop.parent;
+                subpropertyFilters = listGA4Entities(
+                  'subpropertyEventFilters', subpropertyParent).subpropertyEventFilters;
+              }
+              subpropertyFilter = subpropertyFilters.find(
+                filter => prop.name == filter.applyToProperty);
+              if (subpropertyFilter != undefined && subpropertyFilter != '') {
+                subpropertyFilter = JSON.stringify(subpropertyFilter);
+              }
+            }
             const subArray = [
               property[0],
               property[1],
               prop.displayName,
               prop.name.split('/')[1],
               prop.propertyType,
+              prop.parent,
+              sourceProperties,
+              subpropertyFilter,
               prop.createTime,
               prop.updateTime,
               prop.industryCategory,

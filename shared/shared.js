@@ -27,6 +27,30 @@ const apiActionTaken = {
 };
 
 /**
+ * Lists all values across all GA4 sheets.
+ */
+function listAllGA4PropertyResources() {
+    writeGA4AudiencesToSheet();
+    writeGA4ConversionEventsToSheet();
+    writeGA4StreamsToSheet();
+    writeGA4PropertyDetailsToSheet();
+    writeGA4CustomDimensionsToSheet();
+    writeGA4CustomMetricsToSheet();
+    writeGA4AdsLinksToSheet();
+    writeGA4DV360LinksToSheet();
+    writeGA4FirebaseLinksToSheet();
+    writeGA4SA360LinksToSheet();
+    writeGA4BigQueryLinksToSheet();
+    writeGA4AdSenseLinksToSheet();
+    writeGA4ChannelGroupsToSheet();
+    writeGA4ExpandedDataSetsToSheet();
+    writeGA4AdSenseLinksToSheet();
+    writeGA4EventCreateRulesToSheet();
+    writeGA4RollupPropertySourceLinksToSheet();
+    writeGA4SubpropertyEventFiltersToSheet();
+}
+
+/**
  * Returns a list of Universal Analytics view details.
  * @param {string|number} accountId The GA account ID.
  * @param {string} propertyId The UA property ID.

@@ -31,6 +31,8 @@ The script currently performs the following functions:
 | GA4                      | [AdSense Links](#adsense-links)                                      | List, Create, Delete          |
 | GA4                      | [Event Create Rules](#event-create-rules)                            | List, Create, Delete, Update  |
 | GA4                      | [Audience Lists](#audience-lists)                                    | List, Create, Check, Export   |
+| GA4                      | [Subproperty Event Filters](#subproperty-event-filters)              | List, Create, Delete, Update  |
+| GA4                      | [Rollup Property Source Links](#rollup-property-source-links)        | List, Create, Delete          |
 | Universal Analytics      | [Account Summaries](#account-summaries)                              | List                          |
 | Universal Analytics      | [View Details](#view-details)                                        | List                          |
 | Universal Analytics      | [Events](#events)                                                    | List                          |
@@ -1406,3 +1408,74 @@ Currently, the Google Anaytics Utilities can export audience list dimensions eit
     5. Check the "Export" box
 4. Click Google Analytics Utilities > Google Analytics 4 > Advanced > Audience Lists > Export Audience Lists.
 5. The script will attempt to export the audience lists users to a the chosen export locations. As indicated above, if the audience lists are too large, the export may fail.
+
+
+### Subproperty Event Filters
+
+#### List
+
+1. List GA4 account summaries.
+2. Select the properties for which you want to list their subproperty filter events.
+3. Navigate to "GA4 Subproperty Filter Events".
+4. Click Google Analytics Utilities > Google Analytics 4 > Subproperty Filter Events > List.
+5. Subproperty event filters for the selected properties will be listed in the “GA4 Subproperty Event Filters” sheet.
+
+
+#### Create
+
+1. Navigate to “GA4 Subproperty Event Filters”.
+2. Enter the following for each subproperty event filter you want to create:
+    1. Property ID (this is the parent property)
+    2. Apply to property (this is the subproperty the filter will be applied to)
+    3. Filter clauses
+    4. Check the “Create” box
+3. Click Google Analytics Utilities > Google Analytics 4 > Subproperty Event Filters > Modify.
+4. The script will attempt to create new subproperty event filters.
+
+#### Update
+
+1. List your subproperty event filters.
+2. Navigate to “GA4 Subproperty Event Filters”.
+3. Modify the following for each subproperty event filter you want to update:
+    1. Filter clauses
+    2. Check the “Update” box
+4. Click Google Analytics Utilities > Google Analytics 4 > Subproperty Event Filters > Modify.
+5. The script will attempt to update the subproperty event filters.
+
+#### Delete
+
+1. List your subproperty event filters.
+2. Navigate to “GA4 Subproperty Event Filters”.
+3. Check the “Delete” box for the subproperty event filters you want to delete.
+4. Click Google Analytics Utilities > Google Analytics 4 > Subproperty Event Filters > Modify.
+5. The script will attempt to delete the subproperty event filters.
+
+
+### Rollup Property Source Links
+
+#### List
+
+1. List GA4 account summaries.
+2. Select the properties for which you want to list their rollup property source links.
+3. Navigate to "GA4 Rollup Property Source Links".
+4. Click Google Analytics Utilities > Google Analytics 4 > Rollup Property Source Links > List.
+5. Rollup property source links for the selected properties will be listed in the “GA4 Rollup Property Source Links” sheet.
+
+
+#### Create
+
+1. Navigate to “GA4 Rollup Property Source Links”.
+2. Enter the following for each rollup property source link you want to create:
+    1. Property ID (this is the rollup property)
+    2. Source Link ID (this is the property ID for the source property in the format properties/ID_NUMBER)
+    3. Check the “Create” box
+3. Click Google Analytics Utilities > Google Analytics 4 > Rollup Property Source Links > Modify.
+4. The script will attempt to create new rollup property source links.
+
+#### Delete
+
+1. List your rollup property source links.
+2. Navigate to “GA4 Rollup Property Source Links”.
+3. Check the “Delete” box for the rollup property source links you want to delete.
+4. Click Google Analytics Utilities > Google Analytics 4 > Rollup Property Source Links > Modify.
+5. The script will attempt to delete the rollup property source links.
