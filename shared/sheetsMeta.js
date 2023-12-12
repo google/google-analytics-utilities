@@ -443,13 +443,13 @@ const sheetsMeta = {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 18
+        numColumns: 21
       },
       read: {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 22
+        numColumns: 25
       }
     },
     audiences: {
@@ -632,13 +632,13 @@ const sheetsMeta = {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 10
+        numColumns: 11
       },
       read: {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 14
+        numColumns: 15
       }
     },
     audienceLists: {
@@ -655,6 +655,36 @@ const sheetsMeta = {
         numRows: 1,
         numColumns: 21
       }
+    },
+    rollupPropertySourceLinks: {
+      sheetName: 'GA4 Rollup Property Source Links',
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 6
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 10
+      }  
+    },
+    subpropertyEventFilters: {
+      sheetName: 'GA4 Subproperty Event Filters',
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 7
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 11
+      }  
     }
   }
 };

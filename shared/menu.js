@@ -140,6 +140,14 @@ function onOpen(e) {
         ui.createMenu('Event Create Rules')
         .addItem('List', 'writeGA4EventCreateRulesToSheet')
         .addItem('Modify', 'modifyEventCreateRules'))
+      .addSubMenu(
+        ui.createMenu('Subproperty Event Filters')
+        .addItem('List', 'writeGA4SubpropertyEventFiltersToSheet')
+        .addItem('Modify', 'modifySubpropertyEventFilters'))
+      .addSubMenu(
+        ui.createMenu('Rollup Property Source Links')
+        .addItem('List', 'writeGA4RollupPropertySourceLinksToSheet')
+        .addItem('Modify', 'modifyRollupPropertySourceLinks'))
       .addSeparator()
       .addSubMenu(
         ui.createMenu('Advanced')
@@ -152,14 +160,14 @@ function onOpen(e) {
         .addSubMenu(
           ui.createMenu('Health Report')
           .addItem('Create Report', 'createHealthReport'))
-       .addSubMenu(
-        ui.createMenu('Audience Lists')
-        .addItem('List Existing Audiences', 'writeGA4AudiencesToAudiencesListsSheet')
-        .addItem('List Audience Lists', 'writeAudienceListsToSheet')
-        .addItem('Create Audience Lists', 'createAudienceLists')
-        .addItem('Check Audience List States', 'checkAudienceListsState')
-        .addItem('Export Audience Lists', 'exportAudienceListsData'))
-      )
+        .addSubMenu(
+          ui.createMenu('Audience Lists')
+          .addItem('List Existing Audiences', 'writeGA4AudiencesToAudiencesListsSheet')
+          .addItem('List Audience Lists', 'writeAudienceListsToSheet')
+          .addItem('Create Audience Lists', 'createAudienceLists')
+          .addItem('Check Audience List States', 'checkAudienceListsState')
+          .addItem('Export Audience Lists', 'exportAudienceListsData')))
+      .addItem('List All Property Settings', 'listAllGA4PropertyResources')
     )
     .addSeparator()
     .addSubMenu(

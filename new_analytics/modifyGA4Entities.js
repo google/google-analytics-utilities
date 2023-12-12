@@ -134,6 +134,20 @@ function modifyEventCreateRules() {
 }
 
 /**
+ * Modifies subproperty event filters.
+ */
+function modifySubpropertyEventFilters() {
+  modifyGA4Entities(sheetsMeta.ga4.subpropertyEventFilters.sheetName);
+}
+
+/**
+ * Modifies rollup property source links.
+ */
+function modifyRollupPropertySourceLinks() {
+  modifyGA4Entities(sheetsMeta.ga4.rollupPropertySourceLinks.sheetName);
+}
+
+/**
  * Loops through the rows on the sheet with data and checks either
  * skips, updates, removes, or creates an entity depending on what
  * was checked in a given sheet.
@@ -211,18 +225,44 @@ function modifyGA4Entities(sheetName) {
       // Creates the new entity.
       } else if (create) {
         const payload = buildCreatePayload(sheetName, entity);
-        const createResponse = createGA4Entity(ga4Resource, parent, payload);
-        responses.push(createResponse);
         if (ga4Resource == 'properties') {
-          if (entity[13] != 'TWO_MONTHS' || entity[14] != false) {
+          let createResponse = '';
+          if (entity[4] == 'PROPERTY_TYPE_SUBPROPERTY') {
+            const subpropertyEventFilter = JSON.parse(entity[7]);
+            delete subpropertyEventFilter.name;
+            payload.propertyType = entity[4];
+            const subpropertySettings = {
+              parent: entity[5],
+              subproperty: payload,
+              subpropertyEventFilter: subpropertyEventFilter
+            };
+            createResponse = createGA4Entity('subproperties', '', subpropertySettings).subproperty;
+            responses.push(createResponse);
+          } else if (entity[4] == 'PROPERTY_TYPE_ROLLUP') {
+            const rollupSettings = {
+              rollupProperty: payload,
+              sourceProperties: entity[6].split(',').map(id => id.trim())
+            };
+            createResponse = createGA4Entity('rollupProperties', '', rollupSettings);
+            responses.push(createResponse);
+          } else {
+            createResponse = createGA4Entity(ga4Resource, parent, payload).rollupProperty;
+            responses.push(createResponse);
+          }
+          if (entity[16] != 'TWO_MONTHS' || entity[17] != false) {
             responses.push(
-              updateDataRetentionSettings(entity[13], entity[14], 
+              updateDataRetentionSettings(entity[16], entity[17], 
                 createResponse.name + '/dataRetentionSettings'));
           }
+
         } else if (ga4Resource == 'streams' && payload.webStreamData) {
+          responses.push(createGA4Entity(ga4Resource, parent, payload));
           responses.push(updateEnhancedMeasurementSettings(
             buildEnhancedMeasurementSettingsPayload(entity),
             `${entity[5]}/enhancedMeasurementSettings`));
+        } else {
+          const createResponse = createGA4Entity(ga4Resource, parent, payload);
+          responses.push(createResponse);
         }
         actionTaken = responseCheck(responses, 'create');
         writeActionTakenToSheet(sheetName, index, actionTaken);
@@ -285,10 +325,8 @@ function buildCreatePayload(sheetName, entity) {
     payload.eventName = entityDisplayNameOrId;
   } else if (sheetName == sheetsMeta.ga4.googleAdsLinks.sheetName) {
     // Add Google Ads link fields.
-    const canManageClients = entity[6];
     const adsPersonalizationEnabled = entity[7];
     payload.customerId = entityDisplayNameOrId;
-    payload.canManageClients = canManageClients;
     payload.adsPersonalizationEnabled = adsPersonalizationEnabled;
   } else if (sheetName == sheetsMeta.ga4.firebaseLinks.sheetName) {
     // Add Firebase link fields.
@@ -304,9 +342,9 @@ function buildCreatePayload(sheetName, entity) {
   } else if (sheetName == sheetsMeta.ga4.properties.sheetName) {
     // Add fields to modify a property.
     payload.displayName = entity[2];
-    payload.industryCategory = entity[7];
-    payload.timeZone = entity[8];
-    payload.currencyCode = entity[9];
+    payload.industryCategory = entity[10];
+    payload.timeZone = entity[11];
+    payload.currencyCode = entity[12];
   } else if (sheetName == sheetsMeta.ga4.streams.sheetName) {
     payload.displayName = entity[4];
     payload.type = entity[6];
@@ -386,6 +424,11 @@ function buildCreatePayload(sheetName, entity) {
     payload.sourceCopyParameters = entity[8];
     payload.eventConditions = JSON.parse(entity[9]);
     payload.parameterMutations = JSON.parse(entity[10]);
+  } else if (sheetName == sheetsMeta.ga4.subpropertyEventFilters.sheetName) {
+    payload.applyToProperty = entity[4];
+    payload.filterClauses = entity[6];
+  } else if (sheetName == sheetsMeta.ga4.rollupPropertySourceLinks.sheetName) {
+    payload.sourceProperty = entity[4];
   }
   return payload;
 }
@@ -428,9 +471,9 @@ function buildUpdatePayload(sheetName, entity) {
   } else if (sheetName == sheetsMeta.ga4.properties.sheetName) {
     // Add fields to modify a property.
     payload.displayName = entity[2];
-    payload.industryCategory = entity[7];
-    payload.timeZone = entity[8];
-    payload.currencyCode = entity[9]
+    payload.industryCategory = entity[10];
+    payload.timeZone = entity[11];
+    payload.currencyCode = entity[12]
   } else if (sheetName == sheetsMeta.ga4.streams.sheetName) {
     payload.displayName = entity[4];
     if (entity[6] == 'WEB_DATA_STREAM') {
@@ -487,6 +530,8 @@ function buildUpdatePayload(sheetName, entity) {
     payload.sourceCopyParameters = entity[8];
     payload.eventConditions = JSON.parse(entity[9]);
     payload.parameterMutations = JSON.parse(entity[10]);
+  } else if (sheetName == sheetsMeta.ga4.subpropertyEventFilters.sheetName) {
+    payload.filterClauses = entity[6];
   }
   return payload;
 }

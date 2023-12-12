@@ -36,6 +36,8 @@ const ga4Resource = {
   measurementProtocolSecrets: AnalyticsAdmin.Properties.DataStreams.MeasurementProtocolSecrets,
   adSenseLinks: AnalyticsAdmin.Properties.AdSenseLinks,
   eventCreateRules: AnalyticsAdmin.Properties.DataStreams.EventCreateRules,
+  subpropertyEventFilters: AnalyticsAdmin.Properties.SubpropertyEventFilters,
+  rollupPropertySourceLinks: AnalyticsAdmin.Properties.RollupPropertySourceLinks
 };
 
 /**
@@ -53,6 +55,8 @@ function getGA4Resource(resourceKey, parent) {
       response = ga4Resource.properties.getAttributionSettings(parent);
     } else if (resourceKey == 'dataRetentionSettings') {
       response = ga4Resource.properties.getDataRetentionSettings(parent);
+    } else if (resourceKey == 'googleSignalsSettings') {
+      response = ga4Resource.properties.getGoogleSignalsSettings(parent);
     } else {
       response = ga4Resource[resourceKey].get(parent);
     }
@@ -73,10 +77,10 @@ function getGA4Resource(resourceKey, parent) {
 function listGA4Entities(resourceKey, parent) {
   try {
     let items = resourceKey;
-    const options = {pageSize: 2};
+    const options = {pageSize: 200};
     let response = {};
     if (parent != undefined) {
-      parent.pageSize = 2;
+      parent.pageSize = 200;
       if (resourceKey == 'properties') {
         response = ga4Resource[resourceKey].list(parent);
       } else if (resourceKey == 'accountAccessBindings' || 
@@ -98,7 +102,7 @@ function listGA4Entities(resourceKey, parent) {
       let nextPageResponse = {};
       if (parent) {
         if (resourceKey == 'properties') {
-          parent.pageSize = 2;
+          parent.pageSize = 200;
           parent.pageToken = options.pageToken;
           nextPageResponse = ga4Resource[resourceKey].list(parent);
         } else if (resourceKey == 'accountAccessBindings' || 
@@ -145,6 +149,10 @@ function createGA4Entity(resourceKey, name, payload) {
       response = ga4Resource[resourceKey].create(payload);
     } else if (resourceKey == 'connectedSiteTags') {
       response = ga4Resource.properties.createConnectedSiteTag(payload);
+    } else if (resourceKey == 'subproperties') {
+      response = ga4Resource.properties.createSubproperty(payload);
+    } else if (resourceKey == 'rollupProperties') {
+      response = ga4Resource.properties.createRollupProperty(payload);
     } else {
       response = ga4Resource[resourceKey].create(payload, name);
     }
