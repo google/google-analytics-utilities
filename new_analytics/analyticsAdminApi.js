@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2024 Google LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ const ga4Resource = {
   googleAdsLinks: AnalyticsAdmin.Properties.GoogleAdsLinks,
   customDimensions: AnalyticsAdmin.Properties.CustomDimensions,
   customMetrics: AnalyticsAdmin.Properties.CustomMetrics,
-  conversionEvents: AnalyticsAdmin.Properties.ConversionEvents,
+  keyEvents: AnalyticsAdmin.Properties.KeyEvents,
   displayVideo360AdvertiserLinks: AnalyticsAdmin.Properties.DisplayVideo360AdvertiserLinks,
   properties: AnalyticsAdmin.Properties,
   audiences: AnalyticsAdmin.Properties.Audiences,

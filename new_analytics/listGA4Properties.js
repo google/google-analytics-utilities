@@ -64,8 +64,8 @@ function listSelectedGA4Properties(selectedProperties) {
             } else if (prop.propertyType == 'PROPERTY_TYPE_SUBPROPERTY') {
               if (prop.parent != subpropertyParent) {
                 subpropertyParent = prop.parent;
-                subpropertyFilters = listGA4Entities(
-                  'subpropertyEventFilters', subpropertyParent).subpropertyEventFilters;
+                subpropertyFilters =  listGA4Entities(
+                  'subpropertyEventFilters', subpropertyParent).subpropertyEventFilters || [];
               }
               subpropertyFilter = subpropertyFilters.find(
                 filter => prop.name == filter.applyToProperty);

@@ -113,9 +113,9 @@ function onOpen(e) {
         .addItem('List', 'writeGA4CustomMetricsToSheet')
         .addItem('Modify', 'modifyGA4CustomMetrics'))
       .addSubMenu(
-        ui.createMenu('Conversion Events')
-        .addItem('List', 'writeGA4ConversionEventsToSheet')
-        .addItem('Modify', 'modifyGA4ConversionEvents'))
+        ui.createMenu('Key Events')
+        .addItem('List', 'writeGA4KeyEventsToSheet')
+        .addItem('Modify', 'modifyGA4KeyEvents'))
       .addSubMenu(
         ui.createMenu('Audiences')
         .addItem('List', 'writeGA4AudiencesToSheet')
