@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2024 Google LLC
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,10 +29,10 @@ function modifyGA4CustomMetrics() {
 }
 
 /**
- * Modifies GA4 conversion events.
+ * Modifies GA4 key events.
  */
-function modifyGA4ConversionEvents() {
-  modifyGA4Entities(sheetsMeta.ga4.conversionEvents.sheetName);
+function modifyGA4KeyEvents() {
+  modifyGA4Entities(sheetsMeta.ga4.keyEvents.sheetName);
 }
 
 /**
@@ -274,7 +274,7 @@ function modifyGA4Entities(sheetName) {
           updateGA4Entity(ga4Resource, resourceName, payload, index));
         if (ga4Resource == 'properties') {
           responses.push(
-            updateDataRetentionSettings(entity[13], entity[14],
+            updateDataRetentionSettings(entity[16], entity[17],
             resourceName + '/dataRetentionSettings'));
         } else if (ga4Resource == 'streams' && payload.webStreamData) {
           responses.push(updateEnhancedMeasurementSettings(
@@ -320,8 +320,8 @@ function buildCreatePayload(sheetName, entity) {
       }
       payload.measurementUnit = measurementUnit;
     }
-  } else if (sheetName == sheetsMeta.ga4.conversionEvents.sheetName) {
-    // Add conversion event fields.
+  } else if (sheetName == sheetsMeta.ga4.keyEvents.sheetName) {
+    // Add key event fields.
     payload.eventName = entityDisplayNameOrId;
   } else if (sheetName == sheetsMeta.ga4.googleAdsLinks.sheetName) {
     // Add Google Ads link fields.
@@ -414,7 +414,8 @@ function buildCreatePayload(sheetName, entity) {
   } else if (sheetName == sheetsMeta.ga4.channelGroups.sheetName) {
     payload.displayName = entityDisplayNameOrId;
     payload.description = entity[6];
-    payload.groupingRule = JSON.parse(entity[8]);
+    payload.primary = entity[8]
+    payload.groupingRule = JSON.parse(entity[9]);
   } else if (sheetName = sheetsMeta.ga4.measurementProtocolSecrets.sheetName) {
     payload.displayName = entity[6];
   } else if (sheetName == sheetsMeta.ga4.adSenseLinks.sheetName) {
@@ -518,10 +519,14 @@ function buildUpdatePayload(sheetName, entity) {
     payload.displayName = entityDisplayNameOrId;
     payload.description = entity[6];
   } else if (sheetName == sheetsMeta.ga4.channelGroups.sheetName) {
-    if (!entity[7]) {
+    if (entity[7]) {
+      payload.displayName = entityDisplayNameOrId;
+      payload.primary = entity[8];
+    } else {
       payload.displayName = entityDisplayNameOrId;
       payload.description = entity[6];
-      payload.groupingRule = JSON.parse(entity[8]);
+      payload.primary = entity[8];
+      payload.groupingRule = JSON.parse(entity[9]);
     }
   } else if (sheetName = sheetsMeta.ga4.measurementProtocolSecrets.sheetName) {
     payload.displayName = entity[6];

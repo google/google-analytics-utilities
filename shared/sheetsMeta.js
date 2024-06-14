@@ -362,19 +362,19 @@ const sheetsMeta = {
         numColumns: 15
       }
     },
-    conversionEvents: {
-      sheetName: 'GA4 Conversion Events',
+    keyEvents: {
+      sheetName: 'GA4 Key Events',
       write: {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 10
+        numColumns: 12
       },
       read: {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 14
+        numColumns: 16
       }
     },
     googleAdsLinks: {
@@ -497,13 +497,13 @@ const sheetsMeta = {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 12
+        numColumns: 13
       },
       write: {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 12
+        numColumns: 13
       }
     },
     sa360Links: {
@@ -572,13 +572,13 @@ const sheetsMeta = {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 9
+        numColumns: 10
       },
       read: {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 13
+        numColumns: 14
       }
     },
     dataStreamSelection: {

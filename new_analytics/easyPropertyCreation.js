@@ -167,9 +167,13 @@ function cleanOutput(resourceType, value) {
         delete stream.name;
         delete stream.updateTime;
         delete stream.createTime;
-        delete stream.eventCreateRules.name;
-        delete stream.measurementProtocolSecrets.name;
-        delete stream.measurementProtocolSecrets.secretValue;
+        if (stream.eventCreateRules) {
+          delete stream.eventCreateRules.name;
+        }
+        if (stream.measurementProtocolSecrets) {
+          delete stream.measurementProtocolSecrets.name;
+          delete stream.measurementProtocolSecrets.secretValue;
+        }
         if (stream.webStreamData) {
           delete stream.webStreamData.measurementId;
           delete stream.webStreamData.enhancedMeasurementSettings.name;

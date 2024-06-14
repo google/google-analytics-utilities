@@ -31,10 +31,7 @@ function listGA4EventCreateRules(streams) {
     if (eventCreateRules != undefined) {
       eventCreateRules.forEach(rule => {
         sheetValuesArray.push([
-          property[0],
-          property[1],
-          property[2],
-          property[3],
+          ...stream.slice(0, 6),
           rule.destinationEvent,
           rule.name,
           rule.sourceCopyParameters,

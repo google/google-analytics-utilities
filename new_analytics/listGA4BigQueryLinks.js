@@ -40,9 +40,10 @@ function listGA4BigQueryLinks(properties) {
           link.createTime,
           link.dailyExportEnabled,
           link.excludedEvents || '',
-          link.exportStreams.join(', '),
+          link.exportStreams.join(', ') || '',
           link.includeAdvertisingId || '',
-          link.streamingExportEnabled
+          link.streamingExportEnabled,
+          link.freshDailyExportEnabled
         ]);
       });
     }
