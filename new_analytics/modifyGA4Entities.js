@@ -141,6 +141,13 @@ function modifySubpropertyEventFilters() {
 }
 
 /**
+ * Modifies calculated metrics.
+ */
+function modifyCalculatedMetrics() {
+  modifyGA4Entities(sheetsMeta.ga4.subpropertyEventFilters.sheetName);
+}
+
+/**
  * Modifies rollup property source links.
  */
 function modifyRollupPropertySourceLinks() {
@@ -177,6 +184,9 @@ function modifyGA4Entities(sheetName) {
         parent = `properties/${entity[3]}/dataStreams/${entity[5]}`;
         resourceName = entity[7];
       } else if (sheetName == sheetsMeta.ga4.adSenseLinks.sheetName) {
+        parent = `properties/${entity[3]}/dataStreams/${entity[5]}`;
+        resourceName = entity[7];
+      } else if (sheetName == sheetsMeta.ga4.eventCreateRules.sheetName) {
         parent = `properties/${entity[3]}/dataStreams/${entity[5]}`;
         resourceName = entity[7];
       } else {
@@ -416,15 +426,16 @@ function buildCreatePayload(sheetName, entity) {
     payload.description = entity[6];
     payload.primary = entity[8]
     payload.groupingRule = JSON.parse(entity[9]);
-  } else if (sheetName = sheetsMeta.ga4.measurementProtocolSecrets.sheetName) {
+  } else if (sheetName == sheetsMeta.ga4.measurementProtocolSecrets.sheetName) {
     payload.displayName = entity[6];
   } else if (sheetName == sheetsMeta.ga4.adSenseLinks.sheetName) {
     payload.adClientCode = entityDisplayNameOrId;
   } else if (sheetName == sheetsMeta.ga4.eventCreateRules.sheetName) {
     payload.destinationEvent = entity[6];
     payload.sourceCopyParameters = entity[8];
-    payload.eventConditions = JSON.parse(entity[9]);
-    payload.parameterMutations = JSON.parse(entity[10]);
+    payload.eventConditions = JSON.parse(entity[9] || '[]');
+    payload.parameterMutations = JSON.parse(entity[10] || '[]');
+    console.log(payload);
   } else if (sheetName == sheetsMeta.ga4.subpropertyEventFilters.sheetName) {
     payload.applyToProperty = entity[4];
     payload.filterClauses = entity[6];
@@ -535,6 +546,7 @@ function buildUpdatePayload(sheetName, entity) {
     payload.sourceCopyParameters = entity[8];
     payload.eventConditions = JSON.parse(entity[9]);
     payload.parameterMutations = JSON.parse(entity[10]);
+    console.log(payload);
   } else if (sheetName == sheetsMeta.ga4.subpropertyEventFilters.sheetName) {
     payload.filterClauses = entity[6];
   }
@@ -542,7 +554,9 @@ function buildUpdatePayload(sheetName, entity) {
 }
 
 /**
- * 
+ * Builds the enhanced measurement settings payload object.
+ * @param {!Array<boolean|string} sheetsRow An array of the settings from a row in the sheet.
+ * @return {!Object} An object containing the enhanced measurement settings payload.
  */
 function buildEnhancedMeasurementSettingsPayload(sheetsRow) {
   return {
