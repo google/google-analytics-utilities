@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ function listAllGA4PropertyResources() {
     writeGA4PropertyDetailsToSheet();
     writeGA4CustomDimensionsToSheet();
     writeGA4CustomMetricsToSheet();
+    writeGA4CalculatedMetricsToSheet();
     writeGA4AdsLinksToSheet();
     writeGA4DV360LinksToSheet();
     writeGA4FirebaseLinksToSheet();
@@ -163,6 +164,16 @@ function listRemarketingAudiences(accountId, propertyId, startIndex) {
  */
 function listGoals(accountId, propertyId, viewId) {
   return Analytics.Management.Goals.list(accountId, propertyId, viewId).items;
+}
+/**
+ * Creates a goal in a view under the UA property.
+ * @param {!Object} request The request data to create a goal.
+ * @return {!Object} An object describing the goal that was created.
+ */
+function createGoal(request) {
+  return Analytics.Management.Goals.insert(
+      request.resource, request.accountId, request.webPropertyId,
+      request.profileId);
 }
 /**
  * Creates a goal in a view under the UA property.
@@ -331,49 +342,6 @@ function getSelectedViews() {
 function getSelectedGa4Properties() {
   const properties = getDataFromSheet(sheetsMeta.ga4.accountSummaries.sheetName);
   return properties.filter(row => row[4]);
-}
-/**
- * Sets UA and GA4 sheets to be hidden or shown.
- * @param {string} gaType Either "ua" or "ga4".
- * @param {string} action Either "hide" or "show".
- */
-function showOrHideSheets(gaType, action) {
-  const sheets = ss.getSheets();
-  sheets.forEach(sheet => {
-    for (resource in sheetsMeta[gaType]) {
-      if (sheetsMeta[gaType][resource].sheetName == sheet.getName()) {
-        if (action == 'hide') {
-          sheet.hideSheet();
-        } else if (action == 'show') {
-          sheet.showSheet();
-        }
-      }
-    }
-  });
-}
-/**
- * Hides universal analytics sheets.
- */
-function hideUASheets() {
-  showOrHideSheets('ua', 'hide');
-}
-/**
- * Shows universal analytics sheets.
- */
-function showUASheets() {
-  showOrHideSheets('ua', 'show');
-}
-/**
- * Hides GA4 sheets.
- */
-function hideGA4Sheets() {
-  showOrHideSheets('ga4', 'hide');
-}
-/**
- * Shows GA4 sheets.
- */
-function showGA4Sheets() {
-  showOrHideSheets('ga4', 'show');
 }
 
 /**

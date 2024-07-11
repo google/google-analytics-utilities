@@ -37,7 +37,8 @@ const ga4Resource = {
   adSenseLinks: AnalyticsAdmin.Properties.AdSenseLinks,
   eventCreateRules: AnalyticsAdmin.Properties.DataStreams.EventCreateRules,
   subpropertyEventFilters: AnalyticsAdmin.Properties.SubpropertyEventFilters,
-  rollupPropertySourceLinks: AnalyticsAdmin.Properties.RollupPropertySourceLinks
+  rollupPropertySourceLinks: AnalyticsAdmin.Properties.RollupPropertySourceLinks,
+  calculatedMetrics: AnalyticsAdmin.Properties.CalculatedMetrics
 };
 
 /**
