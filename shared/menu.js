@@ -44,6 +44,10 @@ function onOpen(e) {
       .addItem('List', 'writeGA4CustomMetricsToSheet')
       .addItem('Modify', 'modifyGA4CustomMetrics'))
     .addSubMenu(
+      ui.createMenu('Calculated Metrics')
+      .addItem('List', 'writeGA4CalculatedMetricsToSheet')
+      .addItem('Modify', 'modifyCalculatedMetrics'))
+    .addSubMenu(
       ui.createMenu('Key Events')
       .addItem('List', 'writeGA4KeyEventsToSheet')
       .addItem('Modify', 'modifyGA4KeyEvents'))
@@ -116,7 +120,10 @@ function onOpen(e) {
           .addItem('List Audience Lists', 'writeAudienceListsToSheet')
           .addItem('Create Audience Lists', 'createAudienceLists')
           .addItem('Check Audience List States', 'checkAudienceListsState')
-          .addItem('Export Audience Lists', 'exportAudienceListsData')))
+          .addItem('Export Audience Lists', 'exportAudienceListsData'))
+        .addSubMenu(
+          ui.createMenu('User Access Report')
+          .addItem('Run Report', 'writeUserAccessReportDataToSheet')))
       .addItem('List All Property Settings', 'listAllGA4PropertyResources')
     .addSeparator()
     .addItem('Check for Updates', 'checkRelease')

@@ -414,6 +414,36 @@ const sheetsMeta = {
         numRows: 1,
         numColumns: 16
       }
+    },
+    userAccessReport: {
+      sheetName: 'User Access Report',
+      write: {
+        row: 1,
+        column: 1,
+        numRows: 1,
+        numColumns: 1
+      },
+      read: {
+        row: 1,
+        column: 1,
+        numRows: 1,
+        numColumns: 1
+      }
+    },
+    userAccessReportSettings: {
+      sheetName: 'User Access Report Settings',
+      write: {
+        row: 1,
+        column: 1,
+        numRows: 1,
+        numColumns: 1
+      },
+      read: {
+        row: 1,
+        column: 1,
+        numRows: 1,
+        numColumns: 1
+      }
     }
   }
 };

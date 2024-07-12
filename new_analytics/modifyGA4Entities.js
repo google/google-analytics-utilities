@@ -435,7 +435,6 @@ function buildCreatePayload(sheetName, entity) {
     payload.sourceCopyParameters = entity[8];
     payload.eventConditions = JSON.parse(entity[9] || '[]');
     payload.parameterMutations = JSON.parse(entity[10] || '[]');
-    console.log(payload);
   } else if (sheetName == sheetsMeta.ga4.subpropertyEventFilters.sheetName) {
     payload.applyToProperty = entity[4];
     payload.filterClauses = entity[6];
@@ -539,14 +538,13 @@ function buildUpdatePayload(sheetName, entity) {
       payload.primary = entity[8];
       payload.groupingRule = JSON.parse(entity[9]);
     }
-  } else if (sheetName = sheetsMeta.ga4.measurementProtocolSecrets.sheetName) {
+  } else if (sheetName == sheetsMeta.ga4.measurementProtocolSecrets.sheetName) {
     payload.displayName = entity[6];
   } else if (sheetName == sheetsMeta.ga4.eventCreateRules.sheetName) {
     payload.destinationEvent = entity[6];
     payload.sourceCopyParameters = entity[8];
-    payload.eventConditions = JSON.parse(entity[9]);
-    payload.parameterMutations = JSON.parse(entity[10]);
-    console.log(payload);
+    payload.eventConditions = JSON.parse(entity[9] || '[]');
+    payload.parameterMutations = JSON.parse(entity[10] || '[]');
   } else if (sheetName == sheetsMeta.ga4.subpropertyEventFilters.sheetName) {
     payload.filterClauses = entity[6];
   }
