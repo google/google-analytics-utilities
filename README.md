@@ -34,7 +34,7 @@ The script currently performs the following functions:
 | [Audience Lists](#audience-lists)                                    | List, Create, Check, Export   |
 | [Subproperty Event Filters](#subproperty-event-filters)              | List, Create, Delete, Update  |
 | [Rollup Property Source Links](#rollup-property-source-links)        | List, Create, Delete          |
-| [User Access Report][#user-access-report]                            | Create                        |
+| [User Access Report](#user-access-report)                            | Create                        |
 
 These tasks can be completed by [joining the Google Group](https://groups.google.com/g/google-analytics-utilities-users), [copying the template spreadsheet](https://docs.google.com/spreadsheets/d/1kJqwYNed8RTuAgjy0aRUooD__MIPqzUeiDF5LZ7v1aI/), and clicking on various options under the Google Analytics Utilities menu.
 
