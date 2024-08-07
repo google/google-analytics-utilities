@@ -68,30 +68,21 @@ function responseCheck(responses, requestType) {
   const output = [];
   responses.forEach(response => {
     if (response.details != undefined) {
-      output.push('Error ' + response.details.code + ': ' + 
-      response.details.message);
-    } else if (response.statusCode != undefined) {
-      output.push('Error ' + response.statusCode + ': ' + response.name);
-    } else {
-      if (requestType == 'create') {
-        if (response.name) {
-          output.push(apiActionTaken.ga4.created + ': ' + response.name);
-        } else {
-          output.push(apiActionTaken.ga4.created);
-        }     
-      } else if (requestType == 'update') {
-        if (response.measurementUnit == 'CURRENCY') {
-          output.push(apiActionTaken.ga4.updated + ': ' + response.name + 
-          ' - NOTE: CURRENCY cannot be changed to a different measurement unit.'
-          );
-        } else {
-          output.push(apiActionTaken.ga4.updated + ': ' + response.name);
-        }
-      } else if (requestType == 'archive') {
-        output.push(apiActionTaken.ga4.archived);
-      } else if (requestType == 'delete') {
-        output.push(apiActionTaken.ga4.deleted);
-      }
+      output.push(`Error ${response.details.code}: ${response.details.message}`);
+    }else if (response.statusCode != undefined) {
+      output.push(`Error ${response.statusCode}: ${response.name}`);
+    }else if (requestType == 'create') {
+      let created = apiActionTaken.ga4.created
+      if (response.name) created += `: ${response.name}`
+      output.push(created);
+    }else if (requestType == 'update') {
+      let ga4eUpdate = `${apiActionTaken.ga4.updated}: ${response.name}`
+      if (response.measurementUnit == 'CURRENCY') ga4eUpdate += ' - NOTE: CURRENCY cannot be changed to a different measurement unit.'
+      output.push(ga4eUpdate);
+    } else if (requestType == 'archive') {
+      output.push(apiActionTaken.ga4.archived);
+    } else if (requestType == 'delete') {
+      output.push(apiActionTaken.ga4.deleted);
     }
   });
   return output.join('\n');
