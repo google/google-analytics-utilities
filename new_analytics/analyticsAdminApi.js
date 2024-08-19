@@ -204,15 +204,15 @@ function updateGA4Entity(resourceKey, name, payload) {
     if (resourceKey == 'accountAccessBindings' || 
       resourceKey == 'propertyAccessBindings') {
       response = ga4Resource[resourceKey].patch(payload, name);
-    } else if (resourceKey = 'dataRetentionSettings') {
+    } else if (resourceKey == 'dataRetentionSettings') {
       response = ga4Resource.properties.updateDataRetentionSettings(
         payload, name, {updateMask: mask}
       );
-    } else if (resourceKey = 'attributionSettings') {
+    } else if (resourceKey == 'attributionSettings') {
       response = ga4Resource.properties.updateAttributionSettings(
         payload, name, {updateMask: mask}
       );
-    } else if (resourceKey = 'enhancedMeasurementSettings') {
+    } else if (resourceKey == 'enhancedMeasurementSettings') {
       response = ga4Resource.streams.updateEnhancedMeasurementSettings(
         payload, name, {updateMask: mask}
       );
