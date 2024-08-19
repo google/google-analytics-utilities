@@ -144,7 +144,7 @@ function modifySubpropertyEventFilters() {
  * Modifies calculated metrics.
  */
 function modifyCalculatedMetrics() {
-  modifyGA4Entities(sheetsMeta.ga4.subpropertyEventFilters.sheetName);
+  modifyGA4Entities(sheetsMeta.ga4.calculatedMetrics.sheetName);
 }
 
 /**
