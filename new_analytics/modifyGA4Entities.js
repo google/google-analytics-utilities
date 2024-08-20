@@ -440,6 +440,12 @@ function buildCreatePayload(sheetName, entity) {
     payload.filterClauses = entity[6];
   } else if (sheetName == sheetsMeta.ga4.rollupPropertySourceLinks.sheetName) {
     payload.sourceProperty = entity[4];
+  } else if (sheetName == sheetsMeta.ga4.calculatedMetrics.sheetName) {
+    payload.displayName = entityDisplayNameOrId;
+    payload.calculatedMetricId = entity[7];
+    payload.description = entity[6];
+    payload.metricUnit = entity[8];
+    payload.formula = entity[10]
   }
   return payload;
 }
@@ -547,6 +553,11 @@ function buildUpdatePayload(sheetName, entity) {
     payload.parameterMutations = JSON.parse(entity[10] || '[]');
   } else if (sheetName == sheetsMeta.ga4.subpropertyEventFilters.sheetName) {
     payload.filterClauses = entity[6];
+  } else if (sheetName == sheetsMeta.ga4.calculatedMetrics.sheetName) {
+    payload.displayName = entityDisplayNameOrId;
+    payload.description = entity[6];
+    payload.metricUnit = entity[8];
+    payload.formula = entity[10]
   }
   return payload;
 }
