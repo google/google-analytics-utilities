@@ -154,6 +154,9 @@ function createGA4Entity(resourceKey, name, payload) {
       response = ga4Resource.properties.createSubproperty(payload);
     } else if (resourceKey == 'rollupProperties') {
       response = ga4Resource.properties.createRollupProperty(payload);
+    } else if (resourceKey == 'calculatedMetrics') {
+      const resourceName = {calculatedMetricId: payload.calculatedMetricId};
+      response = ga4Resource.calculatedMetrics.create(payload, name, resourceName);
     } else {
       response = ga4Resource[resourceKey].create(payload, name);
     }
@@ -270,4 +273,4 @@ function updateEnhancedMeasurementSettings(settings, parent) {
     return e;
   }
 }
-          
+
