@@ -154,6 +154,9 @@ function createGA4Entity(resourceKey, name, payload) {
       response = ga4Resource.properties.createSubproperty(payload);
     } else if (resourceKey == 'rollupProperties') {
       response = ga4Resource.properties.createRollupProperty(payload);
+    } else if (resourceKey == 'calculatedMetrics') {
+      const resourceName = {calculatedMetricId: payload.calculatedMetricId};
+      response = ga4Resource.calculatedMetrics.create(payload, name, resourceName);
     } else {
       response = ga4Resource[resourceKey].create(payload, name);
     }
@@ -204,15 +207,15 @@ function updateGA4Entity(resourceKey, name, payload) {
     if (resourceKey == 'accountAccessBindings' || 
       resourceKey == 'propertyAccessBindings') {
       response = ga4Resource[resourceKey].patch(payload, name);
-    } else if (resourceKey = 'dataRetentionSettings') {
+    } else if (resourceKey == 'dataRetentionSettings') {
       response = ga4Resource.properties.updateDataRetentionSettings(
         payload, name, {updateMask: mask}
       );
-    } else if (resourceKey = 'attributionSettings') {
+    } else if (resourceKey == 'attributionSettings') {
       response = ga4Resource.properties.updateAttributionSettings(
         payload, name, {updateMask: mask}
       );
-    } else if (resourceKey = 'enhancedMeasurementSettings') {
+    } else if (resourceKey == 'enhancedMeasurementSettings') {
       response = ga4Resource.streams.updateEnhancedMeasurementSettings(
         payload, name, {updateMask: mask}
       );
@@ -270,4 +273,4 @@ function updateEnhancedMeasurementSettings(settings, parent) {
     return e;
   }
 }
-          
+
