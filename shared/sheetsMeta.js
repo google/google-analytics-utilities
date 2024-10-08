@@ -211,13 +211,13 @@ const sheetsMeta = {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 13
+        numColumns: 18
       },
       write: {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 13
+        numColumns: 14
       }
     },
     sa360Links: {

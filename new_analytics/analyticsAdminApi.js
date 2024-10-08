@@ -151,7 +151,7 @@ function createGA4Entity(resourceKey, name, payload) {
     } else if (resourceKey == 'connectedSiteTags') {
       response = ga4Resource.properties.createConnectedSiteTag(payload);
     } else if (resourceKey == 'subproperties') {
-      response = ga4Resource.properties.createSubproperty(payload);
+      response = ga4Resource.properties.provisionSubproperty(payload);
     } else if (resourceKey == 'rollupProperties') {
       response = ga4Resource.properties.createRollupProperty(payload);
     } else {

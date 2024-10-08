@@ -31,7 +31,7 @@ const apiActionTaken = {
  */
 function listAllGA4PropertyResources() {
     writeGA4AudiencesToSheet();
-    writeGA4ConversionEventsToSheet();
+    writeGA4KeyEventsToSheet();
     writeGA4StreamsToSheet();
     writeGA4PropertyDetailsToSheet();
     writeGA4CustomDimensionsToSheet();
@@ -51,140 +51,6 @@ function listAllGA4PropertyResources() {
     writeGA4SubpropertyEventFiltersToSheet();
 }
 
-/**
- * Returns a list of Universal Analytics view details.
- * @param {string|number} accountId The GA account ID.
- * @param {string} propertyId The UA property ID.
- * @return {!Array} An array of UA view details.
- */
-function getViewDetails(accountId, propertyId) {
-  return Analytics.Management.Profiles.list(accountId, propertyId).items;
-}
-/**
- * Returns a list of Universal Analytics view custom dimensions.
- * @param {string|number} accountId The GA account ID.
- * @param {string} propertyId The UA property ID.
- * @return {!Array} An array of custom dimensions.
- */
-function getCustomDimensions(accountId, propertyId) {
-  return Analytics.Management.CustomDimensions.list(accountId, propertyId)
-      .items;
-}
-/**
- * Creates a Universal Analytics custom dimension.
- * @param {!Object} request The request data to create a custom dimension.
- * @return {!Object} An object describing the custom dimension that was created.
- */
-function createCustomDimension(request) {
-  return Analytics.Management.CustomDimensions.insert(
-      request.body, request.accountId, request.propertyId);
-}
-/**
- * Updates a Universal Analytics custom dimension.
- * @param {!Object} request The request data to update a custom dimension.
- * @return {!Object} An object describing the custom dimension that was updated.
- */
-function updateCustomDimension(request) {
-  return Analytics.Management.CustomDimensions.update(
-      request.body, request.accountId, request.propertyId,
-      'ga:dimension' + request.index);
-}
-/**
- * Creates a Universal Analytics custom metric.
- * @param {!Object} request The request data to create a custom metric.
- * @return {!Object} An object describing the custom metric that was created.
- */
-function createCustomMetric(request) {
-  return Analytics.Management.CustomMetrics.insert(
-      request.body, request.accountId, request.propertyId);
-}
-/**
- * Updates a Universal Analytics custom metric.
- * @param {!Object} request The request data to update a custom metric.
- * @return {!Object} An object describing the custom metric that was updated.
- */
-function updateCustomMetric(request) {
-  return Analytics.Management.CustomMetrics.update(
-      request.body, request.accountId, request.propertyId,
-      'ga:metric' + request.index);
-}
-/**
- * Lists the custom metrics in a Universal Analytics property.
- * @param {string|number} accountId The GA account ID.
- * @param {string} propertyId The UA property ID.
- * @return {!Array} An array of custom metrics.
- */
-function getCustomMetrics(accountId, propertyId) {
-  return Analytics.Management.CustomMetrics.list(accountId, propertyId).items;
-}
-/**
- * Lists all of the Universal Analytics filters for a GA account.
- * @param {string|number} accountId The GA account ID.
- * @return {!Array} An array of UA filters.
- */
-function getAllFilters(accountId) {
-  return Analytics.Management.Filters.list(accountId).items;
-}
-/**
- * Lists filter links for the views under a UA property.
- * @param {string|number} accountId The GA account ID.
- * @param {string} propertyId The UA property ID.
- * @param {string|number} viewId The UA view ID.
- * @return {!Array} An array of UA filter links.
- */
-function getFilterLinks(accountId, propertyId, viewId) {
-  return Analytics.Management.ProfileFilterLinks
-      .list(accountId, propertyId, viewId)
-      .items;
-}
-/**
- * Lists the account summaries for all UA accounts a user can access.
- * @return {!Array} An array of account summaries.
- */
-function getAccountSummaries() {
-  return Analytics.Management.AccountSummaries.list();
-}
-/**
- * Lists the remarketing audiences in a Universal Analytics property.
- * @param {string|number} accountId The GA account ID.
- * @param {string} propertyId The UA property ID.
- * @param {number} startIndex The start index for the returned audiences.
- * @return {!Array} An array of remarketing audiences.
- */
-function listRemarketingAudiences(accountId, propertyId, startIndex) {
-  return Analytics.Management.RemarketingAudience.list(
-      accountId, propertyId, {'start-index': startIndex});
-}
-/**
- * Lists the goals for the views under a UA property.
- * @param {string|number} accountId The GA account ID.
- * @param {string} propertyId The UA property ID.
- * @param {string|number} viewId The UA view ID.
- * @return {!Array} An array of goals in a view.
- */
-function listGoals(accountId, propertyId, viewId) {
-  return Analytics.Management.Goals.list(accountId, propertyId, viewId).items;
-}
-/**
- * Creates a goal in a view under the UA property.
- * @param {!Object} request The request data to create a goal.
- * @return {!Object} An object describing the goal that was created.
- */
-function createGoal(request) {
-  return Analytics.Management.Goals.insert(
-      request.resource, request.accountId, request.webPropertyId,
-      request.profileId);
-}
-/**
- * Creates a goal in a view under the UA property.
- * @param {!Object} request The request data to create a goal.
- * @return {!Object} An object describing the goal that was created.
- */
-function createGoal(request) {
-  return Analytics.Management.Goals.insert(
-      request.resource, request.accountId, request.webPropertyId,
-      request.profileId);
-}
 /**
  * Returns either the read or write range for a given sheet.
  * @param {string} name The name of the sheet for the range.
@@ -248,7 +114,7 @@ function getAllProperties() {
 }
 /**
  * Returns a double array of all properties in all accounts.
- * @return {!Array<!Array>} A double array of all properties under all accounts 
+ * @return {!Array<!Array>} A double array of all properties under all accounts
  * a user has access to.
  */
 function getAllPropertiesWithInternalIds() {
@@ -268,7 +134,7 @@ function getAllPropertiesWithInternalIds() {
           is360 = true;
         }
         finalProperties.push(
-            [accountName, accountId, propertyName, propertyId, 
+            [accountName, accountId, propertyName, propertyId,
             internalPropertyId, is360]);
       }
     }
@@ -302,36 +168,8 @@ function getDataFromSheet(sheetName) {
   const ranges = getSheetRange(sheetName, 'read');
   let sheet = ss.getSheetByName(sheetName);
   return sheet.getRange(
-    ranges.row, ranges.column, 
+    ranges.row, ranges.column,
     sheet.getLastRow() - ranges.row + 1, ranges.numColumns).getValues();
-}
-/**
- * Retrieve settings from thee settings sheet.
- * @return {!Object} The settings from the settings sheet.
- */
-function getSettings() {
-  const settingsValues = getDataFromSheet('UA Settings');
-  const rawStartDate = settingsValues[0][0];
-  const rawEndDate = settingsValues[1][0];
-  const timeZone = settingsValues[2][0] || 'EST';
-  let settingsObject = {
-    startDate: Utilities.formatDate(rawStartDate, timeZone, 'yyyy-MM-dd'),
-    endDate: Utilities.formatDate(rawEndDate, timeZone, 'yyyy-MM-dd')
-  };
-  return settingsObject;
-}
-/**
- * Get selected views from the account summaries sheet based
- * on which views have a checked checkbox.
- * @return {!Array<!Array>} A two dimensional array of the selected
- * views retrieved from the sheet.
- */
-function getSelectedViews() {
-  let views = getDataFromSheet(sheetsMeta.ua.accountSummaries.sheetName);
-  for (let i = 0; i < views.length; i++) {
-    views[i].splice(4, 1);
-  }
-  return views.filter(row => row[6]);
 }
 /**
  * Get selected properties from the account summaries sheet based
@@ -354,26 +192,13 @@ function getSelectedGa4Properties() {
 function writeActionTakenToSheet(sheetName, index, actionTaken) {
 	// The actual row to be written to is offset from the index value by 2, so
 	// the index value must be increased by two.
-	const writeRow = index + 2; 
+	const writeRow = index + 2;
   const actionTakenColumn = ss.getSheetByName(sheetName).getLastColumn();
 	const numRows = 1;
 	const numColumns = 1;
 	ss.getSheetByName(sheetName).getRange(
 		writeRow, actionTakenColumn, numRows, numColumns
 	).setValue(actionTaken);
-}
-
-/**
- * Requests report data.
- * @param {!Object} report
- * @return {!Array<!Array>} The event data as a two
- * dimensional array.
- */
-function getData(report) {
-  let request = AnalyticsReporting.newGetReportsRequest();
-  request.reportRequests = [];
-  request.reportRequests.push(report);
-  return AnalyticsReporting.Reports.batchGet(request).reports[0].data.rows;
 }
 
 /**
