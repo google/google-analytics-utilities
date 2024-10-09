@@ -134,6 +134,13 @@ function modifyEventCreateRules() {
 }
 
 /**
+ * Modifies event edit rules.
+ */
+function modifyEventEditRules() {
+  modifyGA4Entities(sheetsMeta.ga4.eventEditRules.sheetName);
+}
+
+/**
  * Modifies subproperty event filters.
  */
 function modifySubpropertyEventFilters() {
@@ -194,6 +201,9 @@ function modifyGA4Entities(sheetName) {
         parent = `properties/${entity[3]}/dataStreams/${entity[5]}`;
         resourceName = entity[7];
       } else if (sheetName == sheetsMeta.ga4.eventCreateRules.sheetName) {
+        parent = `properties/${entity[3]}/dataStreams/${entity[5]}`;
+        resourceName = entity[7];
+      } else if (sheetName == sheetsMeta.ga4.eventEditRules.sheetName) {
         parent = `properties/${entity[3]}/dataStreams/${entity[5]}`;
         resourceName = entity[7];
       } else {
@@ -439,6 +449,10 @@ function buildCreatePayload(sheetName, entity) {
     payload.adClientCode = entityDisplayNameOrId;
   } else if (sheetName == sheetsMeta.ga4.eventCreateRules.sheetName) {
     payload.destinationEvent = entity[6];
+    payload.eventConditions = JSON.parse(entity[9] || '[]');
+    payload.parameterMutations = JSON.parse(entity[10] || '[]');
+  } else if (sheetName == sheetsMeta.ga4.eventEditRules.sheetName) {
+    payload.displayName = entity[6];
     payload.sourceCopyParameters = entity[8];
     payload.eventConditions = JSON.parse(entity[9] || '[]');
     payload.parameterMutations = JSON.parse(entity[10] || '[]');
@@ -559,6 +573,10 @@ function buildUpdatePayload(sheetName, entity) {
   } else if (sheetName == sheetsMeta.ga4.eventCreateRules.sheetName) {
     payload.destinationEvent = entity[6];
     payload.sourceCopyParameters = entity[8];
+    payload.eventConditions = JSON.parse(entity[9] || '[]');
+    payload.parameterMutations = JSON.parse(entity[10] || '[]');
+  } else if (sheetName == sheetsMeta.ga4.eventEditRules.sheetName) {
+    payload.displayName = entity[6];
     payload.eventConditions = JSON.parse(entity[9] || '[]');
     payload.parameterMutations = JSON.parse(entity[10] || '[]');
   } else if (sheetName == sheetsMeta.ga4.subpropertyEventFilters.sheetName) {

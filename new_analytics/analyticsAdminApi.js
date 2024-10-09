@@ -36,6 +36,7 @@ const ga4Resource = {
   measurementProtocolSecrets: AnalyticsAdmin.Properties.DataStreams.MeasurementProtocolSecrets,
   adSenseLinks: AnalyticsAdmin.Properties.AdSenseLinks,
   eventCreateRules: AnalyticsAdmin.Properties.DataStreams.EventCreateRules,
+  eventEditRules: AnalyticsAdmin.Properties.DataStreams.EventEditRules,
   subpropertyEventFilters: AnalyticsAdmin.Properties.SubpropertyEventFilters,
   rollupPropertySourceLinks: AnalyticsAdmin.Properties.RollupPropertySourceLinks,
   calculatedMetrics: AnalyticsAdmin.Properties.CalculatedMetrics

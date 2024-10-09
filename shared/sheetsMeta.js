@@ -355,6 +355,21 @@ const sheetsMeta = {
         numColumns: 15
       }
     },
+    eventEditRules: {
+      sheetName: 'Event Edit Rules',
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 11
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 15
+      }
+    },
     audienceLists: {
       sheetName: 'Audience Lists',
       write: {
