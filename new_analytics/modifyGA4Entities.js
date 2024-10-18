@@ -1,12 +1,12 @@
 /**
  * Copyright 2024 Google LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     https://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -134,6 +134,13 @@ function modifyEventCreateRules() {
 }
 
 /**
+ * Modifies event edit rules.
+ */
+function modifyEventEditRules() {
+  modifyGA4Entities(sheetsMeta.ga4.eventEditRules.sheetName);
+}
+
+/**
  * Modifies subproperty event filters.
  */
 function modifySubpropertyEventFilters() {
@@ -152,6 +159,13 @@ function modifyCalculatedMetrics() {
  */
 function modifyRollupPropertySourceLinks() {
   modifyGA4Entities(sheetsMeta.ga4.rollupPropertySourceLinks.sheetName);
+}
+
+/**
+ * Modifies BigQuery links.
+ */
+function modifyBigQueryLinks() {
+  modifyGA4Entities(sheetsMeta.ga4.bigqueryLinks.sheetName);
 }
 
 /**
@@ -189,6 +203,9 @@ function modifyGA4Entities(sheetName) {
       } else if (sheetName == sheetsMeta.ga4.eventCreateRules.sheetName) {
         parent = `properties/${entity[3]}/dataStreams/${entity[5]}`;
         resourceName = entity[7];
+      } else if (sheetName == sheetsMeta.ga4.eventEditRules.sheetName) {
+        parent = `properties/${entity[3]}/dataStreams/${entity[5]}`;
+        resourceName = entity[7];
       } else {
         parent = 'properties/' + entity[3];
         resourceName = entity[5];
@@ -209,7 +226,7 @@ function modifyGA4Entities(sheetName) {
         // Writes that the entity was skipped to the sheet.
         writeActionTakenToSheet(sheetName, index, actionTaken);
 
-      // Archives custom definitions and audiences. Deletes anything else that 
+      // Archives custom definitions and audiences. Deletes anything else that
       // can be deleted.
       } else if (remove) {
         if (sheetName == sheetsMeta.ga4.customDimensions.sheetName ||
@@ -261,7 +278,7 @@ function modifyGA4Entities(sheetName) {
           }
           if (entity[16] != 'TWO_MONTHS' || entity[17] != false) {
             responses.push(
-              updateDataRetentionSettings(entity[16], entity[17], 
+              updateDataRetentionSettings(entity[16], entity[17],
                 createResponse.name + '/dataRetentionSettings'));
           }
 
@@ -317,7 +334,7 @@ function buildCreatePayload(sheetName, entity) {
     payload.displayName = entityDisplayNameOrId;
     payload.scope = scope;
     payload.description = description;
-    payload.parameterName = parameterName;     
+    payload.parameterName = parameterName;
     if (sheetName == sheetsMeta.ga4.customDimensions.sheetName) {
       // Add custom dimension fields.
       const disallowAdsPersonalization = entity[8];
@@ -432,6 +449,10 @@ function buildCreatePayload(sheetName, entity) {
     payload.adClientCode = entityDisplayNameOrId;
   } else if (sheetName == sheetsMeta.ga4.eventCreateRules.sheetName) {
     payload.destinationEvent = entity[6];
+    payload.eventConditions = JSON.parse(entity[9] || '[]');
+    payload.parameterMutations = JSON.parse(entity[10] || '[]');
+  } else if (sheetName == sheetsMeta.ga4.eventEditRules.sheetName) {
+    payload.displayName = entity[6];
     payload.sourceCopyParameters = entity[8];
     payload.eventConditions = JSON.parse(entity[9] || '[]');
     payload.parameterMutations = JSON.parse(entity[10] || '[]');
@@ -440,6 +461,15 @@ function buildCreatePayload(sheetName, entity) {
     payload.filterClauses = entity[6];
   } else if (sheetName == sheetsMeta.ga4.rollupPropertySourceLinks.sheetName) {
     payload.sourceProperty = entity[4];
+  } else if (sheetName == sheetsMeta.ga4.bigqueryLinks.sheetName) {
+    payload.project = entity[4];
+    payload.dailyExportEnabled = entity[7];
+    payload.excludedEvents = entity[8].split(',');
+    payload.exportStreams = entity[9].split(',');
+    payload.includeAdvertisingId = entity[10];
+    payload.streamingExportEnabled = entity[11];
+    payload.freshDailyExportEnabled = entity[12];
+    payload.datasetLocation = entity[13];
   }
   return payload;
 }
@@ -545,8 +575,19 @@ function buildUpdatePayload(sheetName, entity) {
     payload.sourceCopyParameters = entity[8];
     payload.eventConditions = JSON.parse(entity[9] || '[]');
     payload.parameterMutations = JSON.parse(entity[10] || '[]');
+  } else if (sheetName == sheetsMeta.ga4.eventEditRules.sheetName) {
+    payload.displayName = entity[6];
+    payload.eventConditions = JSON.parse(entity[9] || '[]');
+    payload.parameterMutations = JSON.parse(entity[10] || '[]');
   } else if (sheetName == sheetsMeta.ga4.subpropertyEventFilters.sheetName) {
     payload.filterClauses = entity[6];
+  } else if (sheetName == sheetsMeta.ga4.bigqueryLinks.sheetName) {
+    payload.dailyExportEnabled = entity[7];
+    payload.excludedEvents = entity[8].split(',');
+    payload.exportStreams = entity[9].split(',');
+    payload.includeAdvertisingId = entity[10];
+    payload.streamingExportEnabled = entity[11];
+    payload.freshDailyExportEnabled = entity[12];
   }
   return payload;
 }

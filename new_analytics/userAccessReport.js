@@ -16,7 +16,7 @@
 
 /**
  * Gets the user report settings from the "User Access Report Settings" sheet.
- * @return {!Array<!Array<Date|string|boolean>>} A double array of settings 
+ * @return {!Array<!Array<Date|string|boolean>>} A double array of settings
  * data.
  */
 function getUserAccessReportRequestSettingsFromSheet() {
@@ -64,11 +64,11 @@ function getAllUserAccessRecords(entities, requestSettings) {
         requestSettings, `${ENTITY_PREFIX.ACCOUNTS}${currentEntity.accountId}`);
     } else {
       response = sendUserAccessReportRequest(
-        requestSettings, 
+        requestSettings,
         `${ENTITY_PREFIX.PROPERTIES}${currentEntity.propertyId}`);
     }
     // If the there are rows in the response, then loop through them and push
-    // the dimension and metric values of each row to the records array while 
+    // the dimension and metric values of each row to the records array while
     // adding the current entity values.
     if (response.rowCount > 0) {
       for (const row of response.rows) {
@@ -102,7 +102,7 @@ function createUserAccessReportSelectedEntitiesArray(
     // Loop through each row of the sheet data.
     for (const row of sheetRows) {
       const accountId = row[1];
-      // If the access report will be run at the account level, then only set 
+      // If the access report will be run at the account level, then only set
       // the account name and ID for a selected entity once. If the access
       // report will be run at the property level, then create an entity that
       // includes the account name, account ID, property name, and property ID.
@@ -157,7 +157,7 @@ function createUserAccessReportHeaders(
 }
 
 /**
- * Gets the user access reports and writes the access records to the "User 
+ * Gets the user access reports and writes the access records to the "User
  * Access Report" sheet after first clearing the contents of that sheet.
  */
 function writeUserAccessReportDataToSheet() {

@@ -211,13 +211,13 @@ const sheetsMeta = {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 13
+        numColumns: 18
       },
       write: {
         row: 2,
         column: 1,
         numRows: 1,
-        numColumns: 13
+        numColumns: 14
       }
     },
     sa360Links: {
@@ -342,6 +342,21 @@ const sheetsMeta = {
     },
     eventCreateRules: {
       sheetName: 'Event Create Rules',
+      write: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 11
+      },
+      read: {
+        row: 2,
+        column: 1,
+        numRows: 1,
+        numColumns: 15
+      }
+    },
+    eventEditRules: {
+      sheetName: 'Event Edit Rules',
       write: {
         row: 2,
         column: 1,

@@ -1,12 +1,12 @@
 /**
- * Copyright 2022 Google LLC
- * 
+ * Copyright 2024 Google LLC
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     https://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,28 +15,17 @@
  */
 
 /**
- * Creates the GA4 health report by pulling information for each of the report 
- * components and saving that datat to their respective sheets. The settings 
- * data for both the aggregate slides and snapshot slides is then formatted and 
- * looped through to build a new Google Slides presentation where placeholders 
+ * Creates the GA4 health report by pulling information for each of the report
+ * components and saving that datat to their respective sheets. The settings
+ * data for both the aggregate slides and snapshot slides is then formatted and
+ * looped through to build a new Google Slides presentation where placeholders
  * are replaced with new values.
  */
 function createHealthReport() {
-  if (SpreadsheetApp.getActive().getSheetByName('GA4 Report Settings')
+  if (SpreadsheetApp.getActive()
+  .getSheetByName(sheetsMeta.ga4.healthReport.sheetName)
   .getRange('C8').getValue()) {
-    writeGA4AudiencesToSheet();
-    writeGA4ConversionEventsToSheet();
-    writeGA4StreamsToSheet();
-    writeGA4PropertyDetailsToSheet();
-    writeGA4CustomDimensionsToSheet();
-    writeGA4CustomMetricsToSheet();
-    writeGA4AdsLinksToSheet();
-    writeGA4DV360LinksToSheet();
-    writeGA4FirebaseLinksToSheet();
-    writeGA4SA360LinksToSheet();
-    writeGA4BigQueryLinksToSheet();
-    writeGA4AdSenseLinksToSheet();
-    writeGA4ChannelGroupsToSheet();
+    listAllGA4PropertyResources();
   }
 
   const healthReportSettings = formatHealthReportSettings();
@@ -63,7 +52,7 @@ function createHealthReport() {
 }
 
 /**
- * Creates new Google Slides presentation and shares it based on provided 
+ * Creates new Google Slides presentation and shares it based on provided
  * settings.
  * @param {string} templateUrl
  * @param {string} emailString
@@ -104,9 +93,9 @@ function setReportListValue(reportName, reportUrl) {
   const richTextValue = SpreadsheetApp.newRichTextValue().setText(reportName)
   .setLinkUrl(reportUrl).build();
   const reportSheet = SpreadsheetApp.getActive()
-  .getSheetByName('GA4 Report Settings');
+  .getSheetByName(sheetsMeta.ga4.healthReport.sheetName);
   const reportRange = SpreadsheetApp.getActive()
-  .getSheetByName('GA4 Report Settings')
+  .getSheetByName(sheetsMeta.ga4.healthReport.sheetName)
     .getRange(3, 6, reportSheet.getLastRow(),1);
   const reportValues = reportRange.getValues();
   let firstBlankCellIndex = reportValues.flat().indexOf('');
@@ -145,12 +134,12 @@ function getSettingsKeyName(index) {
 }
 
 /**
- * Retrieves data from the GA4 Report Settings sheet and formats it to be
+ * Retrieves data from the Report Settings sheet and formats it to be
  * useable when replacing values in the slides.
  * @returns {!Object} The health report settings object.
  */
 function formatHealthReportSettings() {
-  const settings = getDataFromSheet('GA4 Report Settings');
+  const settings = getDataFromSheet(sheetsMeta.ga4.healthReport.sheetName);
   const blankRowIndex = settings.findIndex(settingRow => settingRow[0] == '');
 
   // Creates general settings.
@@ -171,7 +160,7 @@ function formatHealthReportSettings() {
   const templateSettings = templateRows.reduce((obj, settingRow) => {
   // Starts constructing template objects.
     const templatePlaceholder = settingRow[0]
-    const templateSlideId = settingRow[1]; 
+    const templateSlideId = settingRow[1];
     const include = settingRow[2];
     const templateValue = settingRow[3];
     if (include) {
@@ -185,11 +174,11 @@ function formatHealthReportSettings() {
           templatePairs: [placeholderValuePair]
         }];
       } else {
-        // Checks if a template slide ID already exists in the templateInfo 
+        // Checks if a template slide ID already exists in the templateInfo
         // object.
         if(obj.templateInfo.find(
           template => template.templateSlideId == templateSlideId)) {
-          // Adds the new placeholder/value pair object to the templatePairs 
+          // Adds the new placeholder/value pair object to the templatePairs
           // array.
           const templateObj = obj.templateInfo.find(
             template => template.templateSlideId == templateSlideId);
@@ -216,8 +205,8 @@ function formatHealthReportSettings() {
 }
 
 /**
- * Creates the repeating slides, which are multiple slides within the larger 
- * presentation that follow a set template. This process creates a new slide 
+ * Creates the repeating slides, which are multiple slides within the larger
+ * presentation that follow a set template. This process creates a new slide
  * based on a template slide and then replaces the placeholders with real values
  * in the new template slide copy.
  * @param {!Object} presentation
@@ -226,13 +215,13 @@ function formatHealthReportSettings() {
 function createRepeatingSlides(presentation, percentColorRanges) {
   // Gets snapshot sheet.
   const snapshotSheet = SpreadsheetApp.getActiveSpreadsheet()
-  .getSheetByName('GA4 Report Settings - Snapshot');
+  .getSheetByName('Report Settings - Snapshot');
   // Gets data from the snapshot sheet.
   const snapshotData = snapshotSheet.getRange(
     1, 1, snapshotSheet.getLastRow(), snapshotSheet.getLastColumn()
   ).getValues();
   const templateSlideIds = [];
-  
+
   // Checks if more than just the headers exists for the snapshot data.
   if (snapshotData.length > 1) {
     // Loops through the snapshoot data starting at index 1 to skip the headers.
@@ -325,11 +314,11 @@ function formatColorRangeObject(value) {
 }
 
 /**
- * Finds the template slides and replaces their content with values from the 
+ * Finds the template slides and replaces their content with values from the
  * sheet.
  * @param {!Object} presentation The Google Slides presentation.
  * @param {!Object} templateInfo The the template info object.
- * @param {!Object} percentColorRanges The color ranges for percent values 
+ * @param {!Object} percentColorRanges The color ranges for percent values
  * object.
  */
 function replaceSingleSlidePlaceholders(
@@ -353,7 +342,7 @@ function replaceSingleSlidePlaceholders(
       /logo|image|graphic/.test(templatePlaceholder)) {
       shapes.splice(shapes.indexOf(selectedShape), 1);
     }
-    replaceValues(templatePlaceholder, templateValue, 
+    replaceValues(templatePlaceholder, templateValue,
     selectedShape, percentColorRanges);
   }
 }
@@ -363,7 +352,7 @@ function replaceSingleSlidePlaceholders(
  * @param {!string} placeholder The placeholder string to be replaced.
  * @param {!value} value The string value to replace the placeholder string.
  * @param {!Object} shape The slide shape with the placeholder string.
- * @param {!Object} percentColorRanges The color ranges for percent values 
+ * @param {!Object} percentColorRanges The color ranges for percent values
  * object.
  */
 function replaceValues(placeholder, value, shape, percentColorRanges) {
@@ -371,7 +360,7 @@ function replaceValues(placeholder, value, shape, percentColorRanges) {
     // Gets the text from the template slide shape.
     const textRange = shape.getText();
 
-    // Checks if the placeholder value is present in the template slide shape 
+    // Checks if the placeholder value is present in the template slide shape
     // text.
     if (textRange.find(placeholder).length > 0) {
       // Replaces the placeholder shape with an image with the same dimensions.
@@ -403,15 +392,15 @@ function replaceTemplateWithImage(shape, templateValue) {
 }
 
 /**
- * Replaces the placeholder template string with the new value from the sheet. 
- * This value from the sheet can be either a string or a number. If it is a 
+ * Replaces the placeholder template string with the new value from the sheet.
+ * This value from the sheet can be either a string or a number. If it is a
  * number, it is transformed into a string.
- * @param {!Object} textRange The text range that contains the placeholder 
+ * @param {!Object} textRange The text range that contains the placeholder
  * string.
  * @param {!string} templatePlaceholder The placeholder string to be replaced.
  * @param {!string} templateValue The value from the sheet that will replace the
  * placeholder string.
- * @param {!Object} percentColorRanges The color ranges for percent values 
+ * @param {!Object} percentColorRanges The color ranges for percent values
  * object.
  */
 function replaceWithTextOrNumber(
@@ -419,14 +408,14 @@ function replaceWithTextOrNumber(
   // Sets the percent color.
   if (/percent/.test(templatePlaceholder)) {
     // Converts the decimal to a percent.
-    const percentNumValue = Math.round(parseFloat(templateValue) * 100); 
+    const percentNumValue = Math.round(parseFloat(templateValue) * 100);
     // Converts the percent to a string with the percent sign at the end.
     const percentStringValue = percentNumValue.toString() + '%';
     // Replaces the placeholder in the slide with the percent string value.
     textRange.replaceAllText(templatePlaceholder.trim(), percentStringValue);
     // Gets the range of the replaced value in order to change its color.
     const percentTextRanges = textRange.find(percentStringValue);
-    // Loops through the percent color range values to set the color of the 
+    // Loops through the percent color range values to set the color of the
     // replaced value correctly.
     percentTextRanges.forEach(percentTextRange => {
       if (percentColorRanges.length > 0) {
@@ -439,7 +428,7 @@ function replaceWithTextOrNumber(
       }
     });
   } else if (!isNaN(templateValue) && typeof templateValue != "boolean") {
-    // Rounds any potential float to the nearest integer to display the value 
+    // Rounds any potential float to the nearest integer to display the value
     // more clearly on the slide.
     const numValue = Math.round(parseFloat(templateValue));
     textRange.replaceAllText(templatePlaceholder.trim(), numValue);

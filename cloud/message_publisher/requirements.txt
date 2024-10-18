@@ -1,0 +1,7 @@
+functions-framework==3.*
+google-cloud-pubsub
+google-cloud-storage
+cloudevents
+pandas
+fsspec
+gcsfs

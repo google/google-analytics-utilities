@@ -36,6 +36,7 @@ const ga4Resource = {
   measurementProtocolSecrets: AnalyticsAdmin.Properties.DataStreams.MeasurementProtocolSecrets,
   adSenseLinks: AnalyticsAdmin.Properties.AdSenseLinks,
   eventCreateRules: AnalyticsAdmin.Properties.DataStreams.EventCreateRules,
+  eventEditRules: AnalyticsAdmin.Properties.DataStreams.EventEditRules,
   subpropertyEventFilters: AnalyticsAdmin.Properties.SubpropertyEventFilters,
   rollupPropertySourceLinks: AnalyticsAdmin.Properties.RollupPropertySourceLinks,
   calculatedMetrics: AnalyticsAdmin.Properties.CalculatedMetrics
@@ -151,7 +152,7 @@ function createGA4Entity(resourceKey, name, payload) {
     } else if (resourceKey == 'connectedSiteTags') {
       response = ga4Resource.properties.createConnectedSiteTag(payload);
     } else if (resourceKey == 'subproperties') {
-      response = ga4Resource.properties.createSubproperty(payload);
+      response = ga4Resource.properties.provisionSubproperty(payload);
     } else if (resourceKey == 'rollupProperties') {
       response = ga4Resource.properties.createRollupProperty(payload);
     } else {

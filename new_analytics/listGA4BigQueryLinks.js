@@ -1,12 +1,12 @@
 /**
- * Copyright 2023 Google LLC
- * 
+ * Copyright 2024 Google LLC
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     https://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,6 +30,12 @@ function listGA4BigQueryLinks(properties) {
       'bigqueryLinks', propertyName).bigqueryLinks;
      if (links != undefined) {
        links.forEach(link => {
+        if (link.excludedEvents) {
+          link.excludedEvents = link.excludedEvents.join(',');
+        }
+        if (link.exportStreams) {
+          link.exportStreams = link.exportStreams.join(',');
+        }
         sheetValuesArray.push([
           property[0],
           property[1],
@@ -37,13 +43,14 @@ function listGA4BigQueryLinks(properties) {
           property[3],
           link.project,
           link.name,
-          link.createTime,
-          link.dailyExportEnabled,
-          link.excludedEvents || '',
-          link.exportStreams.join(', ') || '',
           link.includeAdvertisingId || '',
+          link.dailyExportEnabled,
           link.streamingExportEnabled,
-          link.freshDailyExportEnabled
+          link.freshDailyExportEnabled,
+          link.excludedEvents || '',
+          link.exportStreams || '',
+          link.datasetLocation,
+          link.createTime,
         ]);
       });
     }

@@ -1,12 +1,12 @@
 /**
- * Copyright 2022 Google LLC
- * 
+ * Copyright 2024 Google LLC
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     https://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -76,7 +76,8 @@ function onOpen(e) {
         .addItem('Modify', 'modifyGA4SA360Links'))
       .addSubMenu(
         ui.createMenu('BigQuery')
-        .addItem('List', 'writeGA4BigQueryLinksToSheet'))
+        .addItem('List', 'writeGA4BigQueryLinksToSheet')
+        .addItem('Modify', 'modifyBigQueryLinksToSheet'))
       .addSubMenu(
         ui.createMenu('AdSense')
         .addItem('List', 'writeGA4AdSenseLinksToSheet')
@@ -94,6 +95,10 @@ function onOpen(e) {
         ui.createMenu('Event Create Rules')
         .addItem('List', 'writeGA4EventCreateRulesToSheet')
         .addItem('Modify', 'modifyEventCreateRules'))
+      .addSubMenu(
+        ui.createMenu('Event Edit Rules')
+        .addItem('List', 'writeEventEditRulesToSheet')
+        .addItem('Modify', 'modifyEventEditRules'))
       .addSubMenu(
         ui.createMenu('Subproperty Event Filters')
         .addItem('List', 'writeGA4SubpropertyEventFiltersToSheet')
