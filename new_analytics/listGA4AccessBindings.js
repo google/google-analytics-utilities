@@ -45,7 +45,7 @@ function listGA4AccessBindings(properties) {
       }
     }
 
-    if (property[3] != "") {
+    if (property[3] != '') {
       const propertyAccessBindings = listGA4Entities(
         'propertyAccessBindings', propertyName).accessBindings;
       if (propertyAccessBindings) {
