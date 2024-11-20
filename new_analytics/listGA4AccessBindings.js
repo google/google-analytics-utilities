@@ -44,22 +44,25 @@ function listGA4AccessBindings(properties) {
         });
       }
     }
-    const propertyAccessBindings = listGA4Entities(
-      'propertyAccessBindings', propertyName).accessBindings;
-    if (propertyAccessBindings) {
-      propertyAccessBindings.forEach(accessBinding => {
-        formattedAccessBindings.push([
-          property[0],
-          property[1],
-          property[2],
-          property[3],
-          accessBinding.user,
-          accessBinding.name,
-          'property',
-          getPrimaryRoles(accessBinding.roles),
-          getSecondaryRoles(accessBinding.roles)
-        ]);
-      });
+
+    if (property[3] != '') {
+      const propertyAccessBindings = listGA4Entities(
+        'propertyAccessBindings', propertyName).accessBindings;
+      if (propertyAccessBindings) {
+        propertyAccessBindings.forEach(accessBinding => {
+          formattedAccessBindings.push([
+            property[0],
+            property[1],
+            property[2],
+            property[3],
+            accessBinding.user,
+            accessBinding.name,
+            'property',
+            getPrimaryRoles(accessBinding.roles),
+            getSecondaryRoles(accessBinding.roles)
+          ]);
+        });
+      }
     }
   });
   return formattedAccessBindings;
