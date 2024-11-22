@@ -87,7 +87,7 @@ function listGA4Entities(resourceKey, parent) {
         response = ga4Resource[resourceKey].list(parent);
       } else if (resourceKey == 'accountAccessBindings' || 
         resourceKey == 'propertyAccessBindings') { 
-        items = 'userBindings';
+        items = 'accessBindings';
         response = ga4Resource[resourceKey].list(parent, options);
       } else if (resourceKey == 'connectedSiteTags') {
         delete parent.pageSize;
@@ -109,7 +109,7 @@ function listGA4Entities(resourceKey, parent) {
           nextPageResponse = ga4Resource[resourceKey].list(parent);
         } else if (resourceKey == 'accountAccessBindings' || 
           resourceKey == 'propertyAccessBindings') { 
-          items = 'userBindings';
+          items = 'accessBindings';
           nextPageResponse = ga4Resource[resourceKey].list(parent, options);
         } else if (resourceKey == 'connectedSiteTags') {
           delete parent.pageSize;
