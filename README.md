@@ -35,6 +35,8 @@ The script currently performs the following functions:
 | [Subproperty Event Filters](#subproperty-event-filters)              | List, Create, Delete, Update  |
 | [Rollup Property Source Links](#rollup-property-source-links)        | List, Create, Delete          |
 | [User Access Report](#user-access-report)                            | Create                        |
+| [Annotations](#annotations)                                          | List, Create, Delete, Update  |
+
 
 These tasks can be completed by [joining the Google Group](https://groups.google.com/g/google-analytics-utilities-users), [copying the template spreadsheet](https://docs.google.com/spreadsheets/d/1kJqwYNed8RTuAgjy0aRUooD__MIPqzUeiDF5LZ7v1aI/), and clicking on various options under the Google Analytics Utilities menu.
 
@@ -1242,3 +1244,45 @@ Currently, the Google Anaytics Utilities can export audience list dimensions eit
     - The "Account Level Report" setting specifies if you are running access reports at the account level or property level. If you leave the box unchecked, then a property level user access report will be run for each of the properties you selected in step 2. If you check the box, then account level user access reports will be run for each of properties you selected in step 2. If multiple rows were selected that contain the same account, only one user access report will be run for said account.
 5. Click Google Analytics Utilities > Advanced > User Access Report > Run Report.
 6. The script will attempt to run a user access report for each of the properties or accounts you selected. The results will be written to the "User Access Report" sheet. Please note that the information in the "User Access Report" will be cleared whenever a new report is run.
+
+
+
+### Annotations
+
+#### List
+
+1. List GA4 account summaries.
+2. Select the properties for which you want to list their annotations
+3. Navigate to "Annotations".
+4. Click Google Analytics Utilities > Annotations > List.
+5. Annotations for the selected properties will be listed in the "Annotations" sheet.
+
+
+#### Create
+
+1. Navigate to "Annotations".
+2. Enter the following for each Annotations you want to create:
+    1. Property ID (this is the parent property)
+    2. Annotations Title
+    3. Color
+    4. Start Date (and optional end date if you want)
+3. Click Google Analytics Utilities > Annotations > Modify.
+4. The script will attempt to create new Annotations
+
+#### Update
+
+1. List your Annotations.
+2. Navigate to "Annotations".
+3. Modify the following for Annotations you want to update:
+    1. Annotations title, Description, Color, Start Date, End Date
+    2. Check the "Update" box
+4. Click Google Analytics Utilities > Annotations > Modify.
+5. The script will attempt to update the Annotations
+
+#### Delete
+
+1. List your Annotations.
+2. Navigate to "Annotations".
+3. Check the "Delete" box for the Annotations you want to delete.
+4. Click Google Analytics Utilities > Annotations > Modify.
+5. The script will attempt to delete the Annotations.
